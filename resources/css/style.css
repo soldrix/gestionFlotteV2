@@ -1,0 +1,159 @@
+@import '~datatables.net-bs5/css/dataTables.bootstrap5.css';
+@import '~datatables.net-responsive-bs5/css/responsive.bootstrap5.css';
+@import '~flatpickr/dist/flatpickr.css';
+
+.minScreen{
+    height: calc(100vh - 60px);
+}
+.modal.fade input.active{
+    border:2px solid red;
+}
+.tdBtn{
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+}
+tr:hover .divBtnTab{
+    opacity: 100%;
+}
+.divBtnTab{
+    width: fit-content;
+    float: right;
+    opacity: 0;
+}
+td{
+    vertical-align: middle;
+}
+.noteSupp{
+    overflow-y: auto;
+    max-height: 100px;
+    padding-right:15px;
+}
+.col-sm-12{
+    padding: 0 !important;
+}
+.inputSearch{
+    border: 0;
+    border-bottom: 2px solid black;
+    outline: none;
+    background-color: transparent;
+    min-width: 150px;
+}
+.divFilter{
+    margin-top: 10px;
+    width: 100%;
+    background:#f2f2f2;
+    height: 50px;
+    display:flex;
+}
+
+#dropdownfilter{
+    z-index :100;
+    color:black;
+    text-decoration:none;
+    cursor:pointer;
+    user-select:none;
+    font-weight:bold;
+    height: fit-content;
+    align-self: center;
+}
+.ligne-75{
+    width: 75%;
+    height:2px;
+    background:black;
+    margin:10px auto;
+    opacity:50%;
+}
+#nbOffre{
+    font-weight: bold;
+}
+#btnOffre{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    height: fit-content;
+}
+#containerVoiture{
+    background-color: #F2F2F2;
+    min-height: calc(100vh - 60px);
+}
+.imageVoiture{
+    background-color: black;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    height: 450px;
+    border-radius: 15px;
+}
+.iconVoiture{
+    height: 24px;
+    width: 24px;
+    font-size: 24px;
+}
+.iconVoiture svg{
+    width: 100%;
+    height: 100%;
+}
+.iconVoiture svg path{
+    fill: white;
+}
+#blockSell{
+    height: fit-content;
+}.textSell{
+    max-width: 90%;
+ }
+.taxeText{
+    font-size: 13px;
+}
+.franchiseP,#gps,#protecPneu,#chainesV{
+    transform: scale(1.8);
+    margin-right:20px;
+    height: fit-content;
+    align-self: center;
+    line-height: 15px;
+}
+.px-4-5{
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+}
+.h-fit{
+    height: fit-content;
+}
+#divSearch{
+    display: none;
+    position: absolute;
+    height: fit-content;
+    flex-direction: column;
+    top: 100%;
+    z-index: 100000;
+    max-height: 500%;
+    background: #f2f2f2;
+    box-shadow: black 11px 9px 22px 6px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+#dateD.active,#dateF.active{
+    border: 2px red solid;
+}
+.textHome{
+    font-size: 20px;
+}
+.titreHome{
+    font-size: 2.5rem;
+}
+.fondHome{
+    background-color: #0000005e;
+    width: 100%;
+    height: 100%;
+}
+.cellLocation{
+    border-left: 2px solid white;
+    border-right: 2px solid white;
+}
+.Containerlocation{
+    background-color: #f2f2f2;
+    height: calc(100vh - 60px);
+}
+.h-100C{
+    height: calc(100vh - 60px);
+}
