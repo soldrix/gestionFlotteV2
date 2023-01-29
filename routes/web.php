@@ -9,6 +9,7 @@ use App\Http\Controllers\ReparationController;
 use App\Http\Controllers\AssuranceController;
 use App\Http\Controllers\ConsommationController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -102,7 +103,11 @@ Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
             Route::put('admin/location/update/{id}', 'update')->name('updateLocation');
             Route::delete('admin/location/delete/{id}', 'destroy');
         });
-
+        Route::controller(UserController::class)->group(function (){
+           Route::get('admin/users', 'index');
+           Route::get('admin/user/create', 'create');
+           Route::get('admin/user/store', 'store')->name('userCreate');
+        });
     });
 
 });
