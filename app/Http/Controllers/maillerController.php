@@ -10,15 +10,14 @@ class maillerController extends Controller
     public function UserPassword($data){
         $mail = new PHPMailer(true);
         $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com';  //gmail SMTP server
+        $mail->Host = config('mail.mailers.smtp.host');  //gmail SMTP server
         $mail->SMTPAuth = true;
 //to view proper logging details for success and error messages
 // $mail->SMTPDebug = 1;
-        $mail->Username = 'autoemail123456789@gmail.com';   //email
-        $mail->Password = 'oksstahsynfhmwvg';   //16 character obtained from app password created
-        $mail->Port = 465;                    //SMTP port
+        $mail->Username = config('mail.mailers.smtp.username');   //email
+        $mail->Password = config('mail.mailers.smtp.password');   //16 character obtained from app password created
+        $mail->Port = config('mail.mailers.smtp.port');                    //SMTP port
         $mail->SMTPSecure = "ssl";
-
         $mail->setFrom('admin@gmail.com', 'admin');
 
 //receiver email address and name
