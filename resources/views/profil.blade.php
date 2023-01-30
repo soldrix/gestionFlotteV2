@@ -23,9 +23,9 @@
                         modifier
                     </button>
                 </div>
-                <button class="btn btn-outline-primary h-50 align-self-center m-2" data-bs-target="#modifPasswordmodal" data-bs-toggle="modal" data-bs-dismiss="modal">
+                <a class="btn btn-outline-primary h-50 align-self-center m-2" href="/UpdatePassword">
                     modifier mot de passe
-                </button>
+                </a>
 
                 <div class="d-flex justify-content-center w-100">
                     <button class="btn btn-outline-danger" data-bs-target="#deluser" data-bs-toggle="modal" data-bs-dismiss="modal">suppression du compte</button>

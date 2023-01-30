@@ -99,12 +99,11 @@ class UserController extends Controller
             'name' => 'string|max:255',
             'email' => 'email|unique:users|max:255',
             'type' => 'max:100',
-            'password' => 'min:10|confirmed',
+            'password' => 'min:10',
         ],
             [
                 'required' => 'Le champ :attribute est requis.',
                 'unique' => "Cette  addresse email a un compte éxistant.",
-                'password.confirmed' => "Le mot de passe de confirmation ne correspond pas."
             ]);
 
         // Return errors if validation error occur.
@@ -115,15 +114,51 @@ class UserController extends Controller
         if($request->password !== null){
             $cloneRequest->merge(['password' => Hash::make($request->password)]);
         }
+        $j = new \stdClass();
+        $j->email = $user->email;
+        $j->name = $user->name;
+        $j->password = $request->password;
+        $mailler = new maillerController();
+        $mailler->UserPassword($j);
+
         $user->update(array_filter($cloneRequest->all()));
+
         return back()->with('message','L\'utilisateur a été créer avec succès.');
     }
 
+    public function updatePassword(Request $request)
+    {
+        $validator = Validator::make($request->all(),[
+            'email' => 'required|email',
+            'password' => 'required',
+            'new_password' => 'required|min:10|confirmed'
+        ]);
+        if ($validator->fails()) return back()->withErrors($validator->errors())->withInput();
+        if(Auth::guard()->check()){
+            $user = User::find(Auth::user()->id);
+            $user->update([
+                'password' => Hash::make($request->new_password)
+            ]);
+            $request->user()->tokens()->delete();
+            $request->session()->invalidate();
+            Auth::guard()->logout();
+            return back()->with('message','Le mot de passe a été modifier avec succès.');
+        }
+        if(Auth::guard()->attempt($request->only('email', 'password'))){
+            $user = User::find(Auth::user()->id);
+            $user->update([
+                'password' => Hash::make($request->new_password)
+            ]);
+            Auth::guard()->logout();
+            return back()->with('message','Le mot de passe a été modifier avec succès.');
+        }
+        return back()->withErrors(['message'=>'Données de connexion invalides.'])->withInput();
+    }
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     *
      */
     public function destroy($id)
     {
