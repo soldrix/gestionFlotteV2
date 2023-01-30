@@ -113,13 +113,14 @@ class UserController extends Controller
         unset($cloneRequest->password);
         if($request->password !== null){
             $cloneRequest->merge(['password' => Hash::make($request->password)]);
+            $j = new \stdClass();
+            $j->email = $user->email;
+            $j->name = $user->name;
+            $j->password = $request->password;
+            $mailler = new maillerController();
+            $mailler->UserPassword($j);
         }
-        $j = new \stdClass();
-        $j->email = $user->email;
-        $j->name = $user->name;
-        $j->password = $request->password;
-        $mailler = new maillerController();
-        $mailler->UserPassword($j);
+
 
         $user->update(array_filter($cloneRequest->all()));
 

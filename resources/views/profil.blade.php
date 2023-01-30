@@ -7,22 +7,6 @@
     <div class="col-8 d-flex align-self-center flex-column">
             @if(\Illuminate\Support\Facades\Auth::user())
                 <h2>Mon profil</h2>
-                <div class="d-flex w-100 p-2">
-                    <p class="m-0" style="font-weight: bold">
-                        Prenom <br> <span id="textName">{{auth()->user()->name}}</span>
-                    </p>
-                    <button class="btn btn-outline-primary h-50 align-self-center mx-2" data-bs-target="#modifNamemodal" data-bs-toggle="modal" data-bs-dismiss="modal">
-                        modifier
-                    </button>
-                </div>
-                <div class="d-flex w-100 p-2">
-                    <p class="m-0" style="font-weight: bold">
-                        EMAIL <br> <span id="textEmail">{{auth()->user()->email}}</span>
-                    </p>
-                    <button class="btn btn-outline-primary h-50 align-self-center mx-2" data-bs-target="#modifEmailmodal" data-bs-toggle="modal" data-bs-dismiss="modal">
-                        modifier
-                    </button>
-                </div>
                 <a class="btn btn-outline-primary h-50 align-self-center m-2" href="/UpdatePassword">
                     modifier mot de passe
                 </a>
