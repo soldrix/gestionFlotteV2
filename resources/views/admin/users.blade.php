@@ -12,17 +12,17 @@
                 <thead>
                 <tr>
                     <th>Nom</th>
-                    <th>email</th>
+                    <th>Email</th>
+                    <th>Type</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($users as $datas)
                     <tr data-voiture="{{$datas->id}}">
                         <td>{{$datas->name}}</td>
+                        <td>{{$datas->email}}</td>
                         <td class="tdBtn">
-                            <div class="noteSupp">
-                                {{$datas->email}}
-                            </div>
+                                {{$datas->type}}
                             <div class="divBtnTab">
                                 <a class="btn btn-info editButton text-white"  href="user/edit/{{$datas->id}}"><i class="fa-solid fa-pencil "></i></a>
                                 <button class="btn btn-danger delButton" data-voiture="{{$datas->id}}"><i class="fa-solid fa-trash-can"></i></button>
@@ -34,5 +34,5 @@
             </table>
         </div>
     </div>
-    <script src="{{ asset('js/entretien.js') }}" defer></script>
+    <script src="{{ asset('js/user.js') }}" defer></script>
 @endsection

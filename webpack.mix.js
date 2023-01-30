@@ -25,6 +25,7 @@ mix.autoload({
     .js('resources/js/location.js', 'public/js')
     .js('resources/js/assurance.js', 'public/js')
     .js('resources/js/consommation.js', 'public/js')
+    .js('resources/js/user.js', 'public/js')
     .js('resources/js/main.js','public/js')
     .js('node_modules/jquery/dist/jquery.js','public/js')
     .js('node_modules/@fortawesome/fontawesome-free/js/fontawesome.js','public/js')

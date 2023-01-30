@@ -25,7 +25,9 @@ Route::view('/', 'auth/login');
 Route::view('/login', 'auth/login');
 Route::view('/register', 'auth/register');
 Route::view('/PageNotFound', 'errors.404');
+Route::view('/UpdatePassword', 'updatePassword');
 
+Route::post('/userPassword/update', [UserController::class, 'updatePassword'])->name('UpdatePassword');
 Route::controller(LoginController::class)->group(function (){
 
     Route::post('login','login')->name('login');
@@ -36,7 +38,7 @@ Route::controller(LoginController::class)->group(function (){
 });
 
 Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
-
+    Route::view('/profil', 'profil');
     Route::middleware(\App\Http\Middleware\VerifRight::class)->group(function() {
 
         Route::controller(VoitureController::class)->group(function () {
@@ -106,7 +108,10 @@ Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
         Route::controller(UserController::class)->group(function (){
            Route::get('admin/users', 'index');
            Route::get('admin/user/create', 'create');
-           Route::get('admin/user/store', 'store')->name('userCreate');
+           Route::get('admin/user/edit/{id}', 'edit');
+           Route::post('admin/user/store', 'store')->name('userCreate');
+           Route::put('admin/user/update/{id}', 'update')->name('userUpdate');
+           Route::delete('admin/user/delete/{id}', 'destroy');
         });
     });
 
