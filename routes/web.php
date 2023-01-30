@@ -106,7 +106,10 @@ Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
         Route::controller(UserController::class)->group(function (){
            Route::get('admin/users', 'index');
            Route::get('admin/user/create', 'create');
-           Route::get('admin/user/store', 'store')->name('userCreate');
+           Route::get('admin/user/edit/{id}', 'edit');
+           Route::post('admin/user/store', 'store')->name('userCreate');
+           Route::put('admin/user/update/{id}', 'update')->name('userUpdate');
+           Route::delete('admin/user/delete/{id}', 'destroy');
         });
     });
 

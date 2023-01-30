@@ -51,11 +51,12 @@
                             <ul class="navbar-nav me-auto">
                                 <a href="{{url('/admin/voitures')}}" class="mx-2 text-dark text-decoration-none">Voitures</a>
                                 <a href="{{url('/admin/entretiens')}}" class="mx-2 text-dark text-decoration-none">Entretiens</a>
-                                <a href="{{url('/admin/assurances')}}" class="mx-2 text-dark text-decoration-none">Assurance</a>
-                                <a href="{{url('/admin/reparations')}}" class="mx-2 text-dark text-decoration-none">Reparation</a>
-                                <a href="{{url('/admin/consommations')}}" class="mx-2 text-dark text-decoration-none">Consommation</a>
+                                <a href="{{url('/admin/assurances')}}" class="mx-2 text-dark text-decoration-none">Assurances</a>
+                                <a href="{{url('/admin/reparations')}}" class="mx-2 text-dark text-decoration-none">Reparations</a>
+                                <a href="{{url('/admin/consommations')}}" class="mx-2 text-dark text-decoration-none">Consommations</a>
                                 <a href="{{url('/admin/agences')}}" class="mx-2 text-dark text-decoration-none">Agences</a>
-                                <a href="{{url('/admin/locations')}}" class="mx-2 text-dark text-decoration-none">Location</a>
+                                <a href="{{url('/admin/locations')}}" class="mx-2 text-dark text-decoration-none">Locations</a>
+                                <a href="{{url('/admin/users')}}" class="mx-2 text-dark text-decoration-none">Utilisateurs</a>
                             </ul>
                             @else
                             <ul class="navbar-nav me-auto">
