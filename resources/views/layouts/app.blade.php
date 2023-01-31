@@ -13,13 +13,11 @@
     <!-- Scripts -->
     <script src="{{asset('js/fontawesome.js')}}" defer></script>
     @if(\Illuminate\Support\Facades\Auth::user())
-        @if(\Illuminate\Support\Facades\Auth::user()->type === 'admin')
+        @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'fournisseur']))
 {{--            <script src="{{ asset('js/app.js') }}" defer></script>--}}
             <link href="{{ asset('css/dataTables.bootstrap5.css') }}" rel="stylesheet">
-            @else
-                <script src="{{asset('js/main.js')}}" defer></script>
         @endif
-    @endif
+@endif
 
 
     <!-- Fonts -->
@@ -59,6 +57,7 @@
                                     <a href="{{url('/admin/agences')}}" class="mx-2 text-dark text-decoration-none">Agences</a>
                                     <a href="{{url('/admin/locations')}}" class="mx-2 text-dark text-decoration-none">Locations</a>
                                     <a href="{{url('/admin/users')}}" class="mx-2 text-dark text-decoration-none">Utilisateurs</a>
+                                    <a href="{{url('/admin/fournisseurs')}}" class="mx-2 text-dark text-decoration-none">Fournisseurs</a>
                                 @endif
                             </ul>
                     @endif

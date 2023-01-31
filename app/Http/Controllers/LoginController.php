@@ -41,6 +41,8 @@ class LoginController extends Controller
         Auth::guard()->attempt($request->only('email', 'password'));
         $request->session()->regenerate();
         $token = Auth()->user()->createToken('auth_token')->plainTextToken;
+        $role = Auth::user()->type;
+        Auth()->user()->assignRole($role);
         if(Auth::user()->type === 'admin'){
             return redirect('/admin/voitures');
         }
