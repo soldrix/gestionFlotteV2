@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\roles;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,7 +27,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('admin.userCreate');
+        $roles = roles::all();
+        return view('admin.userCreate',['roles' => $roles]);
     }
 
     /**
@@ -74,16 +76,6 @@ class UserController extends Controller
         return back()->with('message','L\'utilisateur a été créer avec succès.');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -94,7 +86,8 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
-        return view('admin.userEdit',['user' => $user]);
+        $roles = roles::all();
+        return view('admin.userEdit',['user' => $user, 'roles' => $roles]);
     }
 
     /**

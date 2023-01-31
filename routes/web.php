@@ -53,7 +53,7 @@ Route::controller(LoginController::class)->group(function (){
 
 Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
     Route::view('/profil', 'profil');
-        Route::controller(VoitureController::class)->middleware('role:admin,fournisseur')->group(function () {
+        Route::controller(VoitureController::class)->middleware('role:admin,fournisseur,responsable auto')->group(function () {
             Route::get('admin/voitures', 'adminIndex');
             Route::get('admin/voiture/create', 'create');
             Route::post('admin/voiture/store', 'store')->name('createVoiture');
@@ -73,7 +73,7 @@ Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
             Route::delete('admin/agence/delete/{id}', 'destroy');
         });
 
-        Route::controller(EntretienController::class)->middleware('role:admin')->group(function (){
+        Route::controller(EntretienController::class)->middleware('role:admin,responsable auto')->group(function (){
             Route::get('admin/entretiens', 'index');
             Route::get('admin/entretien/create' , 'create');
             Route::post('admin/entretien/store', 'store')->name('createEntretien');
@@ -82,7 +82,7 @@ Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
             Route::delete('admin/entretien/delete/{id}', 'destroy');
         });
 
-        Route::controller(ReparationController::class)->middleware('role:admin')->group(function (){
+        Route::controller(ReparationController::class)->middleware('role:admin,responsable auto')->group(function (){
             Route::get('admin/reparations', 'index');
             Route::get('admin/reparation/create' , 'create');
             Route::post('admin/reparation/store', 'store')->name('createReparation');
@@ -91,7 +91,7 @@ Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
             Route::delete('admin/reparation/delete/{id}', 'destroy');
         });
 
-        Route::controller(AssuranceController::class)->middleware('role:admin')->group(function (){
+        Route::controller(AssuranceController::class)->middleware('role:admin,responsable auto')->group(function (){
             Route::get('admin/assurances', 'index');
             Route::get('admin/assurance/create' , 'create');
             Route::post('admin/assurance/store', 'store')->name('createAssurance');
@@ -100,7 +100,7 @@ Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
             Route::delete('admin/assurance/delete/{id}', 'destroy');
         });
 
-        Route::controller(ConsommationController::class)->middleware('role:admin')->group(function (){
+        Route::controller(ConsommationController::class)->middleware('role:admin,responsable auto')->group(function (){
             Route::get('admin/consommations', 'index');
             Route::get('admin/consommation/create' , 'create');
             Route::post('admin/consommation/store', 'store')->name('createConsommation');
