@@ -47,22 +47,20 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     @if(\Illuminate\Support\Facades\Auth::user())
-                        @if(\Illuminate\Support\Facades\Auth::user()->type === 'admin')
                             <ul class="navbar-nav me-auto">
+                                @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'fournisseur']))
                                 <a href="{{url('/admin/voitures')}}" class="mx-2 text-dark text-decoration-none">Voitures</a>
-                                <a href="{{url('/admin/entretiens')}}" class="mx-2 text-dark text-decoration-none">Entretiens</a>
-                                <a href="{{url('/admin/assurances')}}" class="mx-2 text-dark text-decoration-none">Assurances</a>
-                                <a href="{{url('/admin/reparations')}}" class="mx-2 text-dark text-decoration-none">Reparations</a>
-                                <a href="{{url('/admin/consommations')}}" class="mx-2 text-dark text-decoration-none">Consommations</a>
-                                <a href="{{url('/admin/agences')}}" class="mx-2 text-dark text-decoration-none">Agences</a>
-                                <a href="{{url('/admin/locations')}}" class="mx-2 text-dark text-decoration-none">Locations</a>
-                                <a href="{{url('/admin/users')}}" class="mx-2 text-dark text-decoration-none">Utilisateurs</a>
+                                @endif
+                                @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin']))
+                                    <a href="{{url('/admin/entretiens')}}" class="mx-2 text-dark text-decoration-none">Entretiens</a>
+                                    <a href="{{url('/admin/assurances')}}" class="mx-2 text-dark text-decoration-none">Assurances</a>
+                                    <a href="{{url('/admin/reparations')}}" class="mx-2 text-dark text-decoration-none">Reparations</a>
+                                    <a href="{{url('/admin/consommations')}}" class="mx-2 text-dark text-decoration-none">Consommations</a>
+                                    <a href="{{url('/admin/agences')}}" class="mx-2 text-dark text-decoration-none">Agences</a>
+                                    <a href="{{url('/admin/locations')}}" class="mx-2 text-dark text-decoration-none">Locations</a>
+                                    <a href="{{url('/admin/users')}}" class="mx-2 text-dark text-decoration-none">Utilisateurs</a>
+                                @endif
                             </ul>
-                            @else
-                            <ul class="navbar-nav me-auto">
-                                <a href="{{url('/locations')}}" class="mx-2 text-dark text-decoration-none">Mes locations</a>
-                            </ul>
-                        @endif
                     @endif
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
