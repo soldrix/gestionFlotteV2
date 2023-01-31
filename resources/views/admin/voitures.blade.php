@@ -6,7 +6,6 @@
                 Ajouter une voiture
             </a>
             <div class="col-9 d-flex flex-wrap pt-5 justify-content-center mx-auto containerVoiture">
-
                 @foreach($voitures as $data)
                     <div class="col-12 col-lg-3 col-xxl-3 d-flex flex-column  p-2 rounded m-2 blockVoiture" style="background: #e4e4e4">
                         <img src="{{asset("/api/image/".$data->image)}}" alt="Image voiture" class="rounded">
@@ -18,7 +17,6 @@
                         <button class="btn btn-danger delButton w-75 mt-2 align-self-center" data-voiture="{{$data->id}}">Supprimer</button>
                     </div>
                 @endforeach
-
             </div>
         </div>
         <script src="{{ asset('js/voiture.js') }}" defer></script>

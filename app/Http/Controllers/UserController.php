@@ -140,23 +140,17 @@ class UserController extends Controller
             'new_password' => 'required|min:10|confirmed'
         ]);
         if ($validator->fails()) return back()->withErrors($validator->errors())->withInput();
-        if(Auth::guard()->check()){
-            $user = User::find(Auth::user()->id);
-            $user->update([
-                'password' => Hash::make($request->new_password)
-            ]);
+        if(auth()->guard()->check()){
             $request->user()->tokens()->delete();
-            $request->session()->invalidate();
-            Auth::guard()->logout();
-            return back()->with('message','Le mot de passe a été modifier avec succès.');
         }
         if(Auth::guard()->attempt($request->only('email', 'password'))){
+            $request->session()->regenerate();
             $user = User::find(Auth::user()->id);
             $user->update([
                 'password' => Hash::make($request->new_password)
             ]);
             Auth::guard()->logout();
-            return back()->with('message','Le mot de passe a été modifier avec succès.');
+            return redirect('/login');
         }
         return back()->withErrors(['message'=>'Données de connexion invalides.'])->withInput();
     }

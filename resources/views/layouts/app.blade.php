@@ -8,16 +8,15 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ __('Gestion Flotte') }}</title>
 
     <!-- Scripts -->
     <script src="{{asset('js/fontawesome.js')}}" defer></script>
     @if(\Illuminate\Support\Facades\Auth::user())
-        @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'fournisseur']))
-{{--            <script src="{{ asset('js/app.js') }}" defer></script>--}}
+        @if(! \Illuminate\Support\Facades\Auth::user()->hasRole('user'))
             <link href="{{ asset('css/dataTables.bootstrap5.css') }}" rel="stylesheet">
         @endif
-@endif
+    @endif
 
 
     <!-- Fonts -->
@@ -58,9 +57,11 @@
                                 @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'chef agence']))
                                     <a href="{{url('/admin/agences')}}" class="mx-2 text-dark text-decoration-none">Agences</a>
                                 @endif
-                                @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin']))
+                                @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'secretaire']))
                                     <a href="{{url('/admin/locations')}}" class="mx-2 text-dark text-decoration-none">Locations</a>
-                                    <a href="{{url('/admin/users')}}" class="mx-2 text-dark text-decoration-none">Utilisateurs</a>
+                                @endif
+                                @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin']))
+                                        <a href="{{url('/admin/users')}}" class="mx-2 text-dark text-decoration-none">Utilisateurs</a>
                                     <a href="{{url('/admin/fournisseurs')}}" class="mx-2 text-dark text-decoration-none">Fournisseurs</a>
                                 @endif
                             </ul>
