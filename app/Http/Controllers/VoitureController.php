@@ -10,6 +10,7 @@ use App\Models\reparation;
 use Illuminate\Http\Request;
 use App\Models\voiture;
 use App\Models\agence;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -21,8 +22,15 @@ class VoitureController extends Controller
      */
     public function index()
     {
+        if(Auth::user()->hasRole('fournisseur')){
+            $fournisseur = fournisseur::all()->where('id_users', '=', Auth::user()->id);
+            foreach ($fournisseur as $datas){
+                $voitures = voiture::all()->where('id_fournisseur', $datas->id);
+            }
+            return view('admin.voitures',["voitures"=>$voitures]);
+        }
         $voitures = voiture::all();
-        return view('voitures',["voitures"=>$voitures]);
+        return view('admin.voitures',["voitures"=>$voitures]);
     }
     /**
      * Display a listing of the resource.
@@ -228,8 +236,21 @@ class VoitureController extends Controller
      */
     public function destroy($id):void
     {
-        $voiture = voiture::find($id);
-        Storage::delete($voiture->image);
-        $voiture->delete();
+        if(Auth::user()->hasRole(['admin', 'responsable auto'])){
+            $voiture = voiture::find($id);
+            Storage::delete($voiture->image);
+            $voiture->delete();
+        }
+        if(Auth::user()->hasRole('fournisseur')){
+            $fournisseur = fournisseur::where('id_users' , '=' , Auth::user()->id);
+            $voiture = voiture::find($id);
+            foreach ($fournisseur as $datas){
+                if($datas->id === $voiture->id_fournisseur){
+                    Storage::delete($voiture->image);
+                    $voiture->delete();
+                }
+            }
+        }
+
     }
 }

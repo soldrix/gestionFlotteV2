@@ -54,7 +54,7 @@ Route::controller(LoginController::class)->group(function (){
 Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
     Route::view('/profil', 'profil');
         Route::controller(VoitureController::class)->middleware('role:admin,fournisseur,responsable auto')->group(function () {
-            Route::get('admin/voitures', 'adminIndex');
+            Route::get('admin/voitures', 'index');
             Route::get('admin/voiture/create', 'create');
             Route::post('admin/voiture/store', 'store')->name('createVoiture');
             Route::get('admin/voiture/{id}', 'adminShow')->name('voitureAdmin');
@@ -64,7 +64,7 @@ Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
             Route::delete('admin/voiture/delete/{id}', 'destroy');
         });
 
-        Route::controller(AgenceController::class)->middleware('role:admin')->group(function (){
+        Route::controller(AgenceController::class)->middleware('role:admin,chef agence')->group(function (){
             Route::get('admin/agences', 'index');
             Route::get('admin/agence/create', 'create');
             Route::post('admin/agence/store', 'store')->name('createAgence');

@@ -55,8 +55,10 @@
                                     <a href="{{url('/admin/reparations')}}" class="mx-2 text-dark text-decoration-none">Reparations</a>
                                     <a href="{{url('/admin/consommations')}}" class="mx-2 text-dark text-decoration-none">Consommations</a>
                                 @endif
+                                @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'chef agence']))
+                                    <a href="{{url('/admin/agences')}}" class="mx-2 text-dark text-decoration-none">Agences</a>
+                                @endif
                                 @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin']))
-                                        <a href="{{url('/admin/agences')}}" class="mx-2 text-dark text-decoration-none">Agences</a>
                                     <a href="{{url('/admin/locations')}}" class="mx-2 text-dark text-decoration-none">Locations</a>
                                     <a href="{{url('/admin/users')}}" class="mx-2 text-dark text-decoration-none">Utilisateurs</a>
                                     <a href="{{url('/admin/fournisseurs')}}" class="mx-2 text-dark text-decoration-none">Fournisseurs</a>
