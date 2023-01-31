@@ -46,15 +46,19 @@
                     <!-- Left Side Of Navbar -->
                     @if(\Illuminate\Support\Facades\Auth::user())
                             <ul class="navbar-nav me-auto">
-                                @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'fournisseur']))
+                                @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'fournisseur', 'responsable auto']))
                                 <a href="{{url('/admin/voitures')}}" class="mx-2 text-dark text-decoration-none">Voitures</a>
                                 @endif
-                                @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin']))
+                                @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'responsable auto']))
                                     <a href="{{url('/admin/entretiens')}}" class="mx-2 text-dark text-decoration-none">Entretiens</a>
                                     <a href="{{url('/admin/assurances')}}" class="mx-2 text-dark text-decoration-none">Assurances</a>
                                     <a href="{{url('/admin/reparations')}}" class="mx-2 text-dark text-decoration-none">Reparations</a>
                                     <a href="{{url('/admin/consommations')}}" class="mx-2 text-dark text-decoration-none">Consommations</a>
+                                @endif
+                                @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'chef agence']))
                                     <a href="{{url('/admin/agences')}}" class="mx-2 text-dark text-decoration-none">Agences</a>
+                                @endif
+                                @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin']))
                                     <a href="{{url('/admin/locations')}}" class="mx-2 text-dark text-decoration-none">Locations</a>
                                     <a href="{{url('/admin/users')}}" class="mx-2 text-dark text-decoration-none">Utilisateurs</a>
                                     <a href="{{url('/admin/fournisseurs')}}" class="mx-2 text-dark text-decoration-none">Fournisseurs</a>

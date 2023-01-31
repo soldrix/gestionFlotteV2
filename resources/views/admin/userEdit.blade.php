@@ -49,9 +49,9 @@
 
                                 <div class="col-md-6">
                                     <select id="type" class="form-select @error('type') is-invalid @enderror" aria-label="Default select example" name="type">
-                                        <option value="">Selectionner un type</option>
-                                        <option>admin</option>
-                                        <option>fournisseur</option>
+                                        @foreach($roles as $role)
+                                            <option value="{{$role->name}}" class="text-capitalize">{{$role->name}}</option>
+                                        @endforeach
                                     </select>
                                     @error('type')
                                     <span class="invalid-feedback" role="alert">

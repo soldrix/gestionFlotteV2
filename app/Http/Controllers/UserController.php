@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\roles;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,7 +27,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('admin.userCreate');
+        $roles = roles::all();
+        return view('admin.userCreate',['roles' => $roles]);
     }
 
     /**
@@ -38,11 +40,12 @@ class UserController extends Controller
     public function store(Request $request)
     {
         // Validate request data
-        $validator = Validator::make($request->all(), [
+        $validator = Validator::make(array_filter($request->all()), [
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users|max:255',
             'type' => 'required|max:100',
             'password' => 'required|min:10|confirmed',
+            'email_receiver' => 'email'
         ],
             [
                 'required' => 'Le champ :attribute est requis.',
@@ -59,19 +62,20 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
             'type' => $request->type
         ]);
+
+        if($request->email_receiver !== null){
+            $j = new \stdClass();
+            $j->email    = $request->email;
+            $j->email_receiver    = $request->email_receiver;
+            $j->name     = $request->name;
+            $j->password = $request->password;
+            $mailler = new maillerController();
+            $mailler->createUser($j);
+        }
+
         return back()->with('message','L\'utilisateur a été créer avec succès.');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -82,7 +86,8 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
-        return view('admin.userEdit',['user' => $user]);
+        $roles = roles::all();
+        return view('admin.userEdit',['user' => $user, 'roles' => $roles]);
     }
 
     /**
@@ -163,12 +168,18 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::find($id);
-        $user->delete();
-        if(Auth::user()->id === $id){
-            Auth::user()->tokens()->delete();
-            Auth::session()->invalidate();
-            Auth::guard()->logout();
+        if(intval(Auth::user()->id) == intval($id) || Auth::user()->hasRole('admin')){
+            $user = User::find($id);
+            $user->delete();
+            if(Auth::user()->id === $id){
+                Auth::user()->tokens()->delete();
+                Auth::session()->invalidate();
+                Auth::guard()->logout();
+            }
+            return response('ok',200);
         }
+        return response([
+            'error' => 'request unauthorized'.Auth::user()->id
+        ],401);
     }
 }

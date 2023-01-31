@@ -160,7 +160,13 @@
                                 <div class="col-md-6">
                                     <select id="id_fournisseur" class="form-select @error('id_fournisseur') is-invalid @enderror" aria-label="Default select example" name="id_fournisseur">
                                         @foreach($fournisseurs as $datas)
-                                            <option value="{{$datas->id}}">{{$datas->name.' '.$datas->email}}</option>
+                                            @if(\Illuminate\Support\Facades\Auth::user()->hasRole('fournisseur'))
+                                                @if($datas->id_users === \Illuminate\Support\Facades\Auth::user()->id)
+                                                    <option value="{{$datas->id}}">{{$datas->name.' '.$datas->email}}</option>
+                                                @endif
+                                            @else
+                                                <option value="{{$datas->id}}">{{$datas->name.' '.$datas->email}}</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                     @error ('id_fournisseur')

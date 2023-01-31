@@ -12,9 +12,10 @@
                 </a>
 
                 <div class="d-flex justify-content-center w-100">
-                    <button class="btn btn-outline-danger" data-bs-target="#deluser" data-bs-toggle="modal" data-bs-dismiss="modal">suppression du compte</button>
+                    <button class="btn btn-outline-danger delButton" data-voiture="{{\Illuminate\Support\Facades\Auth::user()->id}}">suppression du compte</button>
                 </div>
             @endif
     </div>
 </div>
+<script src="{{ asset('js/profil.js') }}" defer></script>
 @endsection
