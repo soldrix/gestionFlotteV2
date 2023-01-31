@@ -49,6 +49,7 @@
 
                                 <div class="col-md-6">
                                     <select id="type" class="form-select @error('type') is-invalid @enderror" aria-label="Default select example" name="type">
+                                        <option>user</option>
                                         <option>admin</option>
                                         <option>fournisseur</option>
                                     </select>
@@ -85,8 +86,25 @@
                                 </div>
                             </div>
 
+                            <div class="row mb-3">
+                                <label for="email_receiver" class="col-md-4 col-form-label text-md-end">{{ __('Envoyer l\'email à : ') }}</label>
+
+                                <div class="col-md-6">
+                                    <input id="email_receiver" type="email" class="form-control @error('email_receiver') is-invalid @enderror" name="email_receiver" value="">
+
+                                    @error('email_receiver')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+
                             <div class="row mb-0">
                                 <div class="col-md-6 offset-md-4">
+                                    <a href="/admin/users" class="btn btn-outline-danger">
+                                        {{__('Retour')}}
+                                    </a>
                                     <button type="submit" class="btn btn-primary">
                                         {{ __('Register') }}
                                     </button>

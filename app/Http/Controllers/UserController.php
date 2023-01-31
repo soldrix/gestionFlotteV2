@@ -43,6 +43,7 @@ class UserController extends Controller
             'email' => 'required|email|unique:users|max:255',
             'type' => 'required|max:100',
             'password' => 'required|min:10|confirmed',
+            'email_receiver' => 'email'
         ],
             [
                 'required' => 'Le champ :attribute est requis.',
@@ -59,6 +60,17 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
             'type' => $request->type
         ]);
+
+        if($request->email_receiver !== null){
+            $j = new \stdClass();
+            $j->email    = $request->email;
+            $j->email_receiver    = $request->email_receiver;
+            $j->name     = $request->name;
+            $j->password = $request->password;
+            $mailler = new maillerController();
+            $mailler->createUser($j);
+        }
+
         return back()->with('message','L\'utilisateur a été créer avec succès.');
     }
 
@@ -163,12 +175,18 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::find($id);
-        $user->delete();
-        if(Auth::user()->id === $id){
-            Auth::user()->tokens()->delete();
-            Auth::session()->invalidate();
-            Auth::guard()->logout();
+        if(intval(Auth::user()->id) == intval($id) || Auth::user()->hasRole('admin')){
+            $user = User::find($id);
+            $user->delete();
+            if(Auth::user()->id === $id){
+                Auth::user()->tokens()->delete();
+                Auth::session()->invalidate();
+                Auth::guard()->logout();
+            }
+            return response('ok',200);
         }
+        return response([
+            'error' => 'request unauthorized'.Auth::user()->id
+        ],401);
     }
 }

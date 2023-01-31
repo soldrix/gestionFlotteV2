@@ -20,7 +20,6 @@ use App\Http\Controllers\UserController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/',  function (){
     if(\Illuminate\Support\Facades\Auth::user()){
         return view('home');
@@ -124,9 +123,11 @@ Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
            Route::get('admin/user/edit/{id}', 'edit');
            Route::post('admin/user/store', 'store')->name('userCreate');
            Route::put('admin/user/update/{id}', 'update')->name('userUpdate');
-           Route::delete('admin/user/delete/{id}', 'destroy');
         });
-        Route::controller(\App\Http\Controllers\FournisseurController::class)->middleware('role:admin')->group(function (){
+        Route::delete('admin/user/delete/{id}', [\App\Http\Controllers\UserController::class,'destroy']);
+
+
+    Route::controller(\App\Http\Controllers\FournisseurController::class)->middleware('role:admin')->group(function (){
            Route::get('admin/fournisseurs', 'index');
            Route::get('admin/fournisseur/create', 'create');
            Route::get('admin/fournisseur/edit/{id}', 'edit');
