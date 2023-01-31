@@ -106,7 +106,7 @@
                             <div class="row mb-3">
                                 <label for="immatriculation" class="col-md-4 col-form-label text-md-end">{{ __('Immatriculation :') }}</label>
                                 <div class="col-md-6">
-                                    <input id="immatriculation" type="text" placeholder="{{$voiture->immatriculation}}" class="form-control @error('immatriculation') is-invalid @enderror" name="immatriculation" value="{{ old('immatriculation') }}" autocomplete="immatriculation" autofocus>
+                                    <input id="immatriculation" type="text" onkeyup="this.value = this.value.toUpperCase();" placeholder="{{$voiture->immatriculation}}" class="form-control @error('immatriculation') is-invalid @enderror" name="immatriculation" value="{{ old('immatriculation') }}" autocomplete="immatriculation" autofocus>
                                     @error ('immatriculation')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -165,7 +165,6 @@
                                 <div class="col-md-6">
                                     <select id="id_fournisseur" class="form-select @error('id_fournisseur') is-invalid @enderror" aria-label="Default select example" name="id_fournisseur">
                                         <option value="">Selectionner un fournisseur</option>
-                                        <option value="vide">Aucun Fournisseur</option>
                                         @foreach($fournisseurs as $datas)
                                             <option value="{{$datas->id}}">{{$datas->name.' '.$datas->email}}</option>
                                         @endforeach

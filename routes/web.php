@@ -21,9 +21,24 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::view('/', 'auth/login');
-Route::view('/login', 'auth/login');
-Route::view('/register', 'auth/register');
+Route::get('/',  function (){
+    if(\Illuminate\Support\Facades\Auth::user()){
+        return view('home');
+    }
+    return view('auth/login');
+});
+Route::get('/login', function (){
+    if(\Illuminate\Support\Facades\Auth::user()){
+        return view('home');
+    }
+    return view('auth/login');
+});
+Route::get('/register',  function (){
+    if(\Illuminate\Support\Facades\Auth::user()){
+        return view('home');
+    }
+    return view('auth/register');
+});
 Route::view('/PageNotFound', 'errors.404');
 Route::view('/UpdatePassword', 'updatePassword');
 
