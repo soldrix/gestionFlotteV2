@@ -39,9 +39,7 @@ Route::controller(LoginController::class)->group(function (){
 
 Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
     Route::view('/profil', 'profil');
-    Route::middleware(\App\Http\Middleware\VerifRight::class)->group(function() {
-
-        Route::controller(VoitureController::class)->group(function () {
+        Route::controller(VoitureController::class)->middleware('role:admin,fournisseur')->group(function () {
             Route::get('admin/voitures', 'adminIndex');
             Route::get('admin/voiture/create', 'create');
             Route::post('admin/voiture/store', 'store')->name('createVoiture');
@@ -52,7 +50,7 @@ Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
             Route::delete('admin/voiture/delete/{id}', 'destroy');
         });
 
-        Route::controller(AgenceController::class)->group(function (){
+        Route::controller(AgenceController::class)->middleware('role:admin')->group(function (){
             Route::get('admin/agences', 'index');
             Route::get('admin/agence/create', 'create');
             Route::post('admin/agence/store', 'store')->name('createAgence');
@@ -61,7 +59,7 @@ Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
             Route::delete('admin/agence/delete/{id}', 'destroy');
         });
 
-        Route::controller(EntretienController::class)->group(function (){
+        Route::controller(EntretienController::class)->middleware('role:admin')->group(function (){
             Route::get('admin/entretiens', 'index');
             Route::get('admin/entretien/create' , 'create');
             Route::post('admin/entretien/store', 'store')->name('createEntretien');
@@ -70,7 +68,7 @@ Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
             Route::delete('admin/entretien/delete/{id}', 'destroy');
         });
 
-        Route::controller(ReparationController::class)->group(function (){
+        Route::controller(ReparationController::class)->middleware('role:admin')->group(function (){
             Route::get('admin/reparations', 'index');
             Route::get('admin/reparation/create' , 'create');
             Route::post('admin/reparation/store', 'store')->name('createReparation');
@@ -79,7 +77,7 @@ Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
             Route::delete('admin/reparation/delete/{id}', 'destroy');
         });
 
-        Route::controller(AssuranceController::class)->group(function (){
+        Route::controller(AssuranceController::class)->middleware('role:admin')->group(function (){
             Route::get('admin/assurances', 'index');
             Route::get('admin/assurance/create' , 'create');
             Route::post('admin/assurance/store', 'store')->name('createAssurance');
@@ -88,7 +86,7 @@ Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
             Route::delete('admin/assurance/delete/{id}', 'destroy');
         });
 
-        Route::controller(ConsommationController::class)->group(function (){
+        Route::controller(ConsommationController::class)->middleware('role:admin')->group(function (){
             Route::get('admin/consommations', 'index');
             Route::get('admin/consommation/create' , 'create');
             Route::post('admin/consommation/store', 'store')->name('createConsommation');
@@ -97,7 +95,7 @@ Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
             Route::delete('admin/consommation/delete/{id}', 'destroy');
         });
 
-        Route::controller(LocationController::class)->group(function (){
+        Route::controller(LocationController::class)->middleware('role:admin')->group(function (){
             Route::get('admin/locations', 'adminIndex');
             Route::get('admin/location/create' , 'create');
             Route::post('admin/location/store', 'store')->name('createLocation');
@@ -105,7 +103,7 @@ Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
             Route::put('admin/location/update/{id}', 'update')->name('updateLocation');
             Route::delete('admin/location/delete/{id}', 'destroy');
         });
-        Route::controller(UserController::class)->group(function (){
+        Route::controller(UserController::class)->middleware('role:admin')->group(function (){
            Route::get('admin/users', 'index');
            Route::get('admin/user/create', 'create');
            Route::get('admin/user/edit/{id}', 'edit');
@@ -113,8 +111,6 @@ Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
            Route::put('admin/user/update/{id}', 'update')->name('userUpdate');
            Route::delete('admin/user/delete/{id}', 'destroy');
         });
-    });
-
 });
 
 

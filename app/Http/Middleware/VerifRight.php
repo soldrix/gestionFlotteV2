@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class VerifRight
 {
@@ -14,11 +15,13 @@ class VerifRight
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next, ... $roles)
     {
-        if ($request->user()->type !== 'admin'){
-            return redirect('PageNotFound');
+        foreach ($roles as $role){
+            if(Auth::user()->hasRole($role)){
+                return $next($request);
+            }
         }
-        return $next($request);
+        return redirect('PagenoteFound');
     }
 }
