@@ -17,7 +17,6 @@ mix.autoload({
     stats: {
         children: true,
     },})
-    .js('resources/js/app.js', 'public/js')
     .js('resources/js/voiture.js', 'public/js')
     .js('resources/js/agence.js', 'public/js')
     .js('resources/js/entretien.js', 'public/js')
@@ -29,6 +28,7 @@ mix.autoload({
     .js('resources/js/main.js','public/js')
     .js('resources/js/fournisseur.js','public/js')
     .js('resources/js/profil.js','public/js')
+    .js('resources/js/voitureDatatable.js','public/js')
     .js('node_modules/jquery/dist/jquery.js','public/js')
     .js('node_modules/bootstrap/dist/js/bootstrap.bundle.js','public/js')
     .js('node_modules/@fortawesome/fontawesome-free/js/fontawesome.js','public/js')

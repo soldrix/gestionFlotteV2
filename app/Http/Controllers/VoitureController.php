@@ -251,6 +251,5 @@ class VoitureController extends Controller
                 }
             }
         }
-
     }
 }

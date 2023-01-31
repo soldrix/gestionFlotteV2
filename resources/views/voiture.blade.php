@@ -168,9 +168,7 @@
                         <p class="ms-4">Ne laissez pas la neige vous prendre au dépourvu</p>
                     </div>
                 </div>
-
-
             </div>
-
         </div>
+        <script src="{{ asset('js/bootstrap.bundle.js') }}" defer></script>
 @endsection

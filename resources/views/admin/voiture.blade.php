@@ -50,6 +50,7 @@
                     </div>
 
                 </div>
+                @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'responsable auto']))
                 <div class="divbottom">
                     <div class="border-bottom border-top mt-2 border-dark border-opacity-25 border-2 pt-2">
                         <ul id="info_voiture" class="nav nav-tabs">
@@ -71,9 +72,9 @@
                         <div id="table_entretiens" class="tab-pane fade active show" role="tabpanel">
 
                             <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-primary float-end" id="btnAddEntretiens">
+                            <a href="/admin/entretien/create" class="btn btn-primary float-end">
                                 Ajouter Entretien
-                            </button>
+                            </a>
                             <table id="DataTable_entretiens" class="table table-striped dataTable dt-responsive" style="width: 100%">
                                 <thead>
                                 <tr>
@@ -86,7 +87,7 @@
                                 </thead>
                                 <tbody>
                                 @foreach($entretiens as $datasEnt)
-                                    <tr data-voiture="{{{$datasEnt->id}}}" data-db="entretiens">
+                                    <tr>
                                         <td>{{$datasEnt->garageEnt}}</td>
                                         <td>{{$datasEnt->typeEnt}}</td>
                                         <td>{{$datasEnt->montantEnt.'€'}}</td>
@@ -97,7 +98,7 @@
                                             </div>
                                             <div class="divBtnTab">
                                                 <button class="btn btn-info editButton text-white"><i class="fa-solid fa-pencil "></i></button>
-                                                <button class="btn btn-danger delButton"><i class="fa-solid fa-trash-can"></i></button>
+                                                <button class="btn btn-danger delButton" data-voiture="{{{$datasEnt->id}}}" data-db="entretien"><i class="fa-solid fa-trash-can"></i></button>
                                             </div>
                                         </td>
                                     </tr>
@@ -108,9 +109,9 @@
                         </div>
                         <div id="table_reparations" class="tab-pane fade" role="tabpanel">
                             <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-primary float-end" id="btnAddReparations">
+                            <a href="/admin/reparation/create" class="btn btn-primary float-end">
                                 Ajouter Reparation
-                            </button>
+                            </a>
                             <table id="DataTable_reparations" class="table table-striped dataTable dt-responsive" style="width: 100%">
                                 <thead>
                                 <tr>
@@ -123,7 +124,7 @@
                                 </thead>
                                 <tbody>
                                 @foreach($reparations as $datasRep)
-                                    <tr data-voiture="{{$datasRep->id}}" data-db="reparations">
+                                    <tr>
                                         <td>{{$datasRep->garageRep}}</td>
                                         <td>{{$datasRep->typeRep}}</td>
                                         <td>{{$datasRep->montantRep.'€'}}</td>
@@ -134,7 +135,7 @@
                                             </div>
                                             <div class="divBtnTab">
                                                 <button class="btn btn-info editButton text-white"><i class="fa-solid fa-pencil "></i></button>
-                                                <button class="btn btn-danger delButton"><i class="fa-solid fa-trash-can"></i></button>
+                                                <button class="btn btn-danger delButton" data-voiture="{{$datasRep->id}}" data-db="reparation"><i class="fa-solid fa-trash-can"></i></button>
                                             </div>
                                         </td>
                                     </tr>
@@ -144,9 +145,9 @@
                         </div>
                         <div id="table_assurances" class="tab-pane fade " role="tabpanel">
                             <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-primary float-end" id="btnAddAssurance">
+                            <a href="/admin/assurance/create" class="btn btn-primary float-end">
                                 Ajouter assurance
-                            </button>
+                            </a>
                             <table id="DataTable_assurances" class="table table-striped dataTable dt-responsive" style="width: 100%">
                                 <thead>
                                 <tr>
@@ -158,7 +159,7 @@
                                 </thead>
                                 <tbody>
                                 @foreach($assurances as $datasAssu)
-                                    <tr data-voiture="{{$datasAssu->id}}" data-db="assurance">
+                                    <tr>
                                         <td>{{$datasAssu->nomAssu}}</td>
                                         <td>{{$datasAssu->debutAssu}}</td>
                                         <td>{{$datasAssu->finAssu}}</td>
@@ -166,7 +167,7 @@
                                             {{$datasAssu->frais."€"}}
                                             <div class="divBtnTab">
                                                 <button class="btn btn-info editButton text-white"><i class="fa-solid fa-pencil "></i></button>
-                                                <button class="btn btn-danger delButton"><i class="fa-solid fa-trash-can"></i></button>
+                                                <button class="btn btn-danger delButton" data-voiture="{{$datasAssu->id}}" data-db="assurance"><i class="fa-solid fa-trash-can"></i></button>
                                             </div>
                                         </td>
                                     </tr>
@@ -176,9 +177,9 @@
                         </div>
                         <div id="table_carburants" class="tab-pane fade" role="tabpanel">
                             <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-primary float-end " id="btnAddConsommation">
+                            <a class="btn btn-primary float-end " href="/admin/consommation/create">
                                 Ajouter Carburant
-                            </button>
+                            </a>
                             <table id="DataTable_carburants" class="table table-striped dataTable dt-responsive" style="width: 100%">
                                 <thead>
                                 <tr>
@@ -189,14 +190,14 @@
                                 </thead>
                                 <tbody>
                                 @foreach($consommations as $datasCons)
-                                    <tr data-voiture="{{$datasCons->id}}" data-db="consommation">
+                                    <tr>
                                         <td>{{$datasCons->litre}}</td>
                                         <td>{{$datasCons->montantCons.'€'}}</td>
                                         <td class="tdBtn">
                                             {{round($datasCons->montantCons/$datasCons->litre,3).'€'}}
                                             <div class="divBtnTab">
                                                 <button class="btn btn-info editButton text-white"><i class="fa-solid fa-pencil "></i></button>
-                                                <button class="btn btn-danger delButton"><i class="fa-solid fa-trash-can"></i></button>
+                                                <button class="btn btn-danger delButton" data-db="consommation" data-voiture="{{$datasCons->id}}"><i class="fa-solid fa-trash-can"></i></button>
                                             </div>
                                         </td>
                                     </tr>
@@ -206,6 +207,8 @@
                         </div>
                     </div>
                 </div>
+                @endif
             </div>
         @endforeach
+        <script src="{{ asset('js/voitureDatatable.js') }}" defer></script>
 @endsection
