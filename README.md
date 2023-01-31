@@ -39,8 +39,8 @@ Ajouter les valeur dans env pour smtp:
 ```
 MAIL_HOST=smtp.gmail.com
 MAIL_PORT=465
-MAIL_USERNAME=autoemail123456789@gmail.com
-MAIL_PASSWORD=oksstahsynfhmwvg
+MAIL_USERNAME=
+MAIL_PASSWORD=
 ```
 
 
