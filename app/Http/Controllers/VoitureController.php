@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\assurance;
 use App\Models\consommation;
 use App\Models\entretien;
+use App\Models\fournisseur;
 use App\Models\reparation;
 use Illuminate\Http\Request;
 use App\Models\voiture;
@@ -38,7 +39,12 @@ class VoitureController extends Controller
     public function create()
     {
         $agences = agence::all();
-        return view('admin.voitureCreate',['agences'=>$agences]);
+        $fournisseurs = fournisseur::join('users', 'users.id', '=', 'fournisseurs.id_users')
+            ->get([
+                'fournisseurs.*',
+                'users.email'
+            ]);
+        return view('admin.voitureCreate',['agences'=>$agences, 'fournisseurs' => $fournisseurs]);
     }
 
     /**

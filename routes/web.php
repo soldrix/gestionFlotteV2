@@ -111,6 +111,14 @@ Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
            Route::put('admin/user/update/{id}', 'update')->name('userUpdate');
            Route::delete('admin/user/delete/{id}', 'destroy');
         });
+        Route::controller(\App\Http\Controllers\FournisseurController::class)->middleware('role:admin')->group(function (){
+           Route::get('admin/fournisseurs', 'index');
+           Route::get('admin/fournisseur/create', 'create');
+           Route::get('admin/fournisseur/edit/{id}', 'edit');
+           Route::post('admin/fournisseur/store', 'store')->name('createFournisseur');
+           Route::put('admin/fournisseur/update/{id}', 'update')->name('updateFournisseur');
+           Route::delete('admin/fournisseur/delete/{id}', 'destroy');
+        });
 });
 
 

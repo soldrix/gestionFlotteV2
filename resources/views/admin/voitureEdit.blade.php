@@ -161,6 +161,23 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
+                                <label for="id_fournisseur" class="col-md-4 col-form-label text-md-end">{{ __('Fournisseur :') }}</label>
+                                <div class="col-md-6">
+                                    <select id="id_fournisseur" class="form-select @error('id_fournisseur') is-invalid @enderror" aria-label="Default select example" name="id_fournisseur">
+                                        <option value="">Selectionner un fournisseur</option>
+                                        <option value="vide">Aucun Fournisseur</option>
+                                        @foreach($fournisseurs as $datas)
+                                            <option value="{{$datas->id}}">{{$datas->name.' '.$datas->email}}</option>
+                                        @endforeach
+                                    </select>
+                                    @error ('id_fournisseur')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="row mb-3">
                                 <label for="image" class="col-md-4 col-form-label text-md-end">{{ __('Image :') }}</label>
                                 <div class="col-md-6">
                                     <input id="image" type="file" accept="image/png, image/jpeg, image/jpg" class="form-control @error('image') is-invalid @enderror" name="image" value="{{ old('image') }}" autocomplete="image" autofocus>

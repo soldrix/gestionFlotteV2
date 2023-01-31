@@ -3,7 +3,7 @@ require( 'datatables.net-responsive-bs5' );
 window.bootstrap = require('bootstrap/dist/js/bootstrap.bundle.js');
 let table;
 $(document).ready(function () {
-    table  = $('#DataTable_agence').DataTable({
+    table = $('#DataTable_fournisseur').DataTable({
         "language": {
             "lengthMenu": "Afficher _MENU_ entrées",
             "zeroRecords": "Aucune entrée correspondante trouvée",
@@ -35,8 +35,8 @@ var myModal = new bootstrap.Modal(document.getElementById('delModal'));
 var delToastEl = document.getElementById('toastSupp');
 var delToast = bootstrap.Toast.getOrCreateInstance(delToastEl);
 function supModal(row){
-    let id_agence = $(row).attr('data-voiture');
-    let agence = table.row($(row).parent().parent().parent());
+    let id_fournisseur = $(row).attr('data-voiture');
+    let fournisseur = table.row($(row).parent().parent().parent());
     myModal.show();
     $('#btnDelModal').on('click',function () {
         $.ajaxSetup({
@@ -46,9 +46,9 @@ function supModal(row){
         });
         $.ajax({
             type:"DELETE",
-            url: '/admin/agence/delete/'+id_agence,
+            url: '/admin/fournisseur/delete/'+id_fournisseur,
             success:function () {
-                agence.remove().draw();
+                fournisseur.remove().draw();
                 myModal.hide();
                 delToast.show();
             }

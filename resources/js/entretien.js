@@ -1,8 +1,9 @@
 require('datatables.net-bs5');
 require( 'datatables.net-responsive-bs5' );
 window.bootstrap = require('bootstrap/dist/js/bootstrap.bundle.js');
+let table;
 $(document).ready(function () {
-    $('.dataTable').DataTable({
+    table = $('#DataTable_entretiens').DataTable({
         "language": {
             "lengthMenu": "Afficher _MENU_ entrées",
             "zeroRecords": "Aucune entrée correspondante trouvée",
@@ -35,7 +36,7 @@ var delToastEl = document.getElementById('toastSupp');
 var delToast = bootstrap.Toast.getOrCreateInstance(delToastEl);
 function supModal(row){
     let id_entretien = $(row).attr('data-voiture');
-    let entretien = $(row).parent().parent().parent();
+    let entretien = table.row($(row).parent().parent().parent());
     myModal.show();
     $('#btnDelModal').on('click',function () {
         $.ajaxSetup({
@@ -47,7 +48,7 @@ function supModal(row){
             type:"DELETE",
             url: '/admin/entretien/delete/'+id_entretien,
             success:function () {
-                entretien.remove();
+                entretien.remove().draw();
                 myModal.hide();
                 delToast.show();
             }
