@@ -55,14 +55,13 @@ class VoitureController extends Controller
      */
     public function store(Request $request)
     {
-        $todayDate = date('Y-m-d');
         $validator = Validator::make($request->all(),[
             "marque" => "required",
             "model"  => "required",
             "image" => ["required","image","mimes:jpg,png,jpeg,gif,svg","max:2048","dimensions:min_width=100,min_height=100,max_width=1000,max_height=1000"],
             "carburant" => ["required"],
-            "circulation" => ["required",'date_format:Y-m-d','after_or_equal:'.$todayDate],
-            "immatriculation" => "required",
+            "circulation" => ["required",'date_format:Y-m-d'],
+            "immatriculation" => ["required", "regex:#[A-Z]{2,4}[\s-]{0,1}[0-9]{1,3}[\s-]{0,1}[A-Z]{2}#"],
             "puissance" => ["required", "integer"],
             "type" => "required",
             "nbPorte" => ["required", "integer"],
@@ -85,7 +84,8 @@ class VoitureController extends Controller
             "nbPlace" => $request->nbPlace,
             "prix" => $request->prix,
             "statut" => $request->statut,
-            "id_agence" => ($request->id_agence !== 'null') ? $request->id_agence : null
+            "id_agence" => ($request->id_agence !== 'null') ? $request->id_agence : null,
+            "id_fournisseur" => $request->id_fournisseur
         ]);
         return back()->with('message', 'La voiture à été créer avec succès.');
     }
@@ -144,7 +144,12 @@ class VoitureController extends Controller
     {
         $voiture = voiture::find($id);
         $agences = agence::all();
-        return view("admin.voitureEdit",['voiture' => $voiture, 'agences' => $agences]);
+        $fournisseurs = fournisseur::join('users', 'users.id', '=', 'fournisseurs.id_users')
+            ->get([
+                'fournisseurs.*',
+                'users.email'
+            ]);
+        return view("admin.voitureEdit",['voiture' => $voiture, 'agences' => $agences, 'fournisseurs' => $fournisseurs]);
     }
 
     /**
@@ -163,7 +168,8 @@ class VoitureController extends Controller
             "prix" => ["numeric"],
             "nbPlace" => ["numeric"],
             "nbPorte" => ["numeric"],
-            "statut" => ["integer", "max_digits:1"]
+            "statut" => ["integer", "max_digits:1"],
+            "immatriculation" => ["regex:#[A-Z]{2,4}[\s-]{0,1}[0-9]{1,3}[\s-]{0,1}[A-Z]{2}#"]
         ]);
         if($validator->fails()) return back()->withErrors($validator->errors())->withInput();
         $voiture = voiture::find($id);
@@ -202,7 +208,7 @@ class VoitureController extends Controller
             $voiture->nbPlace = $request->nbPlace;
         }
         if($request->immatriculation !== null){
-            $voiture->immatriculation = $request->immatricualtion;
+            $voiture->immatriculation = $request->immatriculation;
         }
         if ($request->image !== null){
             Storage::delete($voiture->image);

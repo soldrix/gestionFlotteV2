@@ -105,7 +105,7 @@
                             <div class="row mb-3">
                                 <label for="immatriculation" class="col-md-4 col-form-label text-md-end">{{ __('Immatriculation :') }}</label>
                                 <div class="col-md-6">
-                                    <input id="immatriculation" type="text" placeholder="ex:( AA-152-AA )" class="form-control @error('immatriculation') is-invalid @enderror" name="immatriculation" value="{{ old('immatriculation') }}" required autocomplete="immatriculation" autofocus>
+                                    <input id="immatriculation" type="text" onkeyup="this.value = this.value.toUpperCase();" placeholder="ex:( AA-152-AA )" class="form-control @error('immatriculation') is-invalid @enderror" name="immatriculation" value="{{ old('immatriculation') }}" required autocomplete="immatriculation" autofocus>
                                     @error ('immatriculation')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -156,9 +156,9 @@
                             </div>
                             <div class="row mb-3">
                                 <label for="id_fournisseur" class="col-md-4 col-form-label text-md-end">{{ __('Fournisseur :') }}</label>
+                                @if(count(json_decode($fournisseurs)) > 0)
                                 <div class="col-md-6">
                                     <select id="id_fournisseur" class="form-select @error('id_fournisseur') is-invalid @enderror" aria-label="Default select example" name="id_fournisseur">
-                                        <option value="null">Aucun Fournisseur</option>
                                         @foreach($fournisseurs as $datas)
                                             <option value="{{$datas->id}}">{{$datas->name.' '.$datas->email}}</option>
                                         @endforeach
@@ -169,6 +169,11 @@
                                     </span>
                                     @enderror
                                 </div>
+                                @else
+                                    <div class="col-md-6">
+                                        <p class="text-danger">Aucun founisseur, créer un fournisseur pour pouvoir créer un véhicule.</p>
+                                    </div>
+                                @endif
                             </div>
                             <div class="row mb-3">
                                 <label for="image" class="col-md-4 col-form-label text-md-end">{{ __('Image :') }}</label>
@@ -186,9 +191,11 @@
                                     <a href="/admin/voitures" class="btn btn-outline-danger">
                                         Retour
                                     </a>
+                                    @if(count(json_decode($fournisseurs)) > 0)
                                     <button type="submit" class="btn btn-primary">
                                         {{ __('Continuer') }}
                                     </button>
+                                    @endif
                                 </div>
                             </div>
                         </form>

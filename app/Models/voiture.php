@@ -26,6 +26,7 @@ class voiture extends Model
         "nbPlace",
         "immatriculation",
         "prix",
-        "id_agence"
+        "id_agence",
+        'id_fournisseur'
     ];
 }
