@@ -1068,9 +1068,17 @@ td{
 .imageVoiture{
     background-color: black;
     background-repeat: no-repeat;
+    background-size: 500px, contain;
+    background-position: center;
+    border-radius: 15px;
+}
+.imageVEdit{
+    background-color: black;
+    background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
-    height: 450px;
+    max-height: 500px;
+    min-height: 500px;
     border-radius: 15px;
 }
 .iconVoiture{
