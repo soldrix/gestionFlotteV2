@@ -79,9 +79,27 @@
                                 </div>
                             </div>
 
+
+                            <div class="row mb-3 justify-content-center">
+                                <div class="form-check form-switch col-auto">
+                                    <input class="form-check-input" name="send_email" type="checkbox" id="flexSwitchCheckDefault">
+                                    <label class="form-check-label" for="flexSwitchCheckDefault">Envoyer un email.</label>
+                                </div>
+                            </div>
+
+
                             <div class="row mb-0">
                                 <div class="col-md-6 offset-md-4">
-                                    <a href="/admin/users" class="btn btn-outline-danger">
+                                    @if(url()->previous() !== url()->current() && str_contains(url()->previous(), 'edit') === false)
+                                        @php
+                                            session()->put('urlP', url()->previous());
+                                        @endphp
+                                    @elseif(url()->previous() !== url()->current())
+                                        @php
+                                            session()->put('urlP', '/admin/users/');
+                                        @endphp
+                                    @endif
+                                    <a href="{{str_replace(url('/'), '', session()->get('urlP'))}}" class="btn btn-outline-danger">
                                         {{__('Retour')}}
                                     </a>
                                     <button type="submit" class="btn btn-primary">

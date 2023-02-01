@@ -14,6 +14,7 @@
                     <th>Ville</th>
                     <th>Rue</th>
                     <th>Code Postal</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -21,10 +22,10 @@
                     <tr>
                         <td>{{$datas->ville}}</td>
                         <td>{{$datas->rue}}</td>
+                        <td>{{$datas->codePostal}}</td>
                         <td class="tdBtn">
-                            {{$datas->codePostal}}
                             <div class="divBtnTab d-flex flex-column flex-md-row">
-                                <a class="btn btn-info editButton text-white" href="agence/edit/{{$datas->id}}"><i class="fa-solid fa-pencil "></i></a>
+                                <a class="btn btn-info editButton text-white" href="/admin/agence/edit/{{$datas->id}}"><i class="fa-solid fa-pencil "></i></a>
                                 <button class="btn btn-danger delButton" data-voiture="{{$datas->id}}"><i class="fa-solid fa-trash-can"></i></button>
                             </div>
                         </td>

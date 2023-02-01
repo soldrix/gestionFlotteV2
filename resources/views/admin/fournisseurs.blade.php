@@ -13,14 +13,15 @@
                 <tr>
                     <th>Nom</th>
                     <th>Email</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($fournisseurs as $datas)
                     <tr data-voiture="{{$datas->id}}">
                         <td>{{$datas->name}}</td>
+                        <td>{{$datas->email}}</td>
                         <td class="tdBtn">
-                            {{$datas->email}}
                             <div class="divBtnTab d-flex flex-column flex-md-row">
                                 <a href="/admin/fournisseur/edit/{{$datas->id}}" class="btn btn-info editButton text-white"><i class="fa-solid fa-pencil "></i></a>
                                 <button class="btn btn-danger delButton" data-voiture="{{$datas->id}}"><i class="fa-solid fa-trash-can"></i></button>

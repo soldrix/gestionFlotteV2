@@ -14,6 +14,7 @@
                     <th>Nom</th>
                     <th>Email</th>
                     <th>Type</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -21,10 +22,10 @@
                     <tr data-voiture="{{$datas->id}}">
                         <td>{{$datas->name}}</td>
                         <td>{{$datas->email}}</td>
+                        <td>{{$datas->type}}</td>
                         <td class="tdBtn">
-                                {{$datas->type}}
                             <div class="divBtnTab">
-                                <a class="btn btn-info editButton text-white"  href="user/edit/{{$datas->id}}"><i class="fa-solid fa-pencil "></i></a>
+                                <a class="btn btn-info editButton text-white"  href="/admin/user/edit/{{$datas->id}}"><i class="fa-solid fa-pencil "></i></a>
                                 <button class="btn btn-danger delButton" data-voiture="{{$datas->id}}"><i class="fa-solid fa-trash-can"></i></button>
                             </div>
                         </td>

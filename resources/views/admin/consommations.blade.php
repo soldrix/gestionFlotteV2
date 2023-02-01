@@ -15,6 +15,7 @@
                     <th>Montant</th>
                     <th>Immatriculation</th>
                     <th>Litre/Prix</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -23,8 +24,8 @@
                         <td>{{$datas->litre}}</td>
                         <td>{{$datas->montant.'€'}}</td>
                         <td>{{$datas->immatriculation ?? 'Aucune voiture'}}</td>
+                        <td>{{round($datas->montant/$datas->litre,3).'€'}}</td>
                         <td class="tdBtn">
-                            {{round($datas->montant/$datas->litre,3).'€'}}
                             <div class="divBtnTab">
                                 <a class="btn btn-info editButton text-white" href="/admin/consommation/edit/{{$datas->id}}"><i class="fa-solid fa-pencil "></i></a>
                                 <button class="btn btn-danger delButton" data-voiture="{{$datas->id}}"><i class="fa-solid fa-trash-can"></i></button>

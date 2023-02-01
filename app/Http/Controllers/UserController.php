@@ -118,12 +118,14 @@ class UserController extends Controller
         unset($cloneRequest->password);
         if($request->password !== null){
             $cloneRequest->merge(['password' => Hash::make($request->password)]);
-            $j = new \stdClass();
-            $j->email = $user->email;
-            $j->name = $user->name;
-            $j->password = $request->password;
-            $mailler = new maillerController();
-            $mailler->UserPassword($j);
+            if($request->send_email === 'on'){
+                $j = new \stdClass();
+                $j->email = $user->email;
+                $j->name = $user->name;
+                $j->password = $request->password;
+                $mailler = new maillerController();
+                $mailler->UserPassword($j);
+            }
         }
 
 
@@ -144,13 +146,13 @@ class UserController extends Controller
             $request->user()->tokens()->delete();
         }
         if(Auth::guard()->attempt($request->only('email', 'password'))){
-            $request->session()->regenerate();
+//            $request->session()->regenerate();
             $user = User::find(Auth::user()->id);
             $user->update([
                 'password' => Hash::make($request->new_password)
             ]);
             Auth::guard()->logout();
-            return redirect('/login');
+            return redirect('/login')->with('message', 'Le mot de passe a été modifier avec succès.');
         }
         return back()->withErrors(['message'=>'Données de connexion invalides.'])->withInput();
     }

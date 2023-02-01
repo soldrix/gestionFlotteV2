@@ -16,6 +16,7 @@
                         <th>Immatriculation</th>
                         <th>utilisateur</th>
                         <th>Montant</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -25,8 +26,8 @@
                             <td>{{date('d/m/Y', strtotime($datas->DateFin))}}</td>
                             <td>{{$datas->immatriculation ?? 'Aucune voiture'}}</td>
                             <td>{{$datas->email ?? 'Aucun utilisateur'}}</td>
+                            <td>{{$datas->montant}}</td>
                             <td class="tdBtn">
-                                {{$datas->montant}}
                                 <div class="divBtnTab d-flex flex-column flex-md-row">
                                     <a href="/admin/location/edit/{{$datas->id}}" class="btn btn-info editButton text-white"><i class="fa-solid fa-pencil "></i></a>
                                     <button class="btn btn-danger delButton" data-voiture="{{$datas->id}}"><i class="fa-solid fa-trash-can"></i></button>

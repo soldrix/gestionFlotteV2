@@ -6,7 +6,7 @@
         <a href="/admin/entretien/create" class="btn btn-primary float-end">
             Ajouter Entretien
         </a>
-        <div class="container p-0">
+        <div class="container">
             <h2>Page entretiens</h2>
             <table id="DataTable_entretiens" class="table table-striped dataTable table-responsive" style="width: 100%">
                 <thead>
@@ -17,6 +17,7 @@
                     <th>Date</th>
                     <th>Immatriculation</th>
                     <th>Note</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -27,12 +28,14 @@
                         <td>{{$datas->montant."€"}}</td>
                         <td>{{date('d/m/Y', strtotime($datas->date))}}</td>
                         <td>{{(isset($datas->immatriculation))? $datas->immatriculation : 'Aucune voiture'}}</td>
-                        <td class="tdBtn">
+                        <td>
                             <div class="noteSupp">
                                 {{$datas->note}}
                             </div>
+                        </td>
+                        <td class="tdBtn">
                             <div class="divBtnTab">
-                                <a class="btn btn-info editButton text-white"  href="entretien/edit/{{$datas->id}}"><i class="fa-solid fa-pencil "></i></a>
+                                <a class="btn btn-info editButton text-white"  href="/admin/entretien/edit/{{$datas->id}}"><i class="fa-solid fa-pencil "></i></a>
                                 <button class="btn btn-danger delButton" data-voiture="{{$datas->id}}"><i class="fa-solid fa-trash-can"></i></button>
                             </div>
                         </td>

@@ -16,6 +16,7 @@
                     <th>Fin assurance</th>
                     <th>Immatriculation</th>
                     <th>Frais</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -25,8 +26,8 @@
                         <td>{{date('d/m/Y', strtotime($datas->DateDebut))}}</td>
                         <td>{{date('d/m/Y', strtotime($datas->DateFin))}}</td>
                         <td>{{$datas->immatriculation ?? 'Aucune voiture'}}</td>
+                        <td>{{$datas->frais.'€'}}</td>
                         <td class="tdBtn">
-                            {{$datas->frais.'€'}}
                             <div class="divBtnTab d-flex flex-column flex-md-row">
                                 <a class="btn btn-info editButton text-white" href="/admin/assurance/edit/{{$datas->id}}"><i class="fa-solid fa-pencil "></i></a>
                                 <button class="btn btn-danger delButton" data-voiture="{{$datas->id}}"><i class="fa-solid fa-trash-can"></i></button>
