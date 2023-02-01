@@ -195,7 +195,7 @@
                             </div>
                             <div class="row mb-0">
                                 <div class="col-md-8 offset-md-4">
-                                    <a href="/admin/voiture/{{$voiture->id}}" class="btn btn-outline-danger">
+                                    <a href="{{str_replace(url('/'), '', url()->previous())}}" class="btn btn-outline-danger">
                                         Retour
                                     </a>
                                     <button type="submit" class="btn btn-primary">

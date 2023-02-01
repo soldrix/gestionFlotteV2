@@ -118,11 +118,14 @@ class VoitureController extends Controller
      */
     public function adminShow($id)
     {
-        $voiture = voiture::leftjoin('agence',  'agence.id', '=', 'voitures.id_agence')->where('voitures.id',$id)
+        $voiture = voiture::leftjoin('agence',  'agence.id', '=', 'voitures.id_agence')
+            ->join('fournisseurs', 'fournisseurs.id', '=', 'voitures.id_fournisseur')
+            ->where('voitures.id',$id)
             ->get([
                 'voitures.*',
                 'agence.ville',
-                'agence.rue'
+                'agence.rue',
+                'fournisseurs.name'
             ]);
         $entretiens = entretien::all()->where('id_voiture', $id);
         $assurances = assurance::all()->where('id_voiture', $id);

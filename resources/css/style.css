@@ -157,3 +157,6 @@ td{
 .h-100C{
     height: calc(100vh - 60px);
 }
+.vLabel{
+    font-size: 1.8rem;
+}
