@@ -60,7 +60,12 @@
                             </div>
                             <div class="row mb-0">
                                 <div class="col-md-8 offset-md-4">
-                                    <a href="{{str_replace(url('/'), '', url()->previous())}}" class="btn btn-outline-danger">
+                                    @php
+                                        if(url()->previous() !== url()->current()){
+                                              session()->put('urlP', url()->previous());
+                                          }
+                                    @endphp
+                                    <a href="{{(session()->get('urlP')) ? str_replace(url('/'), '', session()->get('urlP')) : '/admin/consommation/'.$consommation->id}}" class="btn btn-outline-danger">
                                         {{__('Retour')}}
                                     </a>
                                     <button type="submit" class="btn btn-primary">
