@@ -82,7 +82,7 @@
                                         <td>{{$datas->nom}}</td>
                                         <td>{{$datas->type}}</td>
                                         <td>{{$datas->montant.'€'}}</td>
-                                        <td>{{$datas->date}}</td>
+                                        <td>{{date('d/m/Y', strtotime($datas->date))}}</td>
                                         <td>
                                             <div class="noteSupp">
                                                 {{(isset($datas->note)) ? $datas->note : "aucune note"}}
@@ -122,7 +122,7 @@
                                         <td>{{$datas->nom}}</td>
                                         <td>{{$datas->type}}</td>
                                         <td>{{$datas->montant.'€'}}</td>
-                                        <td>{{$datas->date}}</td>
+                                        <td>{{date('d/m/Y', strtotime($datas->date))}}</td>
                                         <td>
                                             <div class="noteSupp">
                                                 {{(isset($datas->note)) ? $datas->note : "aucune note"}}
@@ -158,8 +158,8 @@
                                 @foreach($assurances as $datas)
                                     <tr>
                                         <td>{{$datas->nom}}</td>
-                                        <td>{{$datas->DateDebut}}</td>
-                                        <td>{{$datas->DateFin}}</td>
+                                        <td>{{date('d/m/Y', strtotime($datas->DateDebut))}}</td>
+                                        <td>{{date('d/m/Y', strtotime($datas->DateFin))}}</td>
                                         <td>{{$datas->frais."€"}}</td>
                                         <td class="tdBtn">
                                             <div class="divBtnTab">

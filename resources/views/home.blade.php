@@ -46,7 +46,8 @@
                     </ul>
                 </div>
                 <div id="block_info_voiture" class="tab-content">
-                    <div id="table_voitures" class="tab-pane fade contentHome mt-3" role="tabpanel">
+                    @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin','responsable auto', 'fournisseur']))
+                        <div id="table_voitures" class="tab-pane fade contentHome mt-3" role="tabpanel">
                         <table id="DataTable_voitures" class="table  table-striped dataTable table-responsive" style="width: 100%">
                             <thead>
                             <tr>
@@ -82,7 +83,9 @@
                             </tbody>
                         </table>
                     </div>
-                    <div id="table_entretiens" class="tab-pane fade contentHome mt-3" role="tabpanel">
+                    @endif
+                    @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin','responsable auto']))
+                        <div id="table_entretiens" class="tab-pane fade contentHome mt-3" role="tabpanel">
                         <!-- Button trigger modal -->
                         <table id="DataTable_entretiens" class="table table-striped dataTable dt-responsive" style="width: 100%">
                             <thead>
@@ -113,8 +116,9 @@
                             </tbody>
                         </table>
                     </div>
-
-                    <div id="table_reparations" class="tab-pane contentHome fade mt-3" role="tabpanel">
+                    @endif
+                    @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin','responsable auto']))
+                        <div id="table_reparations" class="tab-pane contentHome fade mt-3" role="tabpanel">
                         <!-- Button trigger modal -->
                         <table id="DataTable_reparations" class="table  table-striped dataTable dt-responsive" style="width: 100%">
                             <thead>
@@ -145,7 +149,9 @@
                             </tbody>
                         </table>
                     </div>
-                    <div id="table_assurances" class="tab-pane fade contentHome mt-3" role="tabpanel">
+                    @endif
+                    @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin','responsable auto']))
+                        <div id="table_assurances" class="tab-pane fade contentHome mt-3" role="tabpanel">
                         <!-- Button trigger modal -->
                         <table id="DataTable_assurances" class="table  table-striped dataTable dt-responsive" style="width: 100%">
                             <thead>
@@ -170,7 +176,9 @@
                             </tbody>
                         </table>
                     </div>
-                    <div id="table_carburants" class="tab-pane contentHome fade mt-3" role="tabpanel">
+                    @endif
+                    @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin','responsable auto']))
+                        <div id="table_carburants" class="tab-pane contentHome fade mt-3" role="tabpanel">
                         <table id="DataTable_carburants" class="table  table-striped dataTable dt-responsive" style="width: 100%">
                             <thead>
                             <tr>
@@ -192,7 +200,9 @@
                             </tbody>
                         </table>
                     </div>
-                    <div id="table_locations" class="tab-pane fade contentHome mt-3" role="tabpanel">
+                    @endif
+                    @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin','secretaire']))
+                        <div id="table_locations" class="tab-pane fade contentHome mt-3" role="tabpanel">
                         <table id="DataTable_location" class="table  table-striped dataTable table-responsive" style="width: 100%">
                             <thead>
                             <tr>
@@ -216,8 +226,9 @@
                             </tbody>
                         </table>
                     </div>
-
-                    <div id="table_fournisseurs" class="tab-pane fade contentHome mt-3" role="tabpanel">
+                    @endif
+                    @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin']))
+                        <div id="table_fournisseurs" class="tab-pane fade contentHome mt-3" role="tabpanel">
                         <table id="DataTable_fournisseur" class="table  table-striped dataTable table-responsive" style="width: 100%">
                             <thead>
                             <tr>
@@ -235,28 +246,7 @@
                             </tbody>
                         </table>
                     </div>
-
-                    <div id="table_agences" class="tab-pane fade contentHome mt-3" role="tabpanel">
-                        <table id="DataTable_agence" class="table  table-striped dataTable table-responsive" style="width: 100%">
-                            <thead>
-                            <tr>
-                                <th>Ville</th>
-                                <th>Rue</th>
-                                <th>Code Postal</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($agences as $datas)
-                                <tr>
-                                    <td>{{$datas->ville}}</td>
-                                    <td>{{$datas->rue}}</td>
-                                    <td>{{$datas->codePostal}}</td>
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                    <div id="table_users" class="tab-pane fade contentHome mt-3" role="tabpanel">
+                        <div id="table_users" class="tab-pane fade contentHome mt-3" role="tabpanel">
                         <table id="DataTable_users" class="table  table-striped dataTable table-responsive" style="width: 100%">
                             <thead>
                             <tr>
@@ -276,6 +266,29 @@
                             </tbody>
                         </table>
                     </div>
+                    @endif
+                    @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'chef agence']))
+                        <div id="table_agences" class="tab-pane fade contentHome mt-3" role="tabpanel">
+                            <table id="DataTable_agence" class="table  table-striped dataTable table-responsive" style="width: 100%">
+                                <thead>
+                                <tr>
+                                    <th>Ville</th>
+                                    <th>Rue</th>
+                                    <th>Code Postal</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($agences as $datas)
+                                    <tr>
+                                        <td>{{$datas->ville}}</td>
+                                        <td>{{$datas->rue}}</td>
+                                        <td>{{$datas->codePostal}}</td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                </div>
+                    @endif
                 </div>
             </div>
         </div>

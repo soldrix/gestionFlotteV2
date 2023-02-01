@@ -102,7 +102,16 @@
 
                             <div class="row mb-0">
                                 <div class="col-md-6 offset-md-4">
-                                    <a href="/admin/users" class="btn btn-outline-danger">
+                                    @if(str_contains(url()->previous(), 'edit') === false && str_contains(url()->previous(), 'create') === false)
+                                        @php
+                                            session()->put('urlP', url()->previous());
+                                        @endphp
+                                    @elseif(url()->previous() !== url()->current())
+                                        @php
+                                            session()->put('urlP', '/admin/users/');
+                                        @endphp
+                                    @endif
+                                    <a href="{{str_replace(url('/'), '', session()->get('urlP'))}}" class="btn btn-outline-danger">
                                         {{__('Retour')}}
                                     </a>
                                     <button type="submit" class="btn btn-primary">
