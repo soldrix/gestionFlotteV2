@@ -46,7 +46,7 @@
                     @if(\Illuminate\Support\Facades\Auth::user())
                             <ul class="navbar-nav me-auto align-items-center">
 
-                                <li class="nav-item dropdown">
+                                <li class="nav-item dropdown d-none d-lg-flex">
                                     @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'fournisseur', 'responsable auto']))
                                             <a href="{{url('/admin/voitures')}}" class="mx-2 nav-link dropdown-toggle text-black" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                                 Voitures
@@ -61,6 +61,20 @@
                                         @endif
                                     </div>
                                 </li>
+
+
+                                @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'fournisseur', 'responsable auto']))
+                                    <a href="{{url('/admin/voitures')}}" class="mb-1 text-dark text-decoration-none d-flex d-lg-none">
+                                        Voitures
+                                    </a>
+                                @endif
+                                @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'responsable auto']))
+                                    <a href="{{url('/admin/entretiens')}}" class="mb-1 text-dark text-decoration-none d-flex d-lg-none">Entretiens</a>
+                                    <a href="{{url('/admin/assurances')}}" class="mb-1 text-dark text-decoration-none d-flex d-lg-none">Assurances</a>
+                                    <a href="{{url('/admin/reparations')}}" class="mb-1 text-dark text-decoration-none d-flex d-lg-none">Reparations</a>
+                                    <a href="{{url('/admin/consommations')}}" class="mb-1 text-dark text-decoration-none d-flex d-lg-none">Consommations</a>
+                                @endif
+
 
 
                                 @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'chef agence']))
@@ -102,7 +116,7 @@
                         @else
                             <li class="nav-item dropdown">
                                 @if(\Illuminate\Support\Facades\Auth::user())
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle text-center" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ \Illuminate\Support\Facades\Auth::user()->name }}
                                 </a>
                                 @endif
