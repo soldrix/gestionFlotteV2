@@ -992,7 +992,7 @@ span.flatpickr-weekday {
     border:2px solid red;
 }
 .tdBtn{
-    justify-content: space-between;
+    justify-content: center;
     display: flex;
     align-items: center;
 }
@@ -1013,9 +1013,15 @@ td{
     max-height: 100px;
     padding-right:15px;
 }
-.col-sm-12{
-    padding: 0 !important;
+.v-title{
+    font-size: 1.5rem;
 }
+.editButton,.delButton{
+    margin: 0 5px;
+}
+/*.col-sm-12{*/
+/*    padding: 0 !important;*/
+/*}*/
 .inputSearch{
     border: 0;
     border-bottom: 2px solid black;
@@ -1079,7 +1085,6 @@ td{
     background-position: center;
     max-height: 500px;
     min-height: 500px;
-    border-radius: 15px;
 }
 .iconVoiture{
     height: 24px;
@@ -1159,5 +1164,8 @@ td{
 }
 .vLabel{
     font-size: 1.8rem;
+}
+span.dtr-data{
+    word-wrap: anywhere;
 }
 

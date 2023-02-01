@@ -194,7 +194,17 @@
                             </div>
                             <div class="row mb-0">
                                 <div class="col-md-8 offset-md-4">
-                                    <a href="/admin/voitures" class="btn btn-outline-danger">
+                                    @if(str_contains(url()->previous(), 'edit') === false && str_contains(url()->previous(), 'create') === false)
+                                        @php
+                                            session()->put('urlP', url()->previous());
+                                        @endphp
+                                    @elseif(url()->previous() !== url()->current())
+                                        @php
+                                            session()->put('urlP', '/admin/voitures/');
+                                        @endphp
+                                    @endif
+
+                                    <a href="{{str_replace(url('/'), '', session()->get('urlP'))}}" class="btn btn-outline-danger">
                                         Retour
                                     </a>
                                     @if(count(json_decode($fournisseurs)) > 0)

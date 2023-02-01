@@ -2,7 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\agence;
+use App\Models\assurance;
+use App\Models\consommation;
+use App\Models\entretien;
+use App\Models\fournisseur;
+use App\Models\location;
+use App\Models\reparation;
 use App\Models\User;
+use App\Models\voiture;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -12,7 +20,44 @@ class LoginController extends Controller
 {
 
     public function index(){
-        return view('home');
+        $date = date('Y-m-d H:i:s', strtotime("-7 day, +1 hour"));
+        $entretiens = entretien::leftJoin('voitures' ,'voitures.id', '=', 'entretiens.id_voiture')->where('entretiens.updated_at', '>=', $date)->get([
+            'entretiens.*',
+            'voitures.immatriculation'
+        ]);
+        $assurances = assurance::leftJoin('voitures' ,'voitures.id', '=', 'assurances.id_voiture')->where('assurances.updated_at', '>=', $date)->get([
+            'assurances.*',
+            'voitures.immatriculation'
+        ]);
+        $consommations = consommation::leftJoin('voitures' ,'voitures.id', '=', 'consommations.id_voiture')->where('consommations.updated_at', '>=', $date)->get([
+            'consommations.*',
+            'voitures.immatriculation'
+        ]);
+        $reparations = reparation::leftJoin('voitures' ,'voitures.id', '=', 'reparations.id_voiture')->where('reparations.updated_at', '>=', $date)->get([
+            'reparations.*',
+            'voitures.immatriculation'
+        ]);
+        $locations = location::leftJoin('voitures' ,'voitures.id', '=', 'locations.id_voiture')
+            ->leftJoin('users', 'users.id', '=', 'locations.id_users')
+            ->where('locations.updated_at', '>=', $date)->get([
+            'locations.*',
+            'voitures.immatriculation'
+        ]);
+        $fournisseurs = fournisseur::leftJoin('users' ,'users.id', '=', 'fournisseurs.id_users')->where('fournisseurs.updated_at', '>=', $date)->get([
+            'fournisseurs.*',
+            'users.email'
+        ]);
+        $agences = agence::all()->where('updated_at', '>=', $date);
+
+        $voitures = voiture::leftJoin('agence', 'agence.id', '=', 'voitures.id_agence')
+            ->leftJoin('fournisseurs', 'fournisseurs.id', '=', 'voitures.id_fournisseur')->where('voitures.updated_at', '>=', $date)->get([
+               'fournisseurs.name',
+               'voitures.*',
+                'agence.ville',
+                'agence.rue'
+            ]);
+        $users = User::where('updated_at', '>=', $date)->get();
+        return view('home',['entretiens' => $entretiens, 'assurances' => $assurances, 'consommations' => $consommations, 'reparations' => $reparations, 'locations' => $locations, 'agences' => $agences, 'fournisseurs' => $fournisseurs, 'voitures' => $voitures, 'users' => $users]);
     }
 
     public function register(Request $request)
@@ -59,15 +104,6 @@ class LoginController extends Controller
             $token = Auth()->user()->createToken('auth_token')->plainTextToken;
             $role = Auth::user()->type;
             Auth()->user()->assignRole($role);
-            if(Auth::user()->hasRole(['admin', 'fournisseur', 'responsable auto'])){
-                return redirect('/admin/voitures');
-            }
-            if(Auth::user()->hasRole('secretaire')){
-                return redirect('/admin/locations');
-            }
-            if(Auth::user()->hasRole('chef agence')){
-                return redirect('/admin/agences');
-            }
             return redirect('/home')->with('token','Bearer '.$token);
         }
         return back()->withErrors(['message'=>'Données de connexion invalides.'])->withInput();
