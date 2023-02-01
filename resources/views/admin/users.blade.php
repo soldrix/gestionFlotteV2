@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container-fluid py-4 px-0">
+    <div class="container-fluid py-4">
         <!-- Button trigger modal -->
         <a href="/admin/user/create" class="btn btn-primary float-end">
             Ajouter un utilisateur

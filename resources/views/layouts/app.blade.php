@@ -35,7 +35,7 @@
         <nav class="navbar sticky-top navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/home') }}">
-                   Home
+                    Home
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -44,31 +44,49 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     @if(\Illuminate\Support\Facades\Auth::user())
-                            <ul class="navbar-nav me-auto">
-                                @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'fournisseur', 'responsable auto']))
-                                <a href="{{url('/admin/voitures')}}" class="mx-2 text-dark text-decoration-none">Voitures</a>
-                                @endif
-                                @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'responsable auto']))
-                                    <a href="{{url('/admin/entretiens')}}" class="mx-2 text-dark text-decoration-none">Entretiens</a>
-                                    <a href="{{url('/admin/assurances')}}" class="mx-2 text-dark text-decoration-none">Assurances</a>
-                                    <a href="{{url('/admin/reparations')}}" class="mx-2 text-dark text-decoration-none">Reparations</a>
-                                    <a href="{{url('/admin/consommations')}}" class="mx-2 text-dark text-decoration-none">Consommations</a>
-                                @endif
+                            <ul class="navbar-nav me-auto align-items-center">
+
+                                <li class="nav-item dropdown">
+                                    @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'fournisseur', 'responsable auto']))
+                                            <a href="{{url('/admin/voitures')}}" class="mx-2 nav-link dropdown-toggle text-black" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                                Voitures
+                                            </a>
+                                    @endif
+                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                        @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'responsable auto']))
+                                            <a href="{{url('/admin/entretiens')}}" class="dropdown-item">Entretiens</a>
+                                            <a href="{{url('/admin/assurances')}}" class="dropdown-item">Assurances</a>
+                                            <a href="{{url('/admin/reparations')}}" class="dropdown-item">Reparations</a>
+                                            <a href="{{url('/admin/consommations')}}" class="dropdown-item">Consommations</a>
+                                        @endif
+                                    </div>
+                                </li>
+
+
                                 @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'chef agence']))
-                                    <a href="{{url('/admin/agences')}}" class="mx-2 text-dark text-decoration-none">Agences</a>
+                                    <li class="nav-item">
+                                        <a href="{{url('/admin/agences')}}" class="mx-2 text-dark text-decoration-none">Agences</a>
+                                    </li>
                                 @endif
                                 @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'secretaire']))
-                                    <a href="{{url('/admin/locations')}}" class="mx-2 text-dark text-decoration-none">Locations</a>
+                                    <li class="nav-item">
+                                        <a href="{{url('/admin/locations')}}" class="mx-2 text-dark text-decoration-none">Locations</a>
+                                    </li>
                                 @endif
                                 @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin']))
+                                    <li class="nav-item">
                                         <a href="{{url('/admin/users')}}" class="mx-2 text-dark text-decoration-none">Utilisateurs</a>
-                                    <a href="{{url('/admin/fournisseurs')}}" class="mx-2 text-dark text-decoration-none">Fournisseurs</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{url('/admin/fournisseurs')}}" class="mx-2 text-dark text-decoration-none">Fournisseurs</a>
+                                    </li>
                                 @endif
                             </ul>
                     @endif
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         <!-- Authentication Links -->
+
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
