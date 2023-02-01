@@ -25,7 +25,7 @@
                         <td>{{$datas->type}}</td>
                         <td class="tdBtn">
                             <div class="divBtnTab">
-                                <a class="btn btn-info editButton text-white"  href="user/edit/{{$datas->id}}"><i class="fa-solid fa-pencil "></i></a>
+                                <a class="btn btn-info editButton text-white"  href="/admin/user/edit/{{$datas->id}}"><i class="fa-solid fa-pencil "></i></a>
                                 <button class="btn btn-danger delButton" data-voiture="{{$datas->id}}"><i class="fa-solid fa-trash-can"></i></button>
                             </div>
                         </td>

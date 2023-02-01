@@ -5,8 +5,8 @@
         @foreach( $voitureData ?? '' as $datas)
             <div class="container-fluid py-4">
                 <div class="col-auto d-flex flex-column flex-lg-row">
-                    <div class="col-12 col-lg-6 border-dark border-3 border-opacity-25 p-4 d-flex justify-content-center" style="border-right: solid">
-                        <img id="imageVoiture" src="{{asset("/api/image/".$datas->image)}}" alt="{{$datas->image}}" class="rounded" style="max-width: 100%">
+                    <div class="col-12 col-lg-6 border-dark border-3 border-opacity-25 p-4 d-flex justify-content-center" style='border-right: solid;background-image: url("{{asset("/api/image/".$datas->image)}}");background-size: contain;background-repeat: no-repeat;background-color: black;background-position: center'>
+{{--                        <img id="imageVoiture" src="{{asset("/api/image/".$datas->image)}}" alt="{{$datas->image}}" class="rounded" style="max-width: 100%">--}}
                     </div>
                     <div class="col-12 col-lg-6 px-2 mt-5">
                         <h2 class="text-primary text-center text-lg-start">Immatriculation : <span class="text-muted" id="immatriculation">{{$datas->immatriculation}}</span></h2>

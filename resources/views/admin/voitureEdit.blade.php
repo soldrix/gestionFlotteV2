@@ -195,12 +195,17 @@
                             </div>
                             <div class="row mb-0">
                                 <div class="col-md-8 offset-md-4">
-                                    @php
-                                      if(url()->previous() !== url()->current()){
-                                            session()->put('urlP', url()->previous());
-                                        }
-                                    @endphp
-                                    <a href="{{(session()->get('urlP')) ? str_replace(url('/'), '', session()->get('urlP')) : '/admin/voiture/'.$voiture->id}}" class="btn btn-outline-danger">
+                                    @if(str_contains(url()->previous(), 'edit') === false)
+                                        @php
+                                        session()->put('urlP', url()->previous());
+                                        @endphp
+                                    @elseif(url()->previous() !== url()->current())
+                                        @php
+                                        session()->put('urlP', '/admin/voitures/');
+                                        @endphp
+                                    @endif
+
+                                    <a href="{{str_replace(url('/'), '', session()->get('urlP'))}}" class="btn btn-outline-danger">
                                         Retour
                                     </a>
                                     <button type="submit" class="btn btn-primary">
