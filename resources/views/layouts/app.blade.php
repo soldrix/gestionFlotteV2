@@ -48,12 +48,13 @@
 
                                 <li class="nav-item dropdown d-none d-lg-flex">
                                     @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'fournisseur', 'responsable auto']))
-                                            <a href="{{url('/admin/voitures')}}" class="mx-2 nav-link dropdown-toggle text-black" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                                Voitures
+                                            <a href="#" class="mx-2 nav-link dropdown-toggle text-black" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                                Pages
                                             </a>
                                     @endif
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                         @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'responsable auto']))
+                                            <a href="{{url('/admin/voitures')}}" class="dropdown-item">Voitures</a>
                                             <a href="{{url('/admin/entretiens')}}" class="dropdown-item">Entretiens</a>
                                             <a href="{{url('/admin/assurances')}}" class="dropdown-item">Assurances</a>
                                             <a href="{{url('/admin/reparations')}}" class="dropdown-item">Reparations</a>

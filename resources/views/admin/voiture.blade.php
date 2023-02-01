@@ -24,14 +24,14 @@
                                 <h2 class="text-primary v-title">Marque : <span class="text-muted">{{$datas->marque}}</span></h2>
                                 <h2 class="text-primary v-title">Model : <span class="text-muted">{{$datas->model}}</span> </h2>
                                 <h2 class="text-primary v-title">Mise en circulation : <span class="text-muted">{{date('d/m/Y', strtotime($datas->circulation))}}</span></h2>
-                                <h2 class="text-primary v-title">Statut : <span class="text-muted">{{$datas->statut}}</span></h2>
+                                <h2 class="text-primary v-title">Statut : <span class="text-muted">{{($datas->statut === 1) ? 'Disponible' :'Indisponible'}}</span></h2>
                                 <h2 class="text-primary v-title">Puissance : <span class="text-muted">{{$datas->puissance}}</span></h2>
                                 <h2 class="text-primary v-title">Carburant : <span class="text-muted">{{$datas->carburant}}</span></h2>
                                 <h2 class="text-primary v-title">Type : <span class="text-muted">{{$datas->type}}</span></h2>
                                 <h2 class="text-primary v-title">nombre de siège : <span class="text-muted">{{$datas->nbPlace}}</span></h2>
                                 <h2 class="text-primary v-title">nombre de porte : <span class="text-muted">{{$datas->nbPorte}}</span></h2>
-                                <h2 class="text-primary v-title">Agence : <span class="text-muted">{{($datas->ville !== null) ? $datas->ville.' '.$datas->rue : 'vide'}}</span></h2>
-                                <h2 class="text-primary v-title">Fournisseur : <span class="text-muted">{{$datas->name.' '.$datas->email}}</span></h2>
+                                <h2 class="text-primary v-title">Agence : <span class="text-muted">{{($datas->ville !== null) ? $datas->ville.' '.$datas->rue : 'Aucune agence'}}</span></h2>
+                                <h2 class="text-primary v-title">Fournisseur : <span class="text-muted">{{($datas->name !== null) ? $datas->name.' '.$datas->email : 'Aucun fournisseur'}}</span></h2>
                             </div>
                             <div class="col-auto mx-2 p-0  align-self-center">
                                 <a class="btn btn-info ms-lg-5" href="edit/{{$datas->id}}" style="height: fit-content">modifier</a>

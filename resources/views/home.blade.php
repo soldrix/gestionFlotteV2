@@ -1,39 +1,283 @@
 @extends('layouts.app')
 
 @section('content')
-        <div class="container-fluid px-0" style="background-image: url('{{asset("/images/fondHome.png")}}');background-repeat: no-repeat;background-size: cover;min-height: 800px;height: 50vh ">
-            <div class="fondHome position-relative py-4">
-                <div class="container px-0 pt-5 h-75">
-                    <div class="col-auto d-flex position-relative bg-light p-2">
-                        <i class="fa-solid fa-magnifying-glass position-absolute" style="bottom: 18.5px"></i>
-                        <div class="d-flex flex-column w-100 position-relative">
-                            <label for="searchBar" class="text-opacity-50 text-dark mb-2">Retrait et retour</label>
-                            <input id="searchBar" type="search" autocomplete="off" placeholder="Trouver une agence" class="w-100 text-dark inputSearch ps-4" style="outline: none">
-                            {{--list agence--}}
-                            <div id="divSearch" class="col-12 py-2 px-4  overflow-auto">
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="position-absolute vw-100 bottom-0 p-5 d-flex justify-content-around container" >
-                        <div class="col-auto mx-3">
-                            <h2 class="text-white titreHome">Véhicules Premium</h2>
-                            <p class="text-white textHome">Sentez-vous comme un VIP <br> où que vous alliez avec nos voitures.</p>
-                        </div>
-                        <div class="col-auto mx-3">
-                            <h2 class="text-white titreHome">Nouvelles voitures</h2>
-                            <p class="text-white textHome">Ne cherchez pas ailleurs <br> les véhicules les plus récents.</p>
-                        </div>
-                        <div class="col-auto mx-3">
-                            <h2 class="text-white titreHome">Entièrement numérique</h2>
-                            <p class="text-white textHome">Évitez les longues files d'attente au guichet.</p>
-                        </div>
-                    </div>
+        <div class="container">
+            <h2 class="mt-3">Liste des dernier ajout et modification.</h2>
+            <div class="divbottom">
+                <div class="border-bottom mt-2 border-dark border-opacity-25 border-2 pt-2">
+                    <ul id="info_voiture" class="nav nav-tabs mt-3">
+                        @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'responsable auto', 'fournisseur']))
+                            <li class="nav-item">
+                                <a class="nav-link tabsHome text-dark" href="#" data-bs-toggle="tab" data-bs-target="#table_voitures"><i class="fa-solid fa-car fa-lg text-dark m-2"></i>Voitures</a>
+                            </li>
+                        @endif
+                        @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'responsable auto']))
+                            <li class="nav-item">
+                                <a class="nav-link tabsHome text-dark" href="#" data-bs-toggle="tab" data-bs-target="#table_entretiens"><i class="fa-solid fa-wrench fa-lg text-dark m-2"></i>Entretiens</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link tabsHome text-dark" href="#" data-bs-toggle="tab" data-bs-target="#table_reparations"><i class="fa-solid fa-gear fa-lg text-dark m-2"></i>Reparations</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link tabsHome text-dark" href="#" data-bs-toggle="tab" data-bs-target="#table_assurances"><i class="fa-solid fa-calendar-check fa-lg text-dark m-2"></i>Assurances</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link tabsHome text-dark" href="#" data-bs-toggle="tab" data-bs-target="#table_carburants"><i class="fa-solid fa-gas-pump fa-lg text-dark m-2"></i>Carburants</a>
+                            </li>
+                        @endif
+                        @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin','secretaire']))
+                            <li class="nav-item">
+                                <a class="nav-link tabsHome text-dark" href="#" data-bs-toggle="tab" data-bs-target="#table_locations"><i class="fa-solid fa-calendar-days fa-lg text-dark m-2"></i>Locations</a>
+                            </li>
+                        @endif
+                        @if(\Illuminate\Support\Facades\Auth::user()->hasRole('admin'))
+                            <li class="nav-item">
+                                <a class="nav-link tabsHome text-dark" href="#" data-bs-toggle="tab" data-bs-target="#table_fournisseurs"><i class="fa-solid fa-truck-ramp-box fa-lg text-dark m-2"></i>Fournisseurs</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link tabsHome text-dark" href="#" data-bs-toggle="tab" data-bs-target="#table_users"><i class="fa-solid fa-user-group fa-lg text-dark m-2"></i>Utilisateurs</a>
+                            </li>
+                        @endif
+                        @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'chef agence']))
+                            <li class="nav-item">
+                                <a class="nav-link tabsHome text-dark" href="#" data-bs-toggle="tab" data-bs-target="#table_agences"><i class="fa-solid fa-shop fa-lg text-dark m-2"></i>Agences</a>
+                            </li>
+                        @endif
+                    </ul>
                 </div>
-                <div class="col-auto">
+                <div id="block_info_voiture" class="tab-content">
+                    <div id="table_voitures" class="tab-pane fade contentHome mt-3" role="tabpanel">
+                        <table id="DataTable_voitures" class="table  table-striped dataTable table-responsive" style="width: 100%">
+                            <thead>
+                            <tr>
+                                <th>Marque</th>
+                                <th>Model</th>
+                                <th>Immatriculation</th>
+                                <th>Nombre de porte</th>
+                                <th>Nombre de siège</th>
+                                <th>Mise en circulation</th>
+                                <th>Puissance</th>
+                                <th>Carburant</th>
+                                <th>Type de véhicule</th>
+                                <th>Agence</th>
+                                <th>Fournisseur</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($voitures as $datas)
+                                <tr>
+                                    <td>{{$datas->marque}}</td>
+                                    <td>{{$datas->model}}</td>
+                                    <td>{{$datas->immatriculation}}</td>
+                                    <td>{{$datas->nbPorte}}</td>
+                                    <td>{{$datas->nbPlace}}</td>
+                                    <td>{{date('d/m/Y', strtotime($datas->circulation))}}</td>
+                                    <td>{{$datas->puissance}}</td>
+                                    <td>{{$datas->carburant}}</td>
+                                    <td>{{$datas->type}}</td>
+                                    <td>{{($datas->ville !== null) ? $datas->ville.' '.$datas->rue : 'Aucune agence'}}</td>
+                                    <td>{{($datas->name !== null) ? $datas->name.' '.$datas->email : 'Aucun fournisseur'}}</td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="table_entretiens" class="tab-pane fade contentHome mt-3" role="tabpanel">
+                        <!-- Button trigger modal -->
+                        <table id="DataTable_entretiens" class="table table-striped dataTable dt-responsive" style="width: 100%">
+                            <thead>
+                            <tr>
+                                <th>Nom garage</th>
+                                <th>Type</th>
+                                <th>Montant</th>
+                                <th>Date</th>
+                                <th>immatriculation</th>
+                                <th>Note</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($entretiens as $datas)
+                                <tr>
+                                    <td>{{$datas->nom}}</td>
+                                    <td>{{$datas->type}}</td>
+                                    <td>{{$datas->montant.'€'}}</td>
+                                    <td>{{date('d/m/Y', strtotime($datas->date))}}</td>
+                                    <td>{{(isset($datas->immatriculation))? $datas->immatriculation : 'Aucune voiture'}}</td>
+                                    <td>
+                                        <div class="noteSupp">
+                                            {{(isset($datas->note)) ? $datas->note : "aucune note"}}
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
 
+                    <div id="table_reparations" class="tab-pane contentHome fade mt-3" role="tabpanel">
+                        <!-- Button trigger modal -->
+                        <table id="DataTable_reparations" class="table  table-striped dataTable dt-responsive" style="width: 100%">
+                            <thead>
+                            <tr>
+                                <th>Nom garage</th>
+                                <th>Type</th>
+                                <th>Montant</th>
+                                <th>Date</th>
+                                <th>Note</th>
+                                <th>Immatriculation</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($reparations as $datas)
+                                <tr>
+                                    <td>{{$datas->nom}}</td>
+                                    <td>{{$datas->type}}</td>
+                                    <td>{{$datas->montant.'€'}}</td>
+                                    <td>{{date('d/m/Y', strtotime($datas->date))}}</td>
+                                    <td>{{(isset($datas->immatriculation))? $datas->immatriculation : 'Aucune voiture'}}</td>
+                                    <td>
+                                        <div class="noteSupp">
+                                            {{(isset($datas->note)) ? $datas->note : "aucune note"}}
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="table_assurances" class="tab-pane fade contentHome mt-3" role="tabpanel">
+                        <!-- Button trigger modal -->
+                        <table id="DataTable_assurances" class="table  table-striped dataTable dt-responsive" style="width: 100%">
+                            <thead>
+                            <tr>
+                                <th>Nom assurance</th>
+                                <th>Debut assurance</th>
+                                <th>Fin assurance</th>
+                                <th>Immatriculation</th>
+                                <th>Frais</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($assurances as $datas)
+                                <tr>
+                                    <td>{{$datas->nom}}</td>
+                                    <td>{{date('d/m/Y', strtotime($datas->DateDebut))}}</td>
+                                    <td>{{date('d/m/Y', strtotime($datas->DateFin))}}</td>
+                                    <td>{{$datas->immatriculation ?? 'Aucune voiture'}}</td>
+                                    <td>{{$datas->frais."€"}}</td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="table_carburants" class="tab-pane contentHome fade mt-3" role="tabpanel">
+                        <table id="DataTable_carburants" class="table  table-striped dataTable dt-responsive" style="width: 100%">
+                            <thead>
+                            <tr>
+                                <th>Nombre de litre</th>
+                                <th>Montant</th>
+                                <th>Immatriculation</th>
+                                <th>litre/prix</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($consommations as $datas)
+                                <tr>
+                                    <td>{{$datas->litre}}</td>
+                                    <td>{{$datas->montant.'€'}}</td>
+                                    <td>{{$datas->immatriculation ?? 'Aucune voiture'}}</td>
+                                    <td>{{round($datas->montant/$datas->litre,3).'€'}}</td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="table_locations" class="tab-pane fade contentHome mt-3" role="tabpanel">
+                        <table id="DataTable_location" class="table  table-striped dataTable table-responsive" style="width: 100%">
+                            <thead>
+                            <tr>
+                                <th>Date de début</th>
+                                <th>Date de Fin</th>
+                                <th>Immatriculation</th>
+                                <th>utilisateur</th>
+                                <th>Montant</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($locations as $datas)
+                                <tr data-voiture="{{$datas->id}}" data-db="location">
+                                    <td>{{date('d/m/Y', strtotime($datas->DateDebut))}}</td>
+                                    <td>{{date('d/m/Y', strtotime($datas->DateFin))}}</td>
+                                    <td>{{$datas->immatriculation ?? 'Aucune voiture'}}</td>
+                                    <td>{{$datas->email ?? 'Aucun utilisateur'}}</td>
+                                    <td>{{$datas->montant}}</td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="table_fournisseurs" class="tab-pane fade contentHome mt-3" role="tabpanel">
+                        <table id="DataTable_fournisseur" class="table  table-striped dataTable table-responsive" style="width: 100%">
+                            <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Email</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($fournisseurs as $datas)
+                                <tr data-voiture="{{$datas->id}}">
+                                    <td>{{$datas->name}}</td>
+                                    <td>{{$datas->email}}</td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="table_agences" class="tab-pane fade contentHome mt-3" role="tabpanel">
+                        <table id="DataTable_agence" class="table  table-striped dataTable table-responsive" style="width: 100%">
+                            <thead>
+                            <tr>
+                                <th>Ville</th>
+                                <th>Rue</th>
+                                <th>Code Postal</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($agences as $datas)
+                                <tr>
+                                    <td>{{$datas->ville}}</td>
+                                    <td>{{$datas->rue}}</td>
+                                    <td>{{$datas->codePostal}}</td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="table_users" class="tab-pane fade contentHome mt-3" role="tabpanel">
+                        <table id="DataTable_users" class="table  table-striped dataTable table-responsive" style="width: 100%">
+                            <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Email</th>
+                                <th>Type</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($users as $datas)
+                                <tr data-voiture="{{$datas->id}}">
+                                    <td>{{$datas->name}}</td>
+                                    <td>{{$datas->email}}</td>
+                                    <td>{{$datas->type}}</td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-        <script src="{{asset('js/bootstrap.bundle.js')}}" defer></script>
+        <script src="{{asset('js/home.js')}}" defer></script>
 @endsection
