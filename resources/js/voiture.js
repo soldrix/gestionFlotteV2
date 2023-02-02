@@ -20,7 +20,7 @@ function supModal(row){
             });
             $.ajax({
                 type:"DELETE",
-                url: '/admin/voiture/delete/'+id_voiture,
+                url: '/voiture/delete/'+id_voiture,
                 success:function () {
                     voiture.remove();
                     myModal.hide();

@@ -9,8 +9,8 @@
                         {{ session()->get('message') }}
                     </div>
                 @endif
-                <div class="card">
-                    <div class="card-header">{{__('Modifier un utilisateur')}}</div>
+                <div class="card bg-p shadow-block">
+                    <div class="card-header bg-s">{{__('Modifier un utilisateur')}}</div>
                     <div class="card-body">
                         <form method="POST" action="{{ route('userUpdate',['id' => $user->id]) }}">
                             @csrf
@@ -43,7 +43,6 @@
                                 </div>
                             </div>
 
-
                             <div class="row mb-3">
                                 <label for="type" class="col-md-4 col-form-label text-md-end">{{ __('Type d\'utilisateur ( '.$user->type.' ) :') }}</label>
 
@@ -62,9 +61,6 @@
                                 </div>
                             </div>
 
-
-
-
                             <div class="row mb-3">
                                 <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Mot de passe :') }}</label>
 
@@ -79,14 +75,12 @@
                                 </div>
                             </div>
 
-
                             <div class="row mb-3 justify-content-center">
                                 <div class="form-check form-switch col-auto">
                                     <input class="form-check-input" name="send_email" type="checkbox" id="flexSwitchCheckDefault">
                                     <label class="form-check-label" for="flexSwitchCheckDefault">Envoyer un email.</label>
                                 </div>
                             </div>
-
 
                             <div class="row mb-0">
                                 <div class="col-md-6 offset-md-4">
@@ -96,10 +90,10 @@
                                         @endphp
                                     @elseif(url()->previous() !== url()->current())
                                         @php
-                                            session()->put('urlP', '/admin/users/');
+                                            session()->put('urlP', '/users');
                                         @endphp
                                     @endif
-                                    <a href="{{str_replace(url('/'), '', session()->get('urlP'))}}" class="btn btn-outline-danger">
+                                    <a href="{{str_replace(url('/'), '', session()->get('urlP'))}}" class="btn btn-danger">
                                         {{__('Retour')}}
                                     </a>
                                     <button type="submit" class="btn btn-primary">

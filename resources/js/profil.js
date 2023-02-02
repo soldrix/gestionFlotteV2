@@ -19,7 +19,7 @@ function supModal(row){
         });
         $.ajax({
             type:"DELETE",
-            url: '/admin/user/delete/'+id_users,
+            url: '/user/delete/'+id_users,
             success:function () {
                 myModal.hide();
                 delToast.show();

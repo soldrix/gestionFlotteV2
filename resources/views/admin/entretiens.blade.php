@@ -3,13 +3,13 @@
 @section('content')
     <div class="container-fluid py-4">
         <!-- Button trigger modal -->
-        <a href="/admin/entretien/create" class="btn btn-primary float-end">
+        <a href="/entretien/create" class="btn btn-primary float-end">
             Ajouter Entretien
         </a>
         <div class="container">
             <h2>Page entretiens</h2>
-            <table id="DataTable_entretiens" class="table table-striped dataTable table-responsive" style="width: 100%">
-                <thead>
+            <table id="DataTable_entretiens" class="table table-dark mt-2 table-hover table-striped dataTable table-responsive" style="width: 100%">
+                <thead class="border-1 border-bottom border-white">
                 <tr>
                     <th>Nom garage</th>
                     <th>Type</th>
@@ -35,7 +35,7 @@
                         </td>
                         <td class="tdBtn">
                             <div class="divBtnTab">
-                                <a class="btn btn-info editButton text-white"  href="/admin/entretien/edit/{{$datas->id}}"><i class="fa-solid fa-pencil "></i></a>
+                                <a class="btn btn-info editButton text-white"  href="/entretien/edit/{{$datas->id}}"><i class="fa-solid fa-pencil "></i></a>
                                 <button class="btn btn-danger delButton" data-voiture="{{$datas->id}}"><i class="fa-solid fa-trash-can"></i></button>
                             </div>
                         </td>

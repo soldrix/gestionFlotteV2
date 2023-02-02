@@ -8,39 +8,39 @@
                     <ul id="info_voiture" class="nav nav-tabs mt-3">
                         @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'responsable auto', 'fournisseur']))
                             <li class="nav-item">
-                                <a class="nav-link tabsHome text-dark" href="#" data-bs-toggle="tab" data-bs-target="#table_voitures"><i class="fa-solid fa-car fa-lg text-dark m-2"></i>Voitures</a>
+                                <a class="nav-link tabsHome" href="#" data-bs-toggle="tab" data-bs-target="#table_voitures"><i class="fa-solid fa-car fa-lg m-2"></i>Voitures</a>
                             </li>
                         @endif
                         @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'responsable auto']))
                             <li class="nav-item">
-                                <a class="nav-link tabsHome text-dark" href="#" data-bs-toggle="tab" data-bs-target="#table_entretiens"><i class="fa-solid fa-wrench fa-lg text-dark m-2"></i>Entretiens</a>
+                                <a class="nav-link tabsHome" href="#" data-bs-toggle="tab" data-bs-target="#table_entretiens"><i class="fa-solid fa-wrench fa-lg m-2"></i>Entretiens</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link tabsHome text-dark" href="#" data-bs-toggle="tab" data-bs-target="#table_reparations"><i class="fa-solid fa-gear fa-lg text-dark m-2"></i>Reparations</a>
+                                <a class="nav-link tabsHome" href="#" data-bs-toggle="tab" data-bs-target="#table_reparations"><i class="fa-solid fa-gear fa-lg m-2"></i>Reparations</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link tabsHome text-dark" href="#" data-bs-toggle="tab" data-bs-target="#table_assurances"><i class="fa-solid fa-calendar-check fa-lg text-dark m-2"></i>Assurances</a>
+                                <a class="nav-link tabsHome" href="#" data-bs-toggle="tab" data-bs-target="#table_assurances"><i class="fa-solid fa-calendar-check fa-lg m-2"></i>Assurances</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link tabsHome text-dark" href="#" data-bs-toggle="tab" data-bs-target="#table_carburants"><i class="fa-solid fa-gas-pump fa-lg text-dark m-2"></i>Carburants</a>
+                                <a class="nav-link tabsHome" href="#" data-bs-toggle="tab" data-bs-target="#table_carburants"><i class="fa-solid fa-gas-pump fa-lg m-2"></i>Carburants</a>
                             </li>
                         @endif
                         @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin','secretaire']))
                             <li class="nav-item">
-                                <a class="nav-link tabsHome text-dark" href="#" data-bs-toggle="tab" data-bs-target="#table_locations"><i class="fa-solid fa-calendar-days fa-lg text-dark m-2"></i>Locations</a>
+                                <a class="nav-link tabsHome" href="#" data-bs-toggle="tab" data-bs-target="#table_locations"><i class="fa-solid fa-calendar-days fa-lg m-2"></i>Locations</a>
                             </li>
                         @endif
                         @if(\Illuminate\Support\Facades\Auth::user()->hasRole('admin'))
                             <li class="nav-item">
-                                <a class="nav-link tabsHome text-dark" href="#" data-bs-toggle="tab" data-bs-target="#table_fournisseurs"><i class="fa-solid fa-truck-ramp-box fa-lg text-dark m-2"></i>Fournisseurs</a>
+                                <a class="nav-link tabsHome" href="#" data-bs-toggle="tab" data-bs-target="#table_fournisseurs"><i class="fa-solid fa-truck-ramp-box fa-lg m-2"></i>Fournisseurs</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link tabsHome text-dark" href="#" data-bs-toggle="tab" data-bs-target="#table_users"><i class="fa-solid fa-user-group fa-lg text-dark m-2"></i>Utilisateurs</a>
+                                <a class="nav-link tabsHome" href="#" data-bs-toggle="tab" data-bs-target="#table_users"><i class="fa-solid fa-user-group fa-lg m-2"></i>Utilisateurs</a>
                             </li>
                         @endif
                         @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'chef agence']))
                             <li class="nav-item">
-                                <a class="nav-link tabsHome text-dark" href="#" data-bs-toggle="tab" data-bs-target="#table_agences"><i class="fa-solid fa-shop fa-lg text-dark m-2"></i>Agences</a>
+                                <a class="nav-link tabsHome" href="#" data-bs-toggle="tab" data-bs-target="#table_agences"><i class="fa-solid fa-shop fa-lg m-2"></i>Agences</a>
                             </li>
                         @endif
                     </ul>
@@ -48,9 +48,9 @@
                 <div id="block_info_voiture" class="tab-content">
                     @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin','responsable auto', 'fournisseur']))
                         <div id="table_voitures" class="tab-pane fade contentHome mt-3" role="tabpanel">
-                        <table id="DataTable_voitures" class="table  table-striped dataTable table-responsive" style="width: 100%">
+                        <table id="DataTable_voitures" class="table table-dark table-bordered table-hover table-striped dataTable mt-2 table-responsive" style="width: 100%">
                             <thead>
-                            <tr>
+                            <tr class="text-white">
                                 <th>Marque</th>
                                 <th>Model</th>
                                 <th>Immatriculation</th>
@@ -66,7 +66,7 @@
                             </thead>
                             <tbody>
                             @foreach($voitures as $datas)
-                                <tr>
+                                <tr class="text-white">
                                     <td>{{$datas->marque}}</td>
                                     <td>{{$datas->model}}</td>
                                     <td>{{$datas->immatriculation}}</td>
@@ -87,7 +87,7 @@
                     @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin','responsable auto']))
                         <div id="table_entretiens" class="tab-pane fade contentHome mt-3" role="tabpanel">
                         <!-- Button trigger modal -->
-                        <table id="DataTable_entretiens" class="table table-striped dataTable dt-responsive" style="width: 100%">
+                        <table id="DataTable_entretiens" class="table table-bordered table-dark table-hover mt-2 table-striped dataTable dt-responsive" style="width: 100%">
                             <thead>
                             <tr>
                                 <th>Nom garage</th>
@@ -120,7 +120,7 @@
                     @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin','responsable auto']))
                         <div id="table_reparations" class="tab-pane contentHome fade mt-3" role="tabpanel">
                         <!-- Button trigger modal -->
-                        <table id="DataTable_reparations" class="table  table-striped dataTable dt-responsive" style="width: 100%">
+                        <table id="DataTable_reparations" class="table table-bordered table-hover table-dark mt-2 table-striped dataTable dt-responsive" style="width: 100%">
                             <thead>
                             <tr>
                                 <th>Nom garage</th>
@@ -153,7 +153,7 @@
                     @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin','responsable auto']))
                         <div id="table_assurances" class="tab-pane fade contentHome mt-3" role="tabpanel">
                         <!-- Button trigger modal -->
-                        <table id="DataTable_assurances" class="table  table-striped dataTable dt-responsive" style="width: 100%">
+                        <table id="DataTable_assurances" class="table table-bordered table-hover table-dark mt-2 table-striped dataTable dt-responsive" style="width: 100%">
                             <thead>
                             <tr>
                                 <th>Nom assurance</th>
@@ -179,7 +179,7 @@
                     @endif
                     @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin','responsable auto']))
                         <div id="table_carburants" class="tab-pane contentHome fade mt-3" role="tabpanel">
-                        <table id="DataTable_carburants" class="table  table-striped dataTable dt-responsive" style="width: 100%">
+                        <table id="DataTable_carburants" class="table table-bordered table-hover table-dark mt-2 table-striped dataTable dt-responsive" style="width: 100%">
                             <thead>
                             <tr>
                                 <th>Nombre de litre</th>
@@ -203,7 +203,7 @@
                     @endif
                     @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin','secretaire']))
                         <div id="table_locations" class="tab-pane fade contentHome mt-3" role="tabpanel">
-                        <table id="DataTable_location" class="table  table-striped dataTable table-responsive" style="width: 100%">
+                        <table id="DataTable_location" class="table table-bordered table-hover table-dark mt-2 table-striped dataTable table-responsive" style="width: 100%">
                             <thead>
                             <tr>
                                 <th>Date de début</th>
@@ -229,7 +229,7 @@
                     @endif
                     @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin']))
                         <div id="table_fournisseurs" class="tab-pane fade contentHome mt-3" role="tabpanel">
-                        <table id="DataTable_fournisseur" class="table  table-striped dataTable table-responsive" style="width: 100%">
+                        <table id="DataTable_fournisseur" class="table table-bordered table-hover table-dark mt-2 table-striped dataTable table-responsive" style="width: 100%">
                             <thead>
                             <tr>
                                 <th>Nom</th>
@@ -247,7 +247,7 @@
                         </table>
                     </div>
                         <div id="table_users" class="tab-pane fade contentHome mt-3" role="tabpanel">
-                        <table id="DataTable_users" class="table  table-striped dataTable table-responsive" style="width: 100%">
+                        <table id="DataTable_users" class="table table-bordered table-hover table-dark mt-2 table-striped dataTable table-responsive" style="width: 100%">
                             <thead>
                             <tr>
                                 <th>Nom</th>
@@ -269,7 +269,7 @@
                     @endif
                     @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'chef agence']))
                         <div id="table_agences" class="tab-pane fade contentHome mt-3" role="tabpanel">
-                            <table id="DataTable_agence" class="table  table-striped dataTable table-responsive" style="width: 100%">
+                            <table id="DataTable_agence" class="table table-bordered table-hover table-dark mt-2 table-striped dataTable table-responsive" style="width: 100%">
                                 <thead>
                                 <tr>
                                     <th>Ville</th>

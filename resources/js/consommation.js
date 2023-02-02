@@ -46,7 +46,7 @@ function supModal(row){
         });
         $.ajax({
             type:"DELETE",
-            url: '/admin/consommation/delete/'+id_consommation,
+            url: '/consommation/delete/'+id_consommation,
             success:function () {
                 consommation.remove().draw();
                 myModal.hide();

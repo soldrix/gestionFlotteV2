@@ -46,7 +46,7 @@ function supModal(row){
         });
         $.ajax({
             type:"DELETE",
-            url: '/admin/reparation/delete/'+id_reparation,
+            url: '/reparation/delete/'+id_reparation,
             success:function () {
                 reparation.remove().draw();
                 myModal.hide();

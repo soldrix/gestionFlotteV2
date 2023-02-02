@@ -32,13 +32,13 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar sticky-top navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar sticky-top navbar-expand-md navbar-light bg-nav shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/home') }}">
+                <a class="navbar-brand text-white" href="{{ url('/home') }}">
                     Home
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
+                <button class="navbar-toggler border-white text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                    <i class="fa-solid fa-bars fa-1x"></i>
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -46,54 +46,54 @@
                     @if(\Illuminate\Support\Facades\Auth::user())
                             <ul class="navbar-nav me-auto align-items-center">
 
-                                <li class="nav-item dropdown d-none d-lg-flex">
+                                <li class="nav-item dropdown d-none d-md-flex">
                                     @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'fournisseur', 'responsable auto']))
-                                            <a href="#" class="mx-2 nav-link dropdown-toggle text-black" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                            <a href="#" class="mx-2 nav-link dropdown-toggle text-white" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                                 Pages
                                             </a>
                                     @endif
-                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <div class="dropdown-menu dropdown-menu-end bg-s" aria-labelledby="navbarDropdown">
                                         @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'responsable auto']))
-                                            <a href="{{url('/admin/voitures')}}" class="dropdown-item">Voitures</a>
-                                            <a href="{{url('/admin/entretiens')}}" class="dropdown-item">Entretiens</a>
-                                            <a href="{{url('/admin/assurances')}}" class="dropdown-item">Assurances</a>
-                                            <a href="{{url('/admin/reparations')}}" class="dropdown-item">Reparations</a>
-                                            <a href="{{url('/admin/consommations')}}" class="dropdown-item">Consommations</a>
+                                            <a href="{{url('/voitures')}}" class="dropdown-item color-white">Voitures</a>
+                                            <a href="{{url('/entretiens')}}" class="dropdown-item color-white">Entretiens</a>
+                                            <a href="{{url('/assurances')}}" class="dropdown-item color-white">Assurances</a>
+                                            <a href="{{url('/reparations')}}" class="dropdown-item color-white">Reparations</a>
+                                            <a href="{{url('/consommations')}}" class="dropdown-item color-white">Consommations</a>
                                         @endif
                                     </div>
                                 </li>
 
 
                                 @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'fournisseur', 'responsable auto']))
-                                    <a href="{{url('/admin/voitures')}}" class="mb-1 text-dark text-decoration-none d-flex d-lg-none">
+                                    <a href="{{url('/voitures')}}" class="mb-1 text-white nav-link d-flex d-md-none">
                                         Voitures
                                     </a>
                                 @endif
                                 @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'responsable auto']))
-                                    <a href="{{url('/admin/entretiens')}}" class="mb-1 text-dark text-decoration-none d-flex d-lg-none">Entretiens</a>
-                                    <a href="{{url('/admin/assurances')}}" class="mb-1 text-dark text-decoration-none d-flex d-lg-none">Assurances</a>
-                                    <a href="{{url('/admin/reparations')}}" class="mb-1 text-dark text-decoration-none d-flex d-lg-none">Reparations</a>
-                                    <a href="{{url('/admin/consommations')}}" class="mb-1 text-dark text-decoration-none d-flex d-lg-none">Consommations</a>
+                                    <a href="{{url('/entretiens')}}" class="mb-1 text-white nav-link d-flex d-md-none">Entretiens</a>
+                                    <a href="{{url('/assurances')}}" class="mb-1 text-white nav-link d-flex d-md-none">Assurances</a>
+                                    <a href="{{url('/reparations')}}" class="mb-1 text-white nav-link d-flex d-md-none">Reparations</a>
+                                    <a href="{{url('/consommations')}}" class="mb-1 text-white nav-link d-flex d-md-none">Consommations</a>
                                 @endif
 
 
 
                                 @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'chef agence']))
                                     <li class="nav-item">
-                                        <a href="{{url('/admin/agences')}}" class="mx-2 text-dark text-decoration-none">Agences</a>
+                                        <a href="{{url('/agences')}}" class="mx-2 text-white nav-link">Agences</a>
                                     </li>
                                 @endif
                                 @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'secretaire']))
                                     <li class="nav-item">
-                                        <a href="{{url('/admin/locations')}}" class="mx-2 text-dark text-decoration-none">Locations</a>
+                                        <a href="{{url('/locations')}}" class="mx-2 text-white nav-link">Locations</a>
                                     </li>
                                 @endif
                                 @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin']))
                                     <li class="nav-item">
-                                        <a href="{{url('/admin/users')}}" class="mx-2 text-dark text-decoration-none">Utilisateurs</a>
+                                        <a href="{{url('/users')}}" class="mx-2 text-white nav-link">Utilisateurs</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="{{url('/admin/fournisseurs')}}" class="mx-2 text-dark text-decoration-none">Fournisseurs</a>
+                                        <a href="{{url('/fournisseurs')}}" class="mx-2 text-white nav-link">Fournisseurs</a>
                                     </li>
                                 @endif
                             </ul>
@@ -105,26 +105,26 @@
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                    <a class="nav-link text-white" href="{{ route('login') }}">{{ __('Login') }}</a>
                                 </li>
                             @endif
 
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="nav-link text-white" href="{{ route('register') }}">{{ __('Register') }}</a>
                                 </li>
                             @endif
                         @else
-                            <li class="nav-item dropdown">
+                            <li class="nav-item dropdown ">
                                 @if(\Illuminate\Support\Facades\Auth::user())
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle text-center" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle text-center text-white" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ \Illuminate\Support\Facades\Auth::user()->name }}
                                 </a>
                                 @endif
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{url('/profil')}}" role="button">Profil</a>
+                                <div class="dropdown-menu dropdown-menu-end bg-s" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item color-white" href="{{url('/profil')}}" role="button">Profil</a>
 
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                    <a class="dropdown-item color-white" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Déconnexion') }}
@@ -196,10 +196,12 @@
         </div>
         <div class="modal" tabindex="-1" id="delModal" data-bs-backdrop="static">
             <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
+                <div class="modal-content bg-s shadow-block">
                     <div class="modal-header">
                         <h5 class="modal-title">Êtes-vous sûr de vouloir supprimer</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn text-white" data-bs-dismiss="modal" aria-label="Close">
+                            <i class="fa-solid fa-xmark fa-lg"></i>
+                        </button>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>

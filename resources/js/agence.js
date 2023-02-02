@@ -46,7 +46,7 @@ function supModal(row){
         });
         $.ajax({
             type:"DELETE",
-            url: '/admin/agence/delete/'+id_agence,
+            url: '/agence/delete/'+id_agence,
             success:function () {
                 agence.remove().draw();
                 myModal.hide();

@@ -46,7 +46,7 @@ function supModal(row){
         });
         $.ajax({
             type:"DELETE",
-            url: '/admin/fournisseur/delete/'+id_fournisseur,
+            url: '/fournisseur/delete/'+id_fournisseur,
             success:function () {
                 fournisseur.remove().draw();
                 myModal.hide();

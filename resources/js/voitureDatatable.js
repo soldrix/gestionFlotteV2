@@ -84,7 +84,7 @@ function supModal(row){
         });
         $.ajax({
             type:"DELETE",
-            url: '/admin/'+db+'/delete/'+id_voiture,
+            url: '/'+db+'/delete/'+id_voiture,
             success:function () {
                 voiture.remove().draw();
                 myModal.hide();
