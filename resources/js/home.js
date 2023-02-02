@@ -1,8 +1,9 @@
 window.bootstrap = require('bootstrap/dist/js/bootstrap.bundle.js');
 require('datatables.net-bs5');
 require( 'datatables.net-responsive-bs5' );
+//fonction pour initialiser les datatable
 function initDatatable(){
-
+    //options du datatable
     let DataTableOption = {
         "language": {
             "lengthMenu": "Afficher _MENU_ entrées",
@@ -26,9 +27,11 @@ function initDatatable(){
             {  responsivePriority: 3, targets: -1}
         ]
     };
-
+    //vérifie si le tableau est existe
     if($('#DataTable_entretiens').length > 0){
+        //vérifie si le tableau n'est pas un datatable
         if(! $.fn.DataTable.isDataTable( '#DataTable_entretiens' )){
+            //initialise le datatable avec les options
             $('#DataTable_entretiens').DataTable(DataTableOption);
         }
     }
@@ -77,10 +80,12 @@ function initDatatable(){
 
 
 $(document).ready(function () {
+    //pour afficher le premier datatable disponible
     $('.tabsHome').first().addClass('active');
     $('.contentHome').first().addClass('active');
     $('.contentHome').first().addClass('show');
     initDatatable();
+    //évènement au click des tabs pour initialiser le nouveau datatable
     $('.tab-pane').on('click',function () {
         initDatatable()
     })

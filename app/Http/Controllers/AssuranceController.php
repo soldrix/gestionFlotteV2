@@ -20,7 +20,7 @@ class AssuranceController extends Controller
                 'assurances.*',
                 'voitures.immatriculation'
             ]);
-        return view('admin.assurances',['assurances' => $assurances]);
+        return view('assurances',['assurances' => $assurances]);
     }
 
     /**
@@ -30,7 +30,7 @@ class AssuranceController extends Controller
     public function create()
     {
         $voitures = voiture::all();
-        return view('admin.assuranceCreate', ['voitures' => $voitures]);
+        return view('form.assurance.assuranceCreate', ['voitures' => $voitures]);
     }
 
     /**
@@ -75,7 +75,7 @@ class AssuranceController extends Controller
     {
         $assurance = assurance::find($id);
         $voitures = voiture::all();
-        return view('admin.assuranceEdit', ['assurance' => $assurance, 'voitures' => $voitures]);
+        return view('form.assurance.assuranceEdit', ['assurance' => $assurance, 'voitures' => $voitures]);
     }
 
     /**
@@ -99,7 +99,9 @@ class AssuranceController extends Controller
         ]);
         if($validator->fails()) return back()->withErrors($validator->errors())->withInput();
         $assurance = assurance::find($id);
+        //ajout à la modification des champs non vide
         if($request->id_voiture){
+            //pour retirer id_voiture ou changer par un autre
             $assurance->id_voiture = ($request->id_voiture === 'vide') ? null : $request->id_voiture;
         }
         if($request->DateDebut !== null){

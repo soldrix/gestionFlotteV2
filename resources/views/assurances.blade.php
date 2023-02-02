@@ -23,6 +23,7 @@
                 @foreach($assurances as $datas)
                     <tr>
                         <td>{{$datas->nom}}</td>
+                        {{--Modifie le format de la date de debut--}}
                         <td>{{date('d/m/Y', strtotime($datas->DateDebut))}}</td>
                         <td>{{date('d/m/Y', strtotime($datas->DateFin))}}</td>
                         <td>{{$datas->immatriculation ?? 'Aucune voiture'}}</td>

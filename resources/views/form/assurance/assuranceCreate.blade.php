@@ -10,16 +10,15 @@
                     </div>
                 @endif
                 <div class="card bg-p shadow-block">
-                    <div class="card-header bg-s">{{__('Ajouter une consommation')}}</div>
+                    <div class="card-header bg-s">{{__('Ajouter une assurance')}}</div>
                     <div class="card-body">
-                        <form method="POST" action="{{ route('updateConsommation', ['id' => $consommation->id]) }}">
+                        <form method="POST" action="{{ route('createAssurance') }}">
                             @csrf
-                            <input type="hidden" name="_method" value="PUT">
                             <div class="row mb-3">
-                                <label for="litre" class="col-md-4 col-form-label text-md-end">{{ __('Nombre de litre :') }}</label>
+                                <label for="nom" class="col-md-4 col-form-label text-md-end">{{ __('Nom de l\'assurance :') }}</label>
                                 <div class="col-md-6">
-                                    <input id="litre" type="text" placeholder="{{$consommation->litre}}" class="form-control @error('litre') is-invalid @enderror" name="litre" value="{{ old('litre') }}" autocomplete="litre" autofocus>
-                                    @error ('litre')
+                                    <input id="nom" type="text" class="form-control @error('nom') is-invalid @enderror" name="nom" value="{{ old('nom') }}" required autocomplete="nom" autofocus>
+                                    @error ('nom')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -27,10 +26,32 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="montant" class="col-md-4 col-form-label text-md-end">{{ __('Montant total :') }}</label>
+                                <label for="DateDebut" class="col-md-4 col-form-label text-md-end">{{ __('Date de debut :') }}</label>
                                 <div class="col-md-6">
-                                    <input id="montant" type="text" placeholder="{{$consommation->montant}}" class="form-control @error('montant') is-invalid @enderror" name="montant" value="{{ old('montant') }}" autocomplete="montant" autofocus>
-                                    @error ('montant')
+                                    <input id="DateDebut" type="date" class="form-control @error('DateDebut') is-invalid @enderror" name="DateDebut" value="{{ old('DateDebut') }}" required autocomplete="DateDebut" autofocus>
+                                    @error ('DateDebut')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="DateFin" class="col-md-4 col-form-label text-md-end">{{ __('Date de fin :') }}</label>
+                                <div class="col-md-6">
+                                    <input id="DateFin" type="date" class="form-control @error('DateFin') is-invalid @enderror" name="DateFin" value="{{ old('DateFin') }}" required autocomplete="DateFin" autofocus>
+                                    @error ('DateFin')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="frais" class="col-md-4 col-form-label text-md-end">{{ __('Frais total :') }}</label>
+                                <div class="col-md-6">
+                                    <input id="frais" type="text" class="form-control @error('frais') is-invalid @enderror" name="frais" value="{{ old('frais') }}" required autocomplete="frais" autofocus>
+                                    @error ('frais')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -41,14 +62,9 @@
                                 <label for="voitureID" class="col-md-4 col-form-label text-md-end">{{ __('Voiture :') }}</label>
                                 <div class="col-md-6">
                                     <select id="voitureId" class="form-select @error('id_voiture') is-invalid @enderror" aria-label="Default select example" name="id_voiture">
-                                        <option value="">Selecetionner une video</option>
-                                        <option value="vide">Aucune voiture</option>
+                                        <option value="null">Aucune voiture</option>
                                         @foreach($voitures as $datas)
-                                            @if($consommation->id_voiture === $datas->id)
-                                                <option value="{{$datas->id}}" selected>{{$datas->marque.' '.$datas->model.' '.$datas->immatriculation}}</option>
-                                            @else
-                                                <option value="{{$datas->id}}">{{$datas->marque.' '.$datas->model.' '.$datas->immatriculation}}</option>
-                                            @endif
+                                            <option value="{{$datas->id}}">{{$datas->marque.' '.$datas->model.' '.$datas->immatriculation}}</option>
                                         @endforeach
                                     </select>
                                     @error ('id_voiture')
@@ -66,7 +82,7 @@
                                         @endphp
                                     @elseif(url()->previous() !== url()->current())
                                         @php
-                                            session()->put('urlP', '/consommations');
+                                            session()->put('urlP', '/assurances');
                                         @endphp
                                     @endif
                                     <a href="{{str_replace(url('/'), '', session()->get('urlP'))}}" class="btn btn-danger">
@@ -83,4 +99,5 @@
             </div>
         </div>
     </div>
+    <script src="{{asset('js/bootstrap.bundle.js')}}"></script>
 @endsection

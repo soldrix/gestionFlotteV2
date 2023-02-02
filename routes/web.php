@@ -21,38 +21,45 @@ use App\Http\Controllers\UserController;
 |
 */
 Route::get('/',  function (){
+    //retourne l'utilisateur à la page home s'il est connecté
     if(\Illuminate\Support\Facades\Auth::user()){
         return redirect('/home');
     }
     return view('auth/login');
 });
 Route::get('/login', function (){
+    //retourne l'utilisateur à la page home s'il est connecté
     if(\Illuminate\Support\Facades\Auth::user()){
         return redirect('/home');
     }
     return view('auth/login');
 });
 Route::get('/register',  function (){
+    //retourne l'utilisateur à la page home s'il est connecté
     if(\Illuminate\Support\Facades\Auth::user()){
         return redirect('/home');
     }
     return view('auth/register');
 });
 Route::view('/PageNotFound', 'errors.404');
+//page de modification de mot de passe
 Route::view('/UpdatePassword', 'updatePassword');
-
 Route::post('/userPassword/update', [UserController::class, 'updatePassword'])->name('UpdatePassword');
 Route::controller(LoginController::class)->group(function (){
-
     Route::post('login','login')->name('login');
     Route::post('register','register')->name('register');
-    Route::post('logout','logout')->name('logout');
-    Route::get('home','index')->name('home');
-
 });
 
+//route qui nécessite une connexion
 Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
+    Route::controller(LoginController::class)->group(function (){
+        Route::post('logout','logout')->name('logout');
+        Route::get('home','index')->name('home');
+    });
+
+
     Route::view('/profil', 'profil');
+    //route protéger par des roles
         Route::controller(VoitureController::class)->middleware('role:admin,fournisseur,responsable auto')->group(function () {
             Route::get('voitures', 'index');
             Route::get('voiture/create', 'create');
@@ -122,6 +129,10 @@ Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
            Route::get('user/edit/{id}', 'edit');
            Route::post('user/store', 'store')->name('userCreate');
            Route::put('user/update/{id}', 'update')->name('userUpdate');
+        });
+        Route::controller(UserController::class)->group(function (){
+           Route::get('profil/edit/{id}', 'editProfil');
+           Route::put('profil/update/{id}', 'profilUpdate')->name('profilUpdate');
         });
         Route::delete('user/delete/{id}', [\App\Http\Controllers\UserController::class,'destroy']);
 

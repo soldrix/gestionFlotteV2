@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container-fluid py-4">
-        <!-- Button trigger modal -->
+        {{--Bouton pour créer une agence--}}
         <a  class="btn btn-primary float-end" href="/agence/create">
             Ajouter agence
         </a>
@@ -18,6 +18,7 @@
                 </tr>
                 </thead>
                 <tbody>
+                {{--créer une colonne pour chaque agence--}}
                 @foreach($agences as $datas)
                     <tr>
                         <td>{{$datas->ville}}</td>
@@ -25,7 +26,9 @@
                         <td>{{$datas->codePostal}}</td>
                         <td class="tdBtn">
                             <div class="divBtnTab d-flex flex-column flex-md-row">
+                                {{--Bouton pour modifié une agence--}}
                                 <a class="btn btn-info editButton text-white" href="/agence/edit/{{$datas->id}}"><i class="fa-solid fa-pencil "></i></a>
+                                {{--Bouton pour supprimé une agence--}}
                                 <button class="btn btn-danger delButton" data-voiture="{{$datas->id}}"><i class="fa-solid fa-trash-can"></i></button>
                             </div>
                         </td>

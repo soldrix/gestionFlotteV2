@@ -97,7 +97,7 @@
                                         {{__('Retour')}}
                                     </a>
                                     <button type="submit" class="btn btn-primary">
-                                        {{ __('Register') }}
+                                        {{ __('Continuer') }}
                                     </button>
                                 </div>
                             </div>
@@ -107,4 +107,5 @@
             </div>
         </div>
     </div>
+    <script src="{{asset('js/bootstrap.bundle.js')}}"></script>
 @endsection

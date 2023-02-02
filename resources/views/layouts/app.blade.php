@@ -34,9 +34,11 @@
     <div id="app">
         <nav class="navbar sticky-top navbar-expand-md navbar-light bg-nav shadow-sm">
             <div class="container">
+                @if(\Illuminate\Support\Facades\Auth::user())
                 <a class="navbar-brand text-white" href="{{ url('/home') }}">
                     Home
                 </a>
+                @endif
                 <button class="navbar-toggler border-white text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <i class="fa-solid fa-bars fa-1x"></i>
                 </button>
@@ -145,17 +147,6 @@
         </main>
     </div>
         <div class="toast-container position-absolute start-0 p-3 top-0 mt-5" >
-
-            <!-- Then put toasts within -->
-            <div id="saveToast" class="toast" role="alert">
-                <div class="toast-header">
-                    <strong class="me-auto">Enregistrement des données</strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                </div>
-                <div class="toast-body">
-                    Les données ont été enregistrées
-                </div>
-            </div>
             <div id="toastSupp" class="toast" role="alert">
                 <div class="toast-header">
                     <strong class="me-auto">Suppression données</strong>
@@ -163,34 +154,6 @@
                 </div>
                 <div class="toast-body">
                     Les données ont été supprimé
-                </div>
-            </div>
-            <div id="toastLocation" class="toast" role="alert">
-                <div class="toast-header">
-                    <strong class="me-auto">Location véhicule</strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                </div>
-                <div class="toast-body">
-                    La location a été réalié avec succès.
-                </div>
-            </div>
-            <div id="toastAnnul" class="toast" role="alert">
-                <div class="toast-header">
-                    <strong class="me-auto">Annulation de location</strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                </div>
-                <div class="toast-body">
-                    La location a été annuler.
-                </div>
-            </div>
-
-            <div id="toastUpdateProfil" class="toast" role="alert">
-                <div class="toast-header">
-                    <strong class="me-auto">Modification de données </strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                </div>
-                <div class="toast-body">
-                    Les données ont été modifié.
                 </div>
             </div>
         </div>

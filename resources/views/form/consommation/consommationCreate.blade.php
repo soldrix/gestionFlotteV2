@@ -10,16 +10,15 @@
                     </div>
                 @endif
                 <div class="card bg-p shadow-block">
-                    <div class="card-header bg-s">{{__('Modifier un fournisseur')}}</div>
+                    <div class="card-header bg-s">{{__('Ajouter une consommation')}}</div>
                     <div class="card-body">
-                        <form method="POST" action="{{ route('updateFournisseur',['id' => $fournisseur->id]) }}">
+                        <form method="POST" action="{{ route('createConsommation') }}">
                             @csrf
-                            <input type="hidden" name="_method" value="PUT">
                             <div class="row mb-3">
-                                <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Nom du fournissseur :') }}</label>
+                                <label for="litre" class="col-md-4 col-form-label text-md-end">{{ __('Nombre de litre :') }}</label>
                                 <div class="col-md-6">
-                                    <input id="name" type="text" placeholder="{{$fournisseur->name}}" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" autocomplete="name" autofocus>
-                                    @error ('name')
+                                    <input id="litre" type="text" class="form-control @error('litre') is-invalid @enderror" name="litre" value="{{ old('litre') }}" required autocomplete="litre" autofocus>
+                                    @error ('litre')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -27,19 +26,26 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="userId" class="col-md-4 col-form-label text-md-end">{{ __('Utilisateur :') }}</label>
+                                <label for="montant" class="col-md-4 col-form-label text-md-end">{{ __('Montant total :') }}</label>
                                 <div class="col-md-6">
-                                    <select id="userId" class="form-select @error('id_users') is-invalid @enderror" aria-label="Default select example" name="id_users">
-                                        <option value="">Selectionner un fournisseur</option>
-                                        @foreach($users as $datas)
-                                            @if($fournisseur->id_users === $datas->id)
-                                            <option value="{{$datas->id}}" selected>{{$datas->name.' '.$datas->email}}</option>
-                                            @else
-                                            <option value="{{$datas->id}}">{{$datas->name.' '.$datas->email}}</option>
-                                            @endif
+                                    <input id="montant" type="text" class="form-control @error('montant') is-invalid @enderror" name="montant" value="{{ old('montant') }}" required autocomplete="montant" autofocus>
+                                    @error ('montant')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="voitureID" class="col-md-4 col-form-label text-md-end">{{ __('Voiture :') }}</label>
+                                <div class="col-md-6">
+                                    <select id="voitureId" class="form-select @error('id_voiture') is-invalid @enderror" aria-label="Default select example" name="id_voiture">
+                                        <option value="null">Aucune voiture</option>
+                                        @foreach($voitures as $datas)
+                                            <option value="{{$datas->id}}">{{$datas->marque.' '.$datas->model.' '.$datas->immatriculation}}</option>
                                         @endforeach
                                     </select>
-                                    @error ('id_users')
+                                    @error ('id_voiture')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -54,7 +60,7 @@
                                         @endphp
                                     @elseif(url()->previous() !== url()->current())
                                         @php
-                                            session()->put('urlP', '/fournisseurs');
+                                            session()->put('urlP', '/consommations');
                                         @endphp
                                     @endif
                                     <a href="{{str_replace(url('/'), '', session()->get('urlP'))}}" class="btn btn-danger">
@@ -71,4 +77,5 @@
             </div>
         </div>
     </div>
+    <script src="{{asset('js/bootstrap.bundle.js')}}"></script>
 @endsection

@@ -20,7 +20,7 @@ class ReparationController extends Controller
                 'reparations.*',
                 'voitures.immatriculation'
             ]);
-        return view('admin.reparations',['reparations' => $reparations]);
+        return view('reparations',['reparations' => $reparations]);
     }
 
     /**
@@ -30,7 +30,7 @@ class ReparationController extends Controller
     public function create()
     {
         $voitures = voiture::all();
-        return view('admin.reparationCreate',["voitures" => $voitures]);
+        return view('form.reparation.reparationCreate',["voitures" => $voitures]);
     }
 
     /**
@@ -75,7 +75,7 @@ class ReparationController extends Controller
     {
         $reparation = reparation::find($id);
         $voitures = voiture::all();
-        return view('admin.reparationEdit',['reparation' => $reparation, 'voitures' => $voitures]);
+        return view('form.reparation.reparationEdit',['reparation' => $reparation, 'voitures' => $voitures]);
     }
 
     /**

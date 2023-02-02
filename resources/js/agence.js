@@ -3,6 +3,7 @@ require( 'datatables.net-responsive-bs5' );
 window.bootstrap = require('bootstrap/dist/js/bootstrap.bundle.js');
 let table;
 $(document).ready(function () {
+    //initialise le datatable
     table  = $('#DataTable_agence').DataTable({
         "language": {
             "lengthMenu": "Afficher _MENU_ entrées",
@@ -26,14 +27,16 @@ $(document).ready(function () {
             {  responsivePriority: 3, targets: -1}
         ]
     });
+    //ajout évènement d'ouverture de la modal de suppression
     $('.delButton').on('click',function () {
         supModal(this);
     })
 })
-
+//modal de confirmation de suppression
 var myModal = new bootstrap.Modal(document.getElementById('delModal'));
 var delToastEl = document.getElementById('toastSupp');
 var delToast = bootstrap.Toast.getOrCreateInstance(delToastEl);
+//function pour faire un appel ajax pour supprimer une agence
 function supModal(row){
     let id_agence = $(row).attr('data-voiture');
     let agence = table.row($(row).parent().parent().parent());

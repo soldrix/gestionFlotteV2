@@ -10,14 +10,15 @@
                     </div>
                 @endif
                 <div class="card bg-p shadow-block">
-                    <div class="card-header bg-s">{{__('Ajouter une agence')}}</div>
+                    <div class="card-header bg-s">{{__('Modifier l\'agence')}}</div>
                     <div class="card-body">
-                        <form method="POST" action="{{ route('createAgence') }}">
+                        <form method="post" action="{{ route('updateAgence',['id' => $agence->id]) }}">
                             @csrf
+                            <input type="hidden" name="_method" value="PUT">
                             <div class="row mb-3">
                                 <label for="ville" class="col-md-4 col-form-label text-md-end">{{ __('Ville :') }}</label>
                                 <div class="col-md-6">
-                                    <input id="ville" type="text" class="form-control @error('ville') is-invalid @enderror" name="ville" value="{{ old('ville') }}" required autocomplete="ville" autofocus>
+                                    <input id="ville" type="text" placeholder="{{$agence->ville}}" class="form-control @error('ville') is-invalid @enderror" name="ville" value="{{ old('ville') }}" autocomplete="ville" autofocus>
                                     @error ('ville')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -28,7 +29,7 @@
                             <div class="row mb-3">
                                 <label for="rue" class="col-md-4 col-form-label text-md-end">{{ __('Rue :') }}</label>
                                 <div class="col-md-6">
-                                    <input id="rue" type="text" class="form-control @error('rue') is-invalid @enderror" name="rue" value="{{ old('rue') }}" required autocomplete="rue" autofocus>
+                                    <input id="rue" type="text" placeholder="{{$agence->rue}}" class="form-control @error('rue') is-invalid @enderror" name="rue" value="{{ old('rue') }}" autocomplete="rue" autofocus>
                                     @error ('rue')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -39,7 +40,7 @@
                             <div class="row mb-3">
                                 <label for="codePostal" class="col-md-4 col-form-label text-md-end">{{ __('Code postal :') }}</label>
                                 <div class="col-md-6">
-                                    <input id="codePostal" type="text" class="form-control @error('codePostal') is-invalid @enderror" name="codePostal" value="{{ old('codePostal') }}" required autocomplete="codePostal" autofocus>
+                                    <input id="codePostal" type="text" placeholder="{{$agence->codePostal}}" class="form-control @error('codePostal') is-invalid @enderror" name="codePostal" value="{{ old('codePostal') }}" autocomplete="codePostal" autofocus>
                                     @error ('codePostal')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -72,4 +73,5 @@
             </div>
         </div>
     </div>
+    <script src="{{asset('js/bootstrap.bundle.js')}}"></script>
 @endsection

@@ -30,7 +30,7 @@ class LocationController extends Controller
                 'users.email'
             ])
         ;
-        return view('admin.locations',["locations" => $locations]);
+        return view('locations',["locations" => $locations]);
     }
     /**
      * Show the form for creating a new resource.
@@ -40,7 +40,7 @@ class LocationController extends Controller
     {
         $voitures =  voiture::all();
         $users = User::all();
-        return view('admin.locationCreate',['voitures' => $voitures, 'users' => $users]);
+        return view('form.location.locationCreate',['voitures' => $voitures, 'users' => $users]);
     }
 
     /**
@@ -78,7 +78,7 @@ class LocationController extends Controller
         $location = location::find($id);
         $voitures = voiture::all();
         $users = User::all();
-        return view('admin.locationEdit', ['location' => $location, 'voitures' => $voitures, 'users' => $users]);
+        return view('form.location.locationEdit', ['location' => $location, 'voitures' => $voitures, 'users' => $users]);
     }
 
     /**

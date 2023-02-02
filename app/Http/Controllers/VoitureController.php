@@ -27,19 +27,10 @@ class VoitureController extends Controller
             foreach ($fournisseur as $datas){
                 $voitures = voiture::all()->where('id_fournisseur', $datas->id);
             }
-            return view('admin.voitures',["voitures"=>$voitures]);
+            return view('voitures',["voitures"=>$voitures]);
         }
         $voitures = voiture::all();
-        return view('admin.voitures',["voitures"=>$voitures]);
-    }
-    /**
-     * Display a listing of the resource.
-     *
-     */
-    public function adminIndex()
-    {
-        $voitures = voiture::all();
-        return view('admin.voitures',["voitures"=>$voitures]);
+        return view('voitures',["voitures"=>$voitures]);
     }
     /**
      * Show the form for creating a new resource.
@@ -52,7 +43,7 @@ class VoitureController extends Controller
                 'fournisseurs.*',
                 'users.email'
             ]);
-        return view('admin.voitureCreate',['agences'=>$agences, 'fournisseurs' => $fournisseurs]);
+        return view('form.voiture.voitureCreate',['agences'=>$agences, 'fournisseurs' => $fournisseurs]);
     }
 
     /**
@@ -78,6 +69,7 @@ class VoitureController extends Controller
             "statut" => ["required", "integer", "max_digits:1"]
         ]);
         if($validator->fails()) return back()->withErrors($validator->errors())->withInput();
+        //ajout l'image dans le storage
         $path = Storage::putFile('image', $request->image);
         voiture::create([
             "image" => $path,
@@ -131,7 +123,7 @@ class VoitureController extends Controller
         $assurances = assurance::all()->where('id_voiture', $id);
         $reparations = reparation::all()->where('id_voiture' ,$id);
         $consommations =consommation::all()->where('id_voiture', $id);
-        return view('admin.voiture',
+        return view('voiture',
             [
                 'voitureData' => $voiture,
                 'nbEnt' => count($entretiens),
@@ -160,7 +152,7 @@ class VoitureController extends Controller
                 'fournisseurs.*',
                 'users.email'
             ]);
-        return view("admin.voitureEdit",['voiture' => $voiture, 'agences' => $agences, 'fournisseurs' => $fournisseurs]);
+        return view("form.voiture.voitureEdit",['voiture' => $voiture, 'agences' => $agences, 'fournisseurs' => $fournisseurs]);
     }
 
     /**
@@ -222,8 +214,11 @@ class VoitureController extends Controller
             $voiture->immatriculation = $request->immatriculation;
         }
         if ($request->image !== null){
+            //si l'image supprime l'ancienne image du storage
             Storage::delete($voiture->image);
+            //ajout la nouvelle image dans le storage
             $path =  Storage::putFile('image', $request->image);
+            //ajoute le chemin de l'image dans la modification
             $voiture->image = $path;
         }
 
@@ -239,11 +234,13 @@ class VoitureController extends Controller
      */
     public function destroy($id):void
     {
+        //vérifie le droit de l'utilisateur
         if(Auth::user()->hasRole(['admin', 'responsable auto'])){
             $voiture = voiture::find($id);
             Storage::delete($voiture->image);
             $voiture->delete();
         }
+        // si l'utilisateur est un fournisseur à la possibilité de supprimer seulement ces voitures
         if(Auth::user()->hasRole('fournisseur')){
             $fournisseur = fournisseur::where('id_users' , '=' , Auth::user()->id);
             $voiture = voiture::find($id);

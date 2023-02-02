@@ -10,16 +10,16 @@
                     </div>
                 @endif
                 <div class="card bg-p shadow-block">
-                    <div class="card-header bg-s">{{__('Modifier l\'agence')}}</div>
+                    <div class="card-header bg-s">{{__('Modifier un fournisseur')}}</div>
                     <div class="card-body">
-                        <form method="post" action="{{ route('updateAgence',['id' => $agence->id]) }}">
+                        <form method="POST" action="{{ route('updateFournisseur',['id' => $fournisseur->id]) }}">
                             @csrf
                             <input type="hidden" name="_method" value="PUT">
                             <div class="row mb-3">
-                                <label for="ville" class="col-md-4 col-form-label text-md-end">{{ __('Ville :') }}</label>
+                                <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Nom du fournissseur :') }}</label>
                                 <div class="col-md-6">
-                                    <input id="ville" type="text" placeholder="{{$agence->ville}}" class="form-control @error('ville') is-invalid @enderror" name="ville" value="{{ old('ville') }}" autocomplete="ville" autofocus>
-                                    @error ('ville')
+                                    <input id="name" type="text" placeholder="{{$fournisseur->name}}" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" autocomplete="name" autofocus>
+                                    @error ('name')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -27,21 +27,19 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="rue" class="col-md-4 col-form-label text-md-end">{{ __('Rue :') }}</label>
+                                <label for="userId" class="col-md-4 col-form-label text-md-end">{{ __('Utilisateur :') }}</label>
                                 <div class="col-md-6">
-                                    <input id="rue" type="text" placeholder="{{$agence->rue}}" class="form-control @error('rue') is-invalid @enderror" name="rue" value="{{ old('rue') }}" autocomplete="rue" autofocus>
-                                    @error ('rue')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <label for="codePostal" class="col-md-4 col-form-label text-md-end">{{ __('Code postal :') }}</label>
-                                <div class="col-md-6">
-                                    <input id="codePostal" type="text" placeholder="{{$agence->codePostal}}" class="form-control @error('codePostal') is-invalid @enderror" name="codePostal" value="{{ old('codePostal') }}" autocomplete="codePostal" autofocus>
-                                    @error ('codePostal')
+                                    <select id="userId" class="form-select @error('id_users') is-invalid @enderror" aria-label="Default select example" name="id_users">
+                                        <option value="">Selectionner un fournisseur</option>
+                                        @foreach($users as $datas)
+                                            @if($fournisseur->id_users === $datas->id)
+                                            <option value="{{$datas->id}}" selected>{{$datas->name.' '.$datas->email}}</option>
+                                            @else
+                                            <option value="{{$datas->id}}">{{$datas->name.' '.$datas->email}}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                    @error ('id_users')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -56,7 +54,7 @@
                                         @endphp
                                     @elseif(url()->previous() !== url()->current())
                                         @php
-                                            session()->put('urlP', '/agences');
+                                            session()->put('urlP', '/fournisseurs');
                                         @endphp
                                     @endif
                                     <a href="{{str_replace(url('/'), '', session()->get('urlP'))}}" class="btn btn-danger">
@@ -73,4 +71,5 @@
             </div>
         </div>
     </div>
+    <script src="{{asset('js/bootstrap.bundle.js')}}"></script>
 @endsection

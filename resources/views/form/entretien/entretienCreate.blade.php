@@ -10,16 +10,15 @@
                     </div>
                 @endif
                 <div class="card bg-p shadow-block">
-                    <div class="card-header bg-s">{{__('Modifier la location')}}</div>
+                    <div class="card-header bg-s">{{__('Ajouter un entretien')}}</div>
                     <div class="card-body">
-                        <form method="POST" action="{{ route('updateLocation',['id' => $location->id]) }}">
+                        <form method="POST" action="{{ route('createEntretien') }}">
                             @csrf
-                            <input type="hidden" name="_method" value="PUT">
                             <div class="row mb-3">
-                                <label for="DateDebut" class="col-md-4 col-form-label text-md-end">{{ __('Date de debut : ( '.date('d/m/Y', strtotime($location->DateDebut)).' )') }}</label>
+                                <label for="type" class="col-md-4 col-form-label text-md-end">{{ __('Type d\'entretien :') }}</label>
                                 <div class="col-md-6">
-                                    <input id="DateDebut" type="date" class="form-control @error('DateDebut') is-invalid @enderror" name="DateDebut" value="{{ old('DateDebut') }}"  autocomplete="DateDebut" autofocus>
-                                    @error ('DateDebut')
+                                    <input id="type" type="text" class="form-control @error('type') is-invalid @enderror" name="type" value="{{ old('type') }}" required autocomplete="type" autofocus>
+                                    @error ('type')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -27,22 +26,31 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="DateFin" class="col-md-4 col-form-label text-md-end">{{ __('Date de fin : ( '.date('d/m/Y', strtotime($location->DateFin)).' )') }}</label>
+                                <label for="nom" class="col-md-4 col-form-label text-md-end">{{ __('Nom du garage :') }}</label>
                                 <div class="col-md-6">
-                                    <input id="DateFin" type="date" class="form-control @error('DateFin') is-invalid @enderror" name="DateFin" value="{{ old('DateFin') }}"  autocomplete="DateFin" autofocus>
-                                    @error ('DateFin')
+                                    <input id="rue" type="text" class="form-control @error('nom') is-invalid @enderror" name="nom" value="{{ old('nom') }}" required autocomplete="nom" autofocus>
+                                    @error ('nom')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror
                                 </div>
                             </div>
-
-
+                            <div class="row mb-3">
+                                <label for="date" class="col-md-4 col-form-label text-md-end">{{ __('Date de l\'entretien :') }}</label>
+                                <div class="col-md-6">
+                                    <input id="date" type="date" class="form-control @error('date') is-invalid @enderror" name="date" value="{{ old('date') }}" required autocomplete="date" autofocus>
+                                    @error ('date')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
                             <div class="row mb-3">
                                 <label for="montant" class="col-md-4 col-form-label text-md-end">{{ __('Montant total :') }}</label>
                                 <div class="col-md-6">
-                                    <input id="montant" type="text" placeholder="{{$location->montant}}" class="form-control @error('montant') is-invalid @enderror" name="montant" value="{{ old('montant') }}"  autocomplete="montant" autofocus>
+                                    <input id="montant" type="text" class="form-control @error('montant') is-invalid @enderror" name="montant" value="{{ old('montant') }}" required autocomplete="montant" autofocus>
                                     @error ('montant')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -51,17 +59,12 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="voitureID" class="col-md-4 col-form-label text-md-end">{{ __('Voitures :') }}</label>
+                                <label for="voitureID" class="col-md-4 col-form-label text-md-end">{{ __('Voiture :') }}</label>
                                 <div class="col-md-6">
                                     <select id="voitureId" class="form-select @error('id_voiture') is-invalid @enderror" aria-label="Default select example" name="id_voiture">
-                                        <option value="">Selectioner une voiture</option>
-                                        <option value="vide">Aucune voiture</option>
+                                        <option value="null">Aucune voiture</option>
                                         @foreach($voitures as $datas)
-                                            @if($datas->id === $location->id_voiture)
-                                                <option value="{{$datas->id}}" selected>{{$datas->marque.' '.$datas->model.' '.$datas->immatriculation}}</option>
-                                            @else
-                                                <option value="{{$datas->id}}">{{$datas->marque.' '.$datas->model.' '.$datas->immatriculation}}</option>
-                                            @endif
+                                            <option value="{{$datas->id}}">{{$datas->marque.' '.$datas->model.' '.$datas->immatriculation}}</option>
                                         @endforeach
                                     </select>
                                     @error ('id_voiture')
@@ -71,22 +74,11 @@
                                     @enderror
                                 </div>
                             </div>
-
                             <div class="row mb-3">
-                                <label for="userID" class="col-md-4 col-form-label text-md-end">{{ __('utilisateurs :') }}</label>
+                                <label for="note" class="col-md-4 col-form-label text-md-end">{{ __('Note supplémentaire :') }}</label>
                                 <div class="col-md-6">
-                                    <select id="userId" class="form-select @error('id_users') is-invalid @enderror" aria-label="Default select example" name="id_users">
-                                        <option value="" selected>Selectioner un utilisateur</option>
-                                        <option value="vide">Aucun utilisateur</option>
-                                        @foreach($users as $datas)
-                                            @if($datas->id === $location->id_users)
-                                                <option value="{{$datas->id}}">{{$datas->name.' '.$datas->email}}</option>
-                                            @else
-                                                <option value="{{$datas->id}}">{{$datas->name.' '.$datas->email}}</option>
-                                            @endif
-                                        @endforeach
-                                    </select>
-                                    @error ('id_users')
+                                    <textarea id="note" type="text" class="form-control @error('note') is-invalid @enderror" name="note" value="{{ old('montant') }}"  autocomplete="montant" autofocus ></textarea>
+                                    @error ('note')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -101,7 +93,7 @@
                                         @endphp
                                     @elseif(url()->previous() !== url()->current())
                                         @php
-                                            session()->put('urlP', '/locations');
+                                            session()->put('urlP', '/entretiens');
                                         @endphp
                                     @endif
                                     <a href="{{str_replace(url('/'), '', session()->get('urlP'))}}" class="btn btn-danger">
@@ -118,4 +110,5 @@
             </div>
         </div>
     </div>
+    <script src="{{asset('js/bootstrap.bundle.js')}}"></script>
 @endsection

@@ -3,6 +3,7 @@ lancer les commandes suivantes:
 npm i
 composer i
 npm run dev
+npx mix
 php artisan key:generate
 ```
 modifier le fichier .env.exemple en .env <br> 
