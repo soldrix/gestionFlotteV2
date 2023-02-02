@@ -40,18 +40,19 @@ Route::get('/register',  function (){
 });
 Route::view('/PageNotFound', 'errors.404');
 Route::view('/UpdatePassword', 'updatePassword');
-
 Route::post('/userPassword/update', [UserController::class, 'updatePassword'])->name('UpdatePassword');
 Route::controller(LoginController::class)->group(function (){
-
     Route::post('login','login')->name('login');
     Route::post('register','register')->name('register');
-    Route::post('logout','logout')->name('logout');
-    Route::get('home','index')->name('home');
-
 });
 
 Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
+    Route::controller(LoginController::class)->group(function (){
+        Route::post('logout','logout')->name('logout');
+        Route::get('home','index')->name('home');
+    });
+
+
     Route::view('/profil', 'profil');
         Route::controller(VoitureController::class)->middleware('role:admin,fournisseur,responsable auto')->group(function () {
             Route::get('voitures', 'index');

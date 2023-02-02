@@ -15,7 +15,7 @@ class AgenceController extends Controller
     public function index()
     {
         $agences = agence::all();
-        return view('admin.agences',['agences' => $agences]);
+        return view('agences',['agences' => $agences]);
     }
 
     /**
@@ -24,7 +24,7 @@ class AgenceController extends Controller
      */
     public function create()
     {
-        return view('admin.agenceCreate');
+        return view('form.agence.agenceCreate');
     }
 
     /**
@@ -59,7 +59,7 @@ class AgenceController extends Controller
     public function edit($id)
     {
         $agence = agence::find($id);
-        return view('admin.agenceEdit',['agence' => $agence]);
+        return view('form.agence.agenceEdit',['agence' => $agence]);
     }
 
     /**

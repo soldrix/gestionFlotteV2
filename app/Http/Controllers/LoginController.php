@@ -88,9 +88,6 @@ class LoginController extends Controller
         $token = Auth()->user()->createToken('auth_token')->plainTextToken;
         $role = Auth::user()->type;
         Auth()->user()->assignRole($role);
-        if(Auth::user()->type === 'admin'){
-            return redirect('/admin/voitures');
-        }
         return redirect('/home')->with('token','Bearer '.$token);
     }
 

@@ -18,7 +18,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        return view('admin.users', ['users' => $users]);
+        return view('users', ['users' => $users]);
     }
 
     /**
@@ -28,7 +28,7 @@ class UserController extends Controller
     public function create()
     {
         $roles = roles::all();
-        return view('admin.userCreate',['roles' => $roles]);
+        return view('form.utilisateur.userCreate',['roles' => $roles]);
     }
 
     /**
@@ -87,7 +87,7 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $roles = roles::all();
-        return view('admin.userEdit',['user' => $user, 'roles' => $roles]);
+        return view('form.utilisateur.userEdit',['user' => $user, 'roles' => $roles]);
     }
 
     /**

@@ -20,7 +20,7 @@ class EntretienController extends Controller
                 'entretiens.*',
                 'voitures.immatriculation'
             ]);
-        return view('admin.entretiens',['entretiens' => $entretiens]);
+        return view('entretiens',['entretiens' => $entretiens]);
     }
 
     /**
@@ -30,7 +30,7 @@ class EntretienController extends Controller
     public function create()
     {
         $voitures = voiture::all();
-        return view('admin.entretienCreate',["voitures" => $voitures]);
+        return view('form.entretien.entretienCreate',["voitures" => $voitures]);
     }
 
     /**
@@ -75,7 +75,7 @@ class EntretienController extends Controller
     {
         $entretien = entretien::find($id);
         $voitures = voiture::all();
-        return view('admin.entretienEdit',['entretien' => $entretien, 'voitures' => $voitures]);
+        return view('form.entretien.entretienEdit',['entretien' => $entretien, 'voitures' => $voitures]);
     }
 
     /**

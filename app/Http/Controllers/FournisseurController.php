@@ -21,7 +21,7 @@ class FournisseurController extends Controller
                 'fournisseurs.*',
                 'users.email'
             ]);
-        return view('admin.fournisseurs', ['fournisseurs' => $fournisseurs]);
+        return view('fournisseurs', ['fournisseurs' => $fournisseurs]);
     }
 
     /**
@@ -32,7 +32,7 @@ class FournisseurController extends Controller
     public function create()
     {
         $users = User::all();
-        return view('admin.fournisseurCreate', ['users' => $users]);
+        return view('form.fournisseur.fournisseurCreate', ['users' => $users]);
     }
 
     /**
@@ -66,7 +66,7 @@ class FournisseurController extends Controller
     {
         $fournisseur = fournisseur::find($id);
         $users = User::all();
-        return view('admin.fournisseurEdit',['fournisseur' => $fournisseur, 'users' => $users]);
+        return view('form.fournisseur.fournisseurEdit',['fournisseur' => $fournisseur, 'users' => $users]);
     }
 
     /**

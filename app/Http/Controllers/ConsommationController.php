@@ -20,7 +20,7 @@ class ConsommationController extends Controller
                 'consommations.*',
                 'voitures.immatriculation'
             ]);
-        return view('admin.consommations', ['consommations' => $consommations]);
+        return view('consommations', ['consommations' => $consommations]);
     }
 
     /**
@@ -30,7 +30,7 @@ class ConsommationController extends Controller
     public function create()
     {
         $voitures = voiture::all();
-        return view('admin.consommationCreate', ['voitures' => $voitures]);
+        return view('form.consommation.consommationCreate', ['voitures' => $voitures]);
     }
 
     /**
@@ -65,7 +65,7 @@ class ConsommationController extends Controller
     {
         $consommation = consommation::find($id);
         $voitures = voiture::all();
-        return view('admin.consommationEdit', ['consommation' => $consommation, 'voitures' => $voitures]);
+        return view('form.consommation.consommationEdit', ['consommation' => $consommation, 'voitures' => $voitures]);
     }
 
     /**

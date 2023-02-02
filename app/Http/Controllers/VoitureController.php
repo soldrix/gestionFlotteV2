@@ -27,19 +27,10 @@ class VoitureController extends Controller
             foreach ($fournisseur as $datas){
                 $voitures = voiture::all()->where('id_fournisseur', $datas->id);
             }
-            return view('admin.voitures',["voitures"=>$voitures]);
+            return view('voitures',["voitures"=>$voitures]);
         }
         $voitures = voiture::all();
-        return view('admin.voitures',["voitures"=>$voitures]);
-    }
-    /**
-     * Display a listing of the resource.
-     *
-     */
-    public function adminIndex()
-    {
-        $voitures = voiture::all();
-        return view('admin.voitures',["voitures"=>$voitures]);
+        return view('voitures',["voitures"=>$voitures]);
     }
     /**
      * Show the form for creating a new resource.
@@ -52,7 +43,7 @@ class VoitureController extends Controller
                 'fournisseurs.*',
                 'users.email'
             ]);
-        return view('admin.voitureCreate',['agences'=>$agences, 'fournisseurs' => $fournisseurs]);
+        return view('form.voiture.voitureCreate',['agences'=>$agences, 'fournisseurs' => $fournisseurs]);
     }
 
     /**
@@ -131,7 +122,7 @@ class VoitureController extends Controller
         $assurances = assurance::all()->where('id_voiture', $id);
         $reparations = reparation::all()->where('id_voiture' ,$id);
         $consommations =consommation::all()->where('id_voiture', $id);
-        return view('admin.voiture',
+        return view('voiture',
             [
                 'voitureData' => $voiture,
                 'nbEnt' => count($entretiens),
@@ -160,7 +151,7 @@ class VoitureController extends Controller
                 'fournisseurs.*',
                 'users.email'
             ]);
-        return view("admin.voitureEdit",['voiture' => $voiture, 'agences' => $agences, 'fournisseurs' => $fournisseurs]);
+        return view("form.voiture.voitureEdit",['voiture' => $voiture, 'agences' => $agences, 'fournisseurs' => $fournisseurs]);
     }
 
     /**
