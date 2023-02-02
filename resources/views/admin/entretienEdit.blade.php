@@ -9,8 +9,8 @@
                         {{ session()->get('message') }}
                     </div>
                 @endif
-                <div class="card">
-                    <div class="card-header">{{__('Modifier l\'entretien')}}</div>
+                <div class="card bg-p shadow-block">
+                    <div class="card-header bg-s">{{__('Modifier l\'entretien')}}</div>
                     <div class="card-body">
                         <form method="POST" action="{{ route('updateEntretien',['id' => $entretien->id]) }}">
                             @csrf
@@ -99,10 +99,10 @@
                                         @endphp
                                     @elseif(url()->previous() !== url()->current())
                                         @php
-                                            session()->put('urlP', '/admin/entretiens/');
+                                            session()->put('urlP', '/entretiens');
                                         @endphp
                                     @endif
-                                    <a href="{{str_replace(url('/'), '', session()->get('urlP'))}}" class="btn btn-outline-danger">
+                                    <a href="{{str_replace(url('/'), '', session()->get('urlP'))}}" class="btn btn-danger">
                                         {{__('Retour')}}
                                     </a>
                                     <button type="submit" class="btn btn-primary">

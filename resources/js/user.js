@@ -46,7 +46,7 @@ function supModal(row){
         });
         $.ajax({
             type:"DELETE",
-            url: '/admin/user/delete/'+id_user,
+            url: '/user/delete/'+id_user,
             success:function () {
                 user.remove().draw();
                 myModal.hide();

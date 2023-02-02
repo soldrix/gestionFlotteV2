@@ -3,13 +3,13 @@
 @section('content')
     <div class="container-fluid py-4">
         <!-- Button trigger modal -->
-        <a href="/admin/assurance/create" class="btn btn-primary float-end">
+        <a href="/assurance/create" class="btn btn-primary float-end">
             Ajouter une assurance
         </a>
         <div class="container">
             <h2>Page assurances</h2>
-            <table id="DataTable_assurances" class="table table-striped dataTable table-responsive" style="width: 100%">
-                <thead>
+            <table id="DataTable_assurances" class="table table-dark mt-2 table-hover table-striped dataTable table-responsive" style="width: 100%">
+                <thead class="border-1 border-bottom border-white">
                 <tr>
                     <th>Nom assurance</th>
                     <th>Debut assurance</th>
@@ -29,7 +29,7 @@
                         <td>{{$datas->frais.'€'}}</td>
                         <td class="tdBtn">
                             <div class="divBtnTab d-flex flex-column flex-md-row">
-                                <a class="btn btn-info editButton text-white" href="/admin/assurance/edit/{{$datas->id}}"><i class="fa-solid fa-pencil "></i></a>
+                                <a class="btn btn-info editButton text-white" href="/assurance/edit/{{$datas->id}}"><i class="fa-solid fa-pencil "></i></a>
                                 <button class="btn btn-danger delButton" data-voiture="{{$datas->id}}"><i class="fa-solid fa-trash-can"></i></button>
                             </div>
                         </td>

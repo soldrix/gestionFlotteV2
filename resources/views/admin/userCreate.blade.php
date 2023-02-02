@@ -9,8 +9,8 @@
                         {{ session()->get('message') }}
                     </div>
                 @endif
-                <div class="card">
-                    <div class="card-header">{{__('Ajouter un utilisateur')}}</div>
+                <div class="card bg-p shadow-block">
+                    <div class="card-header bg-s">{{__('Ajouter un utilisateur')}}</div>
                     <div class="card-body">
                         <form method="POST" action="{{ route('userCreate') }}">
                             @csrf
@@ -43,7 +43,6 @@
                                 </div>
                             </div>
 
-
                             <div class="row mb-3">
                                 <label for="type" class="col-md-4 col-form-label text-md-end">{{ __('Type d\'utilisateur') }}</label>
 
@@ -60,9 +59,6 @@
                                     @enderror
                                 </div>
                             </div>
-
-
-
 
                             <div class="row mb-3">
                                 <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
@@ -108,10 +104,10 @@
                                         @endphp
                                     @elseif(url()->previous() !== url()->current())
                                         @php
-                                            session()->put('urlP', '/admin/users/');
+                                            session()->put('urlP', '/users');
                                         @endphp
                                     @endif
-                                    <a href="{{str_replace(url('/'), '', session()->get('urlP'))}}" class="btn btn-outline-danger">
+                                    <a href="{{str_replace(url('/'), '', session()->get('urlP'))}}" class="btn btn-danger">
                                         {{__('Retour')}}
                                     </a>
                                     <button type="submit" class="btn btn-primary">

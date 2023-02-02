@@ -1,6 +1,10 @@
 @import '~datatables.net-bs5/css/dataTables.bootstrap5.css';
 @import '~datatables.net-responsive-bs5/css/responsive.bootstrap5.css';
 @import '~flatpickr/dist/flatpickr.css';
+:root{
+ --bg-primary: #11151c;
+ --bg-secondary: #19212e;
+}
 
 .minScreen{
     height: calc(100vh - 60px);
@@ -175,4 +179,43 @@ td{
 }
 span.dtr-data{
     word-wrap: anywhere;
+}
+body{
+    background-color: var(--bg-primary);
+    color: white;
+}
+.bg-nav{
+    background-color: var(--bg-secondary);
+}
+
+.bg-p{
+    background-color: var(--bg-primary);
+}
+.bg-s{
+    background-color: var(--bg-secondary);
+}
+.shadow-block{
+    box-shadow: 0 0 4px 1px #ffffff75;
+}
+.color-white{
+    color: white;
+}
+.tabsHome{
+    color: white !important;
+}
+.tabsHome.active{
+    color: black !important;
+}
+.tabsHome i{
+    color: white !important;
+}
+.tabsHome.active i{
+    color: black !important;
+}
+th{
+    text-align: center;
+}
+td{
+    word-wrap: anywhere;
+    text-align: center;
 }

@@ -46,7 +46,7 @@ function supModal(row){
         });
         $.ajax({
             type:"DELETE",
-            url: '/admin/assurance/delete/'+id_assurance,
+            url: '/assurance/delete/'+id_assurance,
             success:function () {
                 assurance.remove().draw();
                 myModal.hide();

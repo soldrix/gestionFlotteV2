@@ -46,7 +46,7 @@ function supModal(row){
         });
         $.ajax({
             type:"DELETE",
-            url: '/admin/entretien/delete/'+id_entretien,
+            url: '/entretien/delete/'+id_entretien,
             success:function () {
                 entretien.remove().draw();
                 myModal.hide();
