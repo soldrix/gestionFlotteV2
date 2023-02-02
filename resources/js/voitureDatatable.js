@@ -70,8 +70,9 @@ var delToastEl = document.getElementById('toastSupp');
 var delToast = bootstrap.Toast.getOrCreateInstance(delToastEl);
 function supModal(row){
     let id_voiture = $(row).attr('data-voiture');
+    //récupère le nom de table de la colonne à supprimé
     let db = $(row).attr('data-db');
-
+    //sélectionne la colonne à supprimer par rapport à la table
     let voiture = (db === 'assurance') ? tableAssu.row($(row).parent().parent().parent()) : (db === 'entretien') ? tableEnt.row($(row).parent().parent().parent()) :
         (db === 'reparation') ? tableRep.row($(row).parent().parent().parent()) :
             (db === 'consommation') ? tableCons.row($(row).parent().parent().parent()): '';
@@ -84,8 +85,10 @@ function supModal(row){
         });
         $.ajax({
             type:"DELETE",
+            //url de suppression par rapport à la table
             url: '/'+db+'/delete/'+id_voiture,
             success:function () {
+                //supprime la colonne du datatable
                 voiture.remove().draw();
                 myModal.hide();
                 delToast.show();

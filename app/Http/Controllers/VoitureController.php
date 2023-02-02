@@ -69,6 +69,7 @@ class VoitureController extends Controller
             "statut" => ["required", "integer", "max_digits:1"]
         ]);
         if($validator->fails()) return back()->withErrors($validator->errors())->withInput();
+        //ajout l'image dans le storage
         $path = Storage::putFile('image', $request->image);
         voiture::create([
             "image" => $path,
@@ -213,8 +214,11 @@ class VoitureController extends Controller
             $voiture->immatriculation = $request->immatriculation;
         }
         if ($request->image !== null){
+            //si l'image supprime l'ancienne image du storage
             Storage::delete($voiture->image);
+            //ajout la nouvelle image dans le storage
             $path =  Storage::putFile('image', $request->image);
+            //ajoute le chemin de l'image dans la modification
             $voiture->image = $path;
         }
 
@@ -230,11 +234,13 @@ class VoitureController extends Controller
      */
     public function destroy($id):void
     {
+        //vérifie le droit de l'utilisateur
         if(Auth::user()->hasRole(['admin', 'responsable auto'])){
             $voiture = voiture::find($id);
             Storage::delete($voiture->image);
             $voiture->delete();
         }
+        // si l'utilisateur est un fournisseur à la possibilité de supprimer seulement ces voitures
         if(Auth::user()->hasRole('fournisseur')){
             $fournisseur = fournisseur::where('id_users' , '=' , Auth::user()->id);
             $voiture = voiture::find($id);

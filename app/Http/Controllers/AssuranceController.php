@@ -99,7 +99,9 @@ class AssuranceController extends Controller
         ]);
         if($validator->fails()) return back()->withErrors($validator->errors())->withInput();
         $assurance = assurance::find($id);
+        //ajout à la modification des champs non vide
         if($request->id_voiture){
+            //pour retirer id_voiture ou changer par un autre
             $assurance->id_voiture = ($request->id_voiture === 'vide') ? null : $request->id_voiture;
         }
         if($request->DateDebut !== null){

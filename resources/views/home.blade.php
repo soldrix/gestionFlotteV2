@@ -6,6 +6,7 @@
             <div class="divbottom">
                 <div class="border-bottom mt-2 border-dark border-opacity-25 border-2 pt-2">
                     <ul id="info_voiture" class="nav nav-tabs mt-3">
+                        {{--Affiche les tabs dont l'utlisateur à accès avec son role--}}
                         @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'responsable auto', 'fournisseur']))
                             <li class="nav-item">
                                 <a class="nav-link tabsHome" href="#" data-bs-toggle="tab" data-bs-target="#table_voitures"><i class="fa-solid fa-car fa-lg m-2"></i>Voitures</a>
@@ -46,6 +47,7 @@
                     </ul>
                 </div>
                 <div id="block_info_voiture" class="tab-content">
+                    {{--Affiche le tableau ou non selont le role de l'utilisateur--}}
                     @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin','responsable auto', 'fournisseur']))
                         <div id="table_voitures" class="tab-pane fade contentHome mt-3" role="tabpanel">
                         <table id="DataTable_voitures" class="table table-dark table-bordered table-hover table-striped dataTable mt-2 table-responsive" style="width: 100%">
@@ -76,6 +78,7 @@
                                     <td>{{$datas->puissance}}</td>
                                     <td>{{$datas->carburant}}</td>
                                     <td>{{$datas->type}}</td>
+                                    {{--Affiche Aucune agence si aucune agence n'est relier à la voiture--}}
                                     <td>{{($datas->ville !== null) ? $datas->ville.' '.$datas->rue : 'Aucune agence'}}</td>
                                     <td>{{($datas->name !== null) ? $datas->name.' '.$datas->email : 'Aucun fournisseur'}}</td>
                                 </tr>
