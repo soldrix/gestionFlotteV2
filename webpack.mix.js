@@ -26,7 +26,6 @@ mix.autoload({
     .js('resources/js/assurance.js', 'public/js')
     .js('resources/js/consommation.js', 'public/js')
     .js('resources/js/user.js', 'public/js')
-    .js('resources/js/main.js','public/js')
     .js('resources/js/fournisseur.js','public/js')
     .js('resources/js/profil.js','public/js')
     .js('resources/js/voitureDatatable.js','public/js')
