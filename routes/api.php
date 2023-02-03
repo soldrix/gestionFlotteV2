@@ -29,6 +29,12 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/image/{path}', [voitureController::class, 'getImage'])->where('path', '.*');
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/voitures/agence/{id}',[voitureController::class, 'indexAgence']);
+
+
+
+
+
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/user/edit/name', [UserController::class, 'updateName']);
     Route::post('/user/edit/email', [UserController::class, 'updateEmail']);
