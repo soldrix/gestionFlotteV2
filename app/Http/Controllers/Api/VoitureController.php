@@ -24,6 +24,24 @@ class VoitureController extends Controller
         return response($voiture);
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  string  $id
+     * @return \Illuminate\Http\Response
+     */
+
+    public function indexAgence($id):JsonResponse
+    {
+        $voiture = voiture::where([
+            'id_agence' => $id,
+            'statut' => 1
+        ])->get();
+        if(count($voiture) < 0) return response()->json(['error' => 'Aucune voiture disponible']);
+        return response()->json([
+            'voitures' => $voiture
+        ]);
+    }
 
     /**
      * Store a newly created resource in storage.
