@@ -17,6 +17,10 @@ class UserController extends Controller
      */
     public function index()
     {
+        if(Auth::user()->hasRole('RH')){
+            $users = User::all()->where('statut', 1);
+            return view('users', ['users' => $users]);
+        }
         $users = User::all();
         return view('users', ['users' => $users]);
     }
@@ -111,11 +115,12 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         // Validate request data
+
         $validator = Validator::make(array_filter($request->all()), [
             'name' => 'string|max:255',
             'email' => 'email|unique:users|max:255',
             'type' => 'max:100',
-            'password' => 'min:10',
+            'password' => 'min:10'
         ],
             [
                 'required' => 'Le champ :attribute est requis.',
@@ -223,10 +228,38 @@ class UserController extends Controller
             $user = User::find($id);
             $user->delete();
             //supprime la connexion de l'utilisateur connecté
-            if(Auth::user()->id === $id){
+            if(intval(Auth::user()->id) === intval($id)){
                 Auth::user()->tokens()->delete();
-                Auth::session()->invalidate();
-                Auth::guard()->logout();
+                session()->invalidate();
+                Auth::logout();
+                return response('logout');
+            }
+            return response('ok',200);
+        }
+        return response([
+            'error' => 'request unauthorized'.Auth::user()->id
+        ],401);
+    }
+
+
+    /**
+     * Desactivate user.
+     *
+     * @param int $id
+     * @return mixed
+    **/
+    public function desactivate($id)
+    {
+        if(intval(Auth::user()->id) === intval($id) || Auth::user()->hasRole(['admin', 'RH'])){
+            $user = User::find($id);
+            $user->statut = 0;
+            $user->update();
+            //supprime la connexion de l'utilisateur connecté
+            if(intval(Auth::user()->id) === intval($id)){
+                Auth::user()->tokens()->delete();
+                session()->invalidate();
+                Auth::logout();
+                return response('logout');
             }
             return response('ok',200);
         }

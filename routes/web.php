@@ -124,17 +124,23 @@ Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
             Route::delete('location/delete/{id}', 'destroy');
         });
         Route::controller(UserController::class)->middleware('role:admin')->group(function (){
-           Route::get('users', 'index');
-           Route::get('user/create', 'create');
            Route::get('user/edit/{id}', 'edit');
-           Route::post('user/store', 'store')->name('userCreate');
            Route::put('user/update/{id}', 'update')->name('userUpdate');
+        });
+        Route::controller(UserController::class)->middleware('role:admin,RH')->group(function (){
+            Route::post('user/store', 'store')->name('userCreate');
+            Route::get('user/create', 'create');
+            Route::get('users', 'index');
+            Route::put('user/desactivate/{id}', 'desactivate');
         });
         Route::controller(UserController::class)->group(function (){
            Route::get('profil/edit/{id}', 'editProfil');
            Route::put('profil/update/{id}', 'profilUpdate')->name('profilUpdate');
+            Route::delete('user/delete/{id}', 'destroy');
+
         });
-        Route::delete('user/delete/{id}', [\App\Http\Controllers\UserController::class,'destroy']);
+
+//        Route::delete('user/delete/{id}', [\App\Http\Controllers\UserController::class,'destroy']);
 
 
     Route::controller(\App\Http\Controllers\FournisseurController::class)->middleware('role:admin')->group(function (){

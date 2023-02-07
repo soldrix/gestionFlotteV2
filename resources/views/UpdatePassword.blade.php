@@ -9,8 +9,8 @@
                         {{ session()->get('message') }}
                     </div>
                 @endif
-                <div class="card">
-                    <div class="card-header">{{__('Modification mot de passe')}}</div>
+                <div class="card bg-p shadow-block">
+                    <div class="card-header bg-s">{{__('Modification mot de passe')}}</div>
                     <div class="card-body">
                         <form method="POST" action="{{ route('UpdatePassword')}}">
                             @csrf

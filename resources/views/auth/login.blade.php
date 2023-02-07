@@ -10,7 +10,7 @@
                 </div>
             @endif
             <div class="card bg-p shadow-block">
-                <div class="card-header bg-s">{{ __('Login') }}</div>
+                <div class="card-header bg-s">{{ __('Connexion') }}</div>
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
@@ -39,7 +39,7 @@
                         <div class="row mb-0">
                             <div class="col-md-8 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
-                                    {{ __('Login') }}
+                                    {{ __('Connexion') }}
                                 </button>
                             </div>
                         </div>

@@ -62,6 +62,23 @@
                             </div>
 
                             <div class="row mb-3">
+                                <label for="statut" class="col-md-4 col-form-label text-md-end">{{ __('Statut :') }}</label>
+
+                                <div class="col-md-6">
+                                    <select id="statut" class="form-select @error('statut') is-invalid @enderror" aria-label="Default select example" name="statut">
+                                        <option value="" class="text-capitalize">Sélectionner un statut</option>
+                                        <option value="1" class="text-capitalize">Activer</option>
+                                        <option value="0" class="text-capitalize">Désactiver</option>
+                                    </select>
+                                    @error('statut')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
                                 <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Mot de passe :') }}</label>
 
                                 <div class="col-md-6">

@@ -35,11 +35,13 @@ class AgenceController extends Controller
      */
     public function store(Request $request)
     {
+        //validator verif les valeurs
         $validator = Validator::make($request->all(),[
             "ville" => "required",
             "rue" => "required",
             "codePostal" => ["required","integer","min_digits:5", "max_digits:5"]
         ]);
+        //retourn les erreurs du validator
         if ($validator->fails()) return back()->withErrors($validator->errors())->withInput();
         agence::create([
             "ville" => $request->ville,
@@ -72,6 +74,7 @@ class AgenceController extends Controller
     public function update(Request $request,$id)
     {
         $agence = agence::find($id);
+        //array filter pour suprimer valeur null
         $validator = Validator::make(array_filter($request->all()),[
             "codePostal" => ["integer","min_digits:5", "max_digits:5"]
         ]);

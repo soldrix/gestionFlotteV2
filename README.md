@@ -37,6 +37,7 @@ php artisan permission:create-role fournisseur
 php artisan permission:create-role "responsable auto"
 php artisan permission:create-role "chef agence"
 php artisan permission:create-role secretaire
+php artisan permission:create-role RH
 ```
 
 Ajouter les valeur dans env pour smtp:

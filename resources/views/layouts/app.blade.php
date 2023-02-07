@@ -92,10 +92,12 @@
                                 @endif
                                 @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin']))
                                     <li class="nav-item">
-                                        <a href="{{url('/users')}}" class="mx-2 text-white nav-link">Utilisateurs</a>
-                                    </li>
-                                    <li class="nav-item">
                                         <a href="{{url('/fournisseurs')}}" class="mx-2 text-white nav-link">Fournisseurs</a>
+                                    </li>
+                                @endif
+                                @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin','RH']))
+                                    <li class="nav-item">
+                                        <a href="{{url('/users')}}" class="mx-2 text-white nav-link">Utilisateurs</a>
                                     </li>
                                 @endif
                             </ul>
@@ -147,13 +149,22 @@
         </main>
     </div>
         <div class="toast-container position-absolute start-0 p-3 top-0 mt-5" >
-            <div id="toastSupp" class="toast" role="alert">
-                <div class="toast-header">
-                    <strong class="me-auto">Suppression données</strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            <div id="toastSupp" class="toast bg-p shadow-block" role="alert">
+                <div class="toast-header bg-s">
+                    <strong class="me-auto color-white">Suppression données</strong>
+                    <button type="button" class="btn"  data-bs-dismiss="toast" aria-label="Close"><i class="fa-solid fa-l fa-xmark color-white"></i></button>
                 </div>
                 <div class="toast-body">
                     Les données ont été supprimé
+                </div>
+            </div>
+            <div id="toastDes" class="toast bg-p shadow-block" role="alert">
+                <div class="toast-header bg-s">
+                    <strong class="me-auto color-white">Désactivation utlisateur</strong>
+                    <button type="button" class="btn"  data-bs-dismiss="toast" aria-label="Close"><i class="fa-solid fa-l fa-xmark color-white"></i></button>
+                </div>
+                <div class="toast-body">
+                    L'utilisateur à été désactiver.
                 </div>
             </div>
         </div>
@@ -173,5 +184,21 @@
                 </div>
             </div>
         </div>
+    <div class="modal" tabindex="-1" id="desModal" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-s shadow-block">
+                <div class="modal-header">
+                    <h5 class="modal-title">Êtes-vous sûr de vouloir désactiver le compte ?</h5>
+                    <button type="button" class="btn text-white" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="fa-solid fa-xmark fa-lg"></i>
+                    </button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-primary" id="btnDesModal">Supprimer</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
