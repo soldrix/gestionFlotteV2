@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\agence;
 use App\Models\voiture;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class chefAgenceController extends Controller
 {
@@ -18,48 +19,27 @@ class chefAgenceController extends Controller
         $agences = agence::all();
         return view('chefAgence',['agences' => $agences]);
     }
-
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Display a listing of the resource.
+     * @param int $id
+     * @return mixed
      */
-    public function create()
+    public function indexVoiture($id)
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        $voitures = voiture::all()->where('id_agence', '=', $id);
+        return view('voituresAgence',['voitures' => $voitures]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return mixed
      */
     public function edit($id)
     {
-        //
+        $voiture = voiture::find($id);
+        return view('form.voiture.statutEdit',['voiture' => $voiture]);
     }
 
     /**
@@ -71,17 +51,10 @@ class chefAgenceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        if($request->statut === null) return back()->withErrors(['statut' => 'Le statut ne peut pas être vide.'])->withInput();
+        $voiture = voiture::find($id);
+        $voiture->update($request->all());
+        return back()->with('message', 'Modification réaliser avec succès.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

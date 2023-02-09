@@ -11,6 +11,7 @@ use App\Http\Controllers\ConsommationController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VoitureFournisseurController;
+use App\Http\Controllers\chefAgenceController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -160,6 +161,12 @@ Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
            Route::post('fournisseur/store', 'store')->name('createFournisseur');
            Route::put('fournisseur/update/{id}', 'update')->name('updateFournisseur');
            Route::delete('fournisseur/delete/{id}', 'destroy');
+    });
+    Route::controller(chefAgenceController::class)->middleware('role:chef agence,admin')->group(function (){
+        Route::get('chef-agence', 'index');
+        Route::get('chef-agence/voitures/{id}', 'indexVoiture');
+        Route::get('chef-agence/voiture/edit/{id}', 'edit')->name('statutVoiture');
+        Route::put('chef-agence/voiture/update/{id}', 'update')->name('updateStatut');
     });
 });
 

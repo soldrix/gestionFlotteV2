@@ -85,9 +85,14 @@
                                     <a href="{{url('/voitures-fournisseur')}}" class="dropdown-item color-white">Gestion véhicules fournisseur</a>
                                 @endif
 
+                                @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'responsable agence']))
+                                    <li class="nav-item">
+                                        <a href="{{url('/agences')}}" class="mx-2 text-white nav-link">Gestion agences</a>
+                                    </li>
+                                @endif
                                 @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'chef agence']))
                                     <li class="nav-item">
-                                        <a href="{{url('/agences')}}" class="mx-2 text-white nav-link">Agences</a>
+                                        <a href="{{url('/chef-agence')}}" class="mx-2 text-white nav-link">Gestion agence</a>
                                     </li>
                                 @endif
                                 @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'secretaire']))
