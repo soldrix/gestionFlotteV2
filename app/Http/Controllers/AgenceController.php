@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\agence;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -14,7 +15,12 @@ class AgenceController extends Controller
      */
     public function index()
     {
-        $agences = agence::all();
+        $agences = agence::join('users', 'users.id', '=', 'agence.id_user')
+            ->get([
+                'agence.*',
+                'users.name',
+                'users.email'
+            ]);
         return view('agences',['agences' => $agences]);
     }
 
@@ -24,7 +30,8 @@ class AgenceController extends Controller
      */
     public function create()
     {
-        return view('form.agence.agenceCreate');
+        $users = User::all()->where('type', '=', 'chef agence');
+        return view('form.agence.agenceCreate',['users'=> $users]);
     }
 
     /**
@@ -46,7 +53,8 @@ class AgenceController extends Controller
         agence::create([
             "ville" => $request->ville,
             "rue" => $request->rue,
-            "codePostal" => $request->codePostal
+            "codePostal" => $request->codePostal,
+            'id_user' => ($request->id_user === 'vide') ? null : $request->id_user
         ]);
         return back()->with('message', 'L\'agence à été créer avec succès.');
     }
@@ -61,7 +69,8 @@ class AgenceController extends Controller
     public function edit($id)
     {
         $agence = agence::find($id);
-        return view('form.agence.agenceEdit',['agence' => $agence]);
+        $users = User::all()->where('type', '=', 'chef agence');
+        return view('form.agence.agenceEdit',['agence' => $agence,'users' => $users]);
     }
 
     /**
@@ -79,7 +88,19 @@ class AgenceController extends Controller
             "codePostal" => ["integer","min_digits:5", "max_digits:5"]
         ]);
         if ($validator->fails()) return back()->withErrors($validator->errors())->withInput();
-        $agence->update(array_filter($request->all()));
+        if($request->ville !== null){
+            $agence->ville = $request->ville;
+        }
+        if($request->rue !== null){
+            $agence->rue = $request->rue;
+        }
+        if($request->codePostal !== null){
+            $agence->codePostal = $request->codePostal;
+        }
+        if($request->id_user !== null){
+            $agence->id_user = ($request->id_user === 'vide') ? null : $request->id_user;
+        }
+        $agence->update();
         return back()->with('message', 'L\'agence à été créer avec succès.');
     }
 

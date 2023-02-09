@@ -49,7 +49,7 @@
                             <ul class="navbar-nav me-auto align-items-center">
 
                                 <li class="nav-item dropdown d-none d-md-flex">
-                                    @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'responsable fournisseur', 'responsable auto']))
+                                    @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'responsable auto']))
                                             <a href="#" class="mx-2 nav-link dropdown-toggle text-white" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                                 Pages
                                             </a>
@@ -81,7 +81,7 @@
                                     <a href="{{url('/consommations')}}" class="mb-1 text-white nav-link d-flex d-md-none">Consommations</a>
                                 @endif
 
-                                @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['fournisseur']))
+                                @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['responsable fournisseur']))
                                     <a href="{{url('/voitures-fournisseur')}}" class="dropdown-item color-white">Gestion véhicules fournisseur</a>
                                 @endif
 
@@ -95,7 +95,7 @@
                                         <a href="{{url('/locations')}}" class="mx-2 text-white nav-link">Locations</a>
                                     </li>
                                 @endif
-                                @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin']))
+                                @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'responsable fournisseur']))
                                     <li class="nav-item">
                                         <a href="{{url('/fournisseurs')}}" class="mx-2 text-white nav-link">Fournisseurs</a>
                                     </li>

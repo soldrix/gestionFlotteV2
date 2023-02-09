@@ -14,6 +14,7 @@
                     <th>Ville</th>
                     <th>Rue</th>
                     <th>Code Postal</th>
+                    <th>Chef agence</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -24,6 +25,7 @@
                         <td>{{$datas->ville}}</td>
                         <td>{{$datas->rue}}</td>
                         <td>{{$datas->codePostal}}</td>
+                        <td>{{($datas->name !== null) ? $datas->name.' '.$datas->email : 'Aucun utilisateur'}}</td>
                         <td class="tdBtn">
                             <div class="divBtnTab d-flex flex-column flex-md-row">
                                 {{--Bouton pour modifié une agence--}}
