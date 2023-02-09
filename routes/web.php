@@ -10,6 +10,7 @@ use App\Http\Controllers\AssuranceController;
 use App\Http\Controllers\ConsommationController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VoitureFournisseurController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -60,7 +61,7 @@ Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
 
     Route::view('/profil', 'profil');
     //route protéger par des roles
-        Route::controller(VoitureController::class)->middleware('role:admin,fournisseur,responsable auto')->group(function () {
+        Route::controller(VoitureController::class)->middleware('role:admin,responsable auto')->group(function () {
             Route::get('voitures', 'index');
             Route::get('voiture/create', 'create');
             Route::post('voiture/store', 'store')->name('createVoiture');
@@ -69,6 +70,15 @@ Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
             Route::put('voiture/update/{id}', 'update')->name('updateVoiture');
             Route::delete('voiture/delete/{id}', 'destroy');
         });
+
+    Route::controller(VoitureFournisseurController::class)->middleware('role:admin,fournisseur')->group(function () {
+        Route::get('voitures-fournisseur', 'index');
+        Route::get('voiture-fournisseur/create', 'create');
+        Route::post('voiture-fournisseur/store', 'store')->name('createVoiture-fournisseur');
+        Route::get('voiture-fournisseur/edit/{id}', 'edit');
+        Route::put('voiture-fournisseur/update/{id}', 'update')->name('updateVoiture_fournisseur');
+        Route::delete('voiture-fournisseur/delete/{id}', 'destroy');
+    });
 
         Route::controller(AgenceController::class)->middleware('role:admin,chef agence')->group(function (){
             Route::get('agences', 'index');

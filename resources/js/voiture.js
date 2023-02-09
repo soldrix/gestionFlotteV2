@@ -1,4 +1,3 @@
-const {send} = require("vite");
 window.bootstrap = require('bootstrap/dist/js/bootstrap.bundle.js');
 $(document).ready(function () {
     $('.delButton').on('click',function () {
