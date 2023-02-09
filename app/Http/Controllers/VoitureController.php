@@ -22,13 +22,6 @@ class VoitureController extends Controller
      */
     public function index()
     {
-        if(Auth::user()->hasRole('fournisseur')){
-            $fournisseur = fournisseur::all()->where('id_users', '=', Auth::user()->id);
-            foreach ($fournisseur as $datas){
-                $voitures = voiture::all()->where('id_fournisseur', $datas->id);
-            }
-            return view('voitures',["voitures"=>$voitures]);
-        }
         $voitures = voiture::all();
         return view('voitures',["voitures"=>$voitures]);
     }
@@ -38,12 +31,7 @@ class VoitureController extends Controller
     public function create()
     {
         $agences = agence::all();
-        $fournisseurs = fournisseur::join('users', 'users.id', '=', 'fournisseurs.id_users')
-            ->get([
-                'fournisseurs.*',
-                'users.email'
-            ]);
-        return view('form.voiture.voitureCreate',['agences'=>$agences, 'fournisseurs' => $fournisseurs]);
+        return view('form.voiture.voitureCreate',['agences'=>$agences]);
     }
 
     /**
@@ -85,7 +73,6 @@ class VoitureController extends Controller
             "prix" => $request->prix,
             "statut" => $request->statut,
             "id_agence" => ($request->id_agence !== 'null') ? $request->id_agence : null,
-            "id_fournisseur" => $request->id_fournisseur
         ]);
         return back()->with('message', 'La voiture à été créer avec succès.');
     }
@@ -111,13 +98,11 @@ class VoitureController extends Controller
     public function adminShow($id)
     {
         $voiture = voiture::leftjoin('agence',  'agence.id', '=', 'voitures.id_agence')
-            ->join('fournisseurs', 'fournisseurs.id', '=', 'voitures.id_fournisseur')
             ->where('voitures.id',$id)
             ->get([
                 'voitures.*',
                 'agence.ville',
-                'agence.rue',
-                'fournisseurs.name'
+                'agence.rue'
             ]);
         $entretiens = entretien::all()->where('id_voiture', $id);
         $assurances = assurance::all()->where('id_voiture', $id);
@@ -147,12 +132,7 @@ class VoitureController extends Controller
     {
         $voiture = voiture::find($id);
         $agences = agence::all();
-        $fournisseurs = fournisseur::join('users', 'users.id', '=', 'fournisseurs.id_users')
-            ->get([
-                'fournisseurs.*',
-                'users.email'
-            ]);
-        return view("form.voiture.voitureEdit",['voiture' => $voiture, 'agences' => $agences, 'fournisseurs' => $fournisseurs]);
+        return view("form.voiture.voitureEdit",['voiture' => $voiture, 'agences' => $agences]);
     }
 
     /**
@@ -234,22 +214,8 @@ class VoitureController extends Controller
      */
     public function destroy($id):void
     {
-        //vérifie le droit de l'utilisateur
-        if(Auth::user()->hasRole(['admin', 'responsable auto'])){
-            $voiture = voiture::find($id);
-            Storage::delete($voiture->image);
-            $voiture->delete();
-        }
-        // si l'utilisateur est un fournisseur à la possibilité de supprimer seulement ces voitures
-        if(Auth::user()->hasRole('fournisseur')){
-            $fournisseur = fournisseur::where('id_users' , '=' , Auth::user()->id);
-            $voiture = voiture::find($id);
-            foreach ($fournisseur as $datas){
-                if($datas->id === $voiture->id_fournisseur){
-                    Storage::delete($voiture->image);
-                    $voiture->delete();
-                }
-            }
-        }
+        $voiture = voiture::find($id);
+        Storage::delete($voiture->image);
+        $voiture->delete();
     }
 }
