@@ -15,6 +15,9 @@ return new class extends Migration
     {
         Schema::create('table_commandes', function (Blueprint $table) {
             $table->id();
+            $table->date('DateDebut');
+            $table->date('DateFin');
+            $table->foreignId('id_voiture')->references('voitures')->on('id')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

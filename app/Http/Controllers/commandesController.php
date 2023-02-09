@@ -2,39 +2,56 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\commande;
+use App\Models\voiture;
+use App\Models\voitureFournisseur;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class commandesController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return mixed
+     *
      */
     public function index()
     {
-        //
+        $commandes = commande::all();
+        return view('commandes',['commandes' => $commandes]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return mixed
      */
     public function create()
     {
-        //
+        $voitures = voitureFournisseur::all();
+        return view('form.createCommandes',['voitures' => $voitures]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return mixed
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(),[
+           "DateDebut" => ["required", "date"],
+           "DateFin" => ["required", "date", "after:".$request->DateDebut]
+        ]);
+        if($validator->fails())return back()->withErrors($validator->errors())->withInput();
+        commande::create([
+            "DateDebut" => $request->DateDebut,
+            "DateFin" => $request->DateFin,
+            "id_voiture" => $request->id_voiture
+        ]);
+        return back()->with('message', 'la comande a été créer avec succès.');
     }
 
     /**
