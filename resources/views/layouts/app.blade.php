@@ -49,7 +49,7 @@
                             <ul class="navbar-nav me-auto align-items-center">
 
                                 <li class="nav-item dropdown d-none d-md-flex">
-                                    @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'fournisseur', 'responsable auto']))
+                                    @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'responsable auto']))
                                             <a href="#" class="mx-2 nav-link dropdown-toggle text-white" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                                 Pages
                                             </a>
@@ -62,11 +62,14 @@
                                             <a href="{{url('/reparations')}}" class="dropdown-item color-white">Reparations</a>
                                             <a href="{{url('/consommations')}}" class="dropdown-item color-white">Consommations</a>
                                         @endif
+                                        @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin']))
+                                            <a href="{{url('/voitures-fournisseur')}}" class="dropdown-item color-white">Gestion véhicules fournisseur</a>
+                                        @endif
                                     </div>
                                 </li>
 
 
-                                @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'fournisseur', 'responsable auto']))
+                                @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'responsable auto']))
                                     <a href="{{url('/voitures')}}" class="mb-1 text-white nav-link d-flex d-md-none">
                                         Voitures
                                     </a>
@@ -78,11 +81,18 @@
                                     <a href="{{url('/consommations')}}" class="mb-1 text-white nav-link d-flex d-md-none">Consommations</a>
                                 @endif
 
+                                @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['responsable fournisseur']))
+                                    <a href="{{url('/voitures-fournisseur')}}" class="dropdown-item color-white">Gestion véhicules fournisseur</a>
+                                @endif
 
-
+                                @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'responsable agence']))
+                                    <li class="nav-item">
+                                        <a href="{{url('/agences')}}" class="mx-2 text-white nav-link">Gestion agences</a>
+                                    </li>
+                                @endif
                                 @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'chef agence']))
                                     <li class="nav-item">
-                                        <a href="{{url('/agences')}}" class="mx-2 text-white nav-link">Agences</a>
+                                        <a href="{{url('/chef-agence')}}" class="mx-2 text-white nav-link">Gestion agence</a>
                                     </li>
                                 @endif
                                 @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'secretaire']))
@@ -90,7 +100,7 @@
                                         <a href="{{url('/locations')}}" class="mx-2 text-white nav-link">Locations</a>
                                     </li>
                                 @endif
-                                @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin']))
+                                @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'responsable fournisseur']))
                                     <li class="nav-item">
                                         <a href="{{url('/fournisseurs')}}" class="mx-2 text-white nav-link">Fournisseurs</a>
                                     </li>
@@ -98,6 +108,9 @@
                                 @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin','RH']))
                                     <li class="nav-item">
                                         <a href="{{url('/users')}}" class="mx-2 text-white nav-link">Utilisateurs</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{url('/commandes')}}" class="mx-2 text-white nav-link">Commandes</a>
                                     </li>
                                 @endif
                             </ul>
@@ -109,13 +122,13 @@
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
-                                    <a class="nav-link text-white" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                    <a class="nav-link text-white" href="{{ route('login') }}">{{ __('Connexion') }}</a>
                                 </li>
                             @endif
 
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link text-white" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="nav-link text-white" href="{{ route('register') }}">{{ __('Inscription ') }}</a>
                                 </li>
                             @endif
                         @else

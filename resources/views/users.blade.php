@@ -22,6 +22,7 @@
                 </thead>
                 <tbody>
                 @foreach($users as $datas)
+                    @if($datas->id !== \Illuminate\Support\Facades\Auth::user()->id)
                     <tr data-voiture="{{$datas->id}}">
                         <td>{{$datas->name}}</td>
                         <td>{{$datas->email}}</td>
@@ -40,6 +41,7 @@
                             </div>
                         </td>
                     </tr>
+                    @endif
                 @endforeach
                 </tbody>
             </table>

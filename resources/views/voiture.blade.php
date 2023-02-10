@@ -54,7 +54,7 @@
                                 <a id="btnTabAssu" class="nav-link tabsHome" href="#" data-bs-toggle="tab" data-bs-target="#table_assurances"><i class="fa-solid fa-calendar-check fa-lg m-2"></i>Assurances</a>
                             </li>
                             <li class="nav-item">
-                                <a id="btnTabCons" class="nav-link tabsHome" href="#" data-bs-toggle="tab" data-bs-target="#table_carburants"><i class="fa-solid fa-gas-pump fa-lg m-2"></i>Carburants</a>
+                                <a id="btnTabCons" class="nav-link tabsHome" href="#" data-bs-toggle="tab" data-bs-target="#table_carburants"><i class="fa-solid fa-gas-pump fa-lg m-2"></i>Consommations</a>
                             </li>
                         </ul>
                     </div>
@@ -175,7 +175,7 @@
                         <div id="table_carburants" class="tab-pane fade" role="tabpanel">
                             <!-- Button trigger modal -->
                             <a class="btn btn-primary float-end my-2" href="/consommation/create">
-                                Ajouter Carburant
+                                Ajouter Consommation
                             </a>
                             <table id="DataTable_carburants" class="table table-dark mt-2 table-hover  table-striped dataTable dt-responsive" style="width: 100%">
                                 <thead class="border-1 border-bottom border-white">

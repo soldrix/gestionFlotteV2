@@ -22,6 +22,6 @@ class VerifRight
                 return $next($request);
             }
         }
-        return redirect('PagenoteFound');
+        return redirect('PagenotFound');
     }
 }

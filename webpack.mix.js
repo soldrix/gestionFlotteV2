@@ -28,6 +28,8 @@ mix.autoload({
     .js('resources/js/user.js', 'public/js')
     .js('resources/js/fournisseur.js','public/js')
     .js('resources/js/profil.js','public/js')
+    .js('resources/js/commandes.js','public/js')
+    .js('resources/js/GestionVoitureFournisseur.js','public/js')
     .js('resources/js/voitureDatatable.js','public/js')
     .js('node_modules/jquery/dist/jquery.js','public/js')
     .js('node_modules/bootstrap/dist/js/bootstrap.bundle.js','public/js')

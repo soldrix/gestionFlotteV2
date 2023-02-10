@@ -6,6 +6,7 @@ use App\Models\fournisseur;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Role;
 
 class FournisseurController extends Controller
 {
@@ -31,7 +32,7 @@ class FournisseurController extends Controller
      */
     public function create()
     {
-        $users = User::all();
+        $users = User::all()->where('type', '=', 'fournisseur');
         return view('form.fournisseur.fournisseurCreate', ['users' => $users]);
     }
 

@@ -155,33 +155,6 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="id_fournisseur" class="col-md-4 col-form-label text-md-end">{{ __('Fournisseur :') }}</label>
-                                @if(count(json_decode($fournisseurs)) > 0)
-                                <div class="col-md-6">
-                                    <select id="id_fournisseur" class="form-select @error('id_fournisseur') is-invalid @enderror" aria-label="Default select example" name="id_fournisseur">
-                                        @foreach($fournisseurs as $datas)
-                                            @if(\Illuminate\Support\Facades\Auth::user()->hasRole('fournisseur'))
-                                                @if($datas->id_users === \Illuminate\Support\Facades\Auth::user()->id)
-                                                    <option value="{{$datas->id}}">{{$datas->name.' '.$datas->email}}</option>
-                                                @endif
-                                            @else
-                                                <option value="{{$datas->id}}">{{$datas->name.' '.$datas->email}}</option>
-                                            @endif
-                                        @endforeach
-                                    </select>
-                                    @error ('id_fournisseur')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                                @else
-                                    <div class="col-md-6">
-                                        <p class="text-danger">Aucun founisseur, créer un fournisseur pour pouvoir créer un véhicule.</p>
-                                    </div>
-                                @endif
-                            </div>
-                            <div class="row mb-3">
                                 <label for="image" class="col-md-4 col-form-label text-md-end">{{ __('Image :') }}</label>
                                 <div class="col-md-6">
                                     <input id="image" type="file" accept="image/png, image/jpeg, image/jpg" class="form-control @error('image') is-invalid @enderror" name="image" value="{{ old('image') }}" required autocomplete="image" autofocus>
@@ -207,11 +180,9 @@
                                     <a href="{{str_replace(url('/'), '', session()->get('urlP'))}}" class="btn btn-danger">
                                         Retour
                                     </a>
-                                    @if(count(json_decode($fournisseurs)) > 0)
                                     <button type="submit" class="btn btn-primary">
                                         {{ __('Continuer') }}
                                     </button>
-                                    @endif
                                 </div>
                             </div>
                         </form>

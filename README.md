@@ -33,9 +33,11 @@ Créer les roles avec les commandes suivante :
 ```
 php artisan permission:create-role user
 php artisan permission:create-role admin
-php artisan permission:create-role fournisseur
 php artisan permission:create-role "responsable auto"
+php artisan permission:create-role "fournisseur"
+php artisan permission:create-role "responsable fournisseur"
 php artisan permission:create-role "chef agence"
+php artisan permission:create-role "responsable agences"
 php artisan permission:create-role secretaire
 php artisan permission:create-role RH
 ```

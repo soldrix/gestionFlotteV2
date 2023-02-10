@@ -7,7 +7,7 @@
                 <div class="border-bottom mt-2 border-dark border-opacity-25 border-2 pt-2">
                     <ul id="info_voiture" class="nav nav-tabs mt-3">
                         {{--Affiche les tabs dont l'utlisateur à accès avec son role--}}
-                        @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'responsable auto', 'fournisseur']))
+                        @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'responsable auto', 'fournisseur', 'user']))
                             <li class="nav-item">
                                 <a class="nav-link tabsHome" href="#" data-bs-toggle="tab" data-bs-target="#table_voitures"><i class="fa-solid fa-car fa-lg m-2"></i>Voitures</a>
                             </li>
@@ -23,7 +23,7 @@
                                 <a class="nav-link tabsHome" href="#" data-bs-toggle="tab" data-bs-target="#table_assurances"><i class="fa-solid fa-calendar-check fa-lg m-2"></i>Assurances</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link tabsHome" href="#" data-bs-toggle="tab" data-bs-target="#table_carburants"><i class="fa-solid fa-gas-pump fa-lg m-2"></i>Carburants</a>
+                                <a class="nav-link tabsHome" href="#" data-bs-toggle="tab" data-bs-target="#table_carburants"><i class="fa-solid fa-gas-pump fa-lg m-2"></i>Consommation</a>
                             </li>
                         @endif
                         @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin','secretaire']))
@@ -48,7 +48,7 @@
                 </div>
                 <div id="block_info_voiture" class="tab-content">
                     {{--Affiche le tableau ou non selont le role de l'utilisateur--}}
-                    @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin','responsable auto', 'fournisseur']))
+                    @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin','responsable auto', 'fournisseur', 'user']))
                         <div id="table_voitures" class="tab-pane fade contentHome mt-3" role="tabpanel">
                         <table id="DataTable_voitures" class="table table-dark table-bordered table-hover table-striped dataTable mt-2 table-responsive" style="width: 100%">
                             <thead>

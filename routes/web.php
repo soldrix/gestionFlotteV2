@@ -10,6 +10,9 @@ use App\Http\Controllers\AssuranceController;
 use App\Http\Controllers\ConsommationController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VoitureFournisseurController;
+use App\Http\Controllers\chefAgenceController;
+use App\Http\Controllers\commandesController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -60,7 +63,7 @@ Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
 
     Route::view('/profil', 'profil');
     //route protéger par des roles
-        Route::controller(VoitureController::class)->middleware('role:admin,fournisseur,responsable auto')->group(function () {
+        Route::controller(VoitureController::class)->middleware('role:admin,responsable auto')->group(function () {
             Route::get('voitures', 'index');
             Route::get('voiture/create', 'create');
             Route::post('voiture/store', 'store')->name('createVoiture');
@@ -69,6 +72,15 @@ Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
             Route::put('voiture/update/{id}', 'update')->name('updateVoiture');
             Route::delete('voiture/delete/{id}', 'destroy');
         });
+
+    Route::controller(VoitureFournisseurController::class)->middleware('role:admin,responsable fournisseur')->group(function () {
+        Route::get('voitures-fournisseur', 'index');
+        Route::get('voiture-fournisseur/create', 'create');
+        Route::post('voiture-fournisseur/store', 'store')->name('createVoiture-fournisseur');
+        Route::get('voiture-fournisseur/edit/{id}', 'edit');
+        Route::put('voiture-fournisseur/update/{id}', 'update')->name('updateVoiture_fournisseur');
+        Route::delete('voiture-fournisseur/delete/{id}', 'destroy');
+    });
 
         Route::controller(AgenceController::class)->middleware('role:admin,chef agence')->group(function (){
             Route::get('agences', 'index');
@@ -143,14 +155,28 @@ Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
 //        Route::delete('user/delete/{id}', [\App\Http\Controllers\UserController::class,'destroy']);
 
 
-    Route::controller(\App\Http\Controllers\FournisseurController::class)->middleware('role:admin')->group(function (){
+    Route::controller(\App\Http\Controllers\FournisseurController::class)->middleware('role:admin,responsable fournisseur')->group(function (){
            Route::get('fournisseurs', 'index');
            Route::get('fournisseur/create', 'create');
            Route::get('fournisseur/edit/{id}', 'edit');
            Route::post('fournisseur/store', 'store')->name('createFournisseur');
            Route::put('fournisseur/update/{id}', 'update')->name('updateFournisseur');
            Route::delete('fournisseur/delete/{id}', 'destroy');
-        });
+    });
+    Route::controller(chefAgenceController::class)->middleware('role:chef agence,admin')->group(function (){
+        Route::get('chef-agence', 'index');
+        Route::get('chef-agence/voitures/{id}', 'indexVoiture');
+        Route::get('chef-agence/voiture/edit/{id}', 'edit')->name('statutVoiture');
+        Route::put('chef-agence/voiture/update/{id}', 'update')->name('updateStatut');
+    });
+    Route::controller(commandesController::class)->middleware('role:admin,RH')->group(function (){
+       Route::get('commandes', 'index');
+       Route::get('commande/create', 'create');
+       Route::get('commande/edit/{id}', 'edit');
+       Route::post('commande/store', 'store')->name('createCommande');
+       Route::put('commande/update/{id}', 'update')->name('updateCommande');
+       Route::delete("commande/delete/{id}", "destroy");
+    });
 });
 
 

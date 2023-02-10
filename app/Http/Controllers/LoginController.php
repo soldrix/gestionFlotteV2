@@ -57,9 +57,7 @@ class LoginController extends Controller
         //récupère toutes les agences créer ou modifier depuis les 7 derniers jours
         $agences = agence::all()->where('updated_at', '>=', $date);
         //récupère toutes les voitures créer ou modifier depuis les 7 derniers jours
-        $voitures = voiture::leftJoin('agence', 'agence.id', '=', 'voitures.id_agence')
-            ->leftJoin('fournisseurs', 'fournisseurs.id', '=', 'voitures.id_fournisseur')->where('voitures.updated_at', '>=', $date)->get([
-               'fournisseurs.name',
+        $voitures = voiture::leftJoin('agence', 'agence.id', '=', 'voitures.id_agence')->where('voitures.updated_at', '>=', $date)->get([
                'voitures.*',
                 'agence.ville',
                 'agence.rue'

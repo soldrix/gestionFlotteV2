@@ -250,17 +250,10 @@ class UserController extends Controller
     **/
     public function desactivate($id)
     {
-        if(intval(Auth::user()->id) === intval($id) || Auth::user()->hasRole(['admin', 'RH'])){
+        if(Auth::user()->hasRole(['admin', 'RH'])){
             $user = User::find($id);
             $user->statut = 0;
             $user->update();
-            //supprime la connexion de l'utilisateur connecté
-            if(intval(Auth::user()->id) === intval($id)){
-                Auth::user()->tokens()->delete();
-                session()->invalidate();
-                Auth::logout();
-                return response('logout');
-            }
             return response('ok',200);
         }
         return response([

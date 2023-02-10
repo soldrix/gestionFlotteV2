@@ -13,21 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('voitures', function (Blueprint $table) {
+        Schema::create('voitures_fournisseur', function (Blueprint $table) {
             $table->id();
             $table->string('image');
             $table->string('marque');
             $table->string('model');
             $table->string('carburant');
-            $table->date('circulation');
-            $table->string('immatriculation');
             $table->boolean('statut');
             $table->integer('puissance');
             $table->string('type');
-            $table->integer('nbPorte');
-            $table->integer('nbPlace');
-            $table->float('prix');
-            $table->foreignId('id_agence')->nullable()->references('id')->on('agence')->onUpdate('cascade')->onDelete('set null');
+            $table->foreignId('id_fournisseur')->references('id')->on('fournisseurs')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -39,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('voitures');
+        Schema::dropIfExists('voitures_fournisseur');
     }
 };
