@@ -57,8 +57,6 @@ class VoitureFournisseurController extends Controller
             "carburant" => ["required"],
             "puissance" => ["required", "integer"],
             "type" => "required",
-            "nbPorte" => ["required", "integer"],
-            "nbPlace" => ["required", "integer"],
             "statut" => ["required", "integer", "max_digits:1"]
         ]);
         if($validator->fails()) return back()->withErrors($validator->errors())->withInput();
@@ -71,8 +69,6 @@ class VoitureFournisseurController extends Controller
             "carburant" => $request->carburant,
             "puissance" => $request->puissance,
             "type" => $request->type,
-            "nbPorte" => $request->nbPorte,
-            "nbPlace" => $request->nbPlace,
             "statut" => $request->statut,
             "id_fournisseur" => $request->id_fournisseur
         ]);

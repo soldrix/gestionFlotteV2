@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('table_commandes', function (Blueprint $table) {
+        Schema::create('commandes', function (Blueprint $table) {
             $table->id();
             $table->date('DateDebut');
             $table->date('DateFin');
-            $table->foreignId('id_voiture')->references('voitures')->on('id')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('id_voiture')->references('id')->on('voitures_fournisseur')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('table_commandes');
+        Schema::dropIfExists('commandes');
     }
 };

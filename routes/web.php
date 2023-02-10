@@ -12,6 +12,7 @@ use App\Http\Controllers\LocationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VoitureFournisseurController;
 use App\Http\Controllers\chefAgenceController;
+use App\Http\Controllers\commandesController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -167,6 +168,14 @@ Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
         Route::get('chef-agence/voitures/{id}', 'indexVoiture');
         Route::get('chef-agence/voiture/edit/{id}', 'edit')->name('statutVoiture');
         Route::put('chef-agence/voiture/update/{id}', 'update')->name('updateStatut');
+    });
+    Route::controller(commandesController::class)->middleware('role:admin,RH')->group(function (){
+       Route::get('commandes', 'index');
+       Route::get('commande/create', 'create');
+       Route::get('commande/edit/{id}', 'edit');
+       Route::post('commande/store', 'store')->name('createCommande');
+       Route::put('commande/update/{id}', 'update')->name('updateCommande');
+       Route::delete("commande/delete/{id}", "destroy");
     });
 });
 

@@ -109,6 +109,9 @@
                                     <li class="nav-item">
                                         <a href="{{url('/users')}}" class="mx-2 text-white nav-link">Utilisateurs</a>
                                     </li>
+                                    <li class="nav-item">
+                                        <a href="{{url('/commandes')}}" class="mx-2 text-white nav-link">Commandes</a>
+                                    </li>
                                 @endif
                             </ul>
                     @endif
