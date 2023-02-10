@@ -1,4 +1,14 @@
 lancer les commandes suivantes:
+
+command mac:
+```
+cp .env.example .env 
+```
+command windows:
+```
+copy .env.example .env
+```
+commande pour le projet :
 ```
 npm i
 composer i
@@ -6,15 +16,7 @@ npm run dev
 npx mix
 php artisan key:generate
 ```
-modifier le fichier .env.exemple en .env <br> 
-command mac:
-```
-cp .env.example .env 
-```
-command windows:
-```text
-copy .env.example .env
-```
+
 
 puis modifier :
 ```
