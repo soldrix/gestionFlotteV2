@@ -29,7 +29,6 @@ puis lancer la commande suivante
 ```
 php artisan migrate
 php artisan storage:link
-php artisan serve
 ```
 Créer les roles avec les commandes suivante :
 ```
@@ -53,4 +52,7 @@ MAIL_PASSWORD=
 ```
 
 
-Enfin creer un compte 
+Enfin démarer le server et ensuite créer un compte:
+```
+php artisan serve
+```
