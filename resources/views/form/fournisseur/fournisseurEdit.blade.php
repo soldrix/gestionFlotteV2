@@ -28,6 +28,7 @@
                             </div>
                             <div class="row mb-3">
                                 <label for="userId" class="col-md-4 col-form-label text-md-end">{{ __('Utilisateur :') }}</label>
+                                @if(count(json_decode($users)) > 0)
                                 <div class="col-md-6">
                                     <select id="userId" class="form-select @error('id_users') is-invalid @enderror" aria-label="Default select example" name="id_users">
                                         <option value="">Selectionner un fournisseur</option>
@@ -45,6 +46,11 @@
                                     </span>
                                     @enderror
                                 </div>
+                                @else
+                                    <div class="col-md-6">
+                                        <p class="text-danger">Aucun utilisateur avec le role fournisseur, créer un utilisateur avec le role fournisseur pour pouvoir modifier un fournisseur.</p>
+                                    </div>
+                                @endif
                             </div>
                             <div class="row mb-0">
                                 <div class="col-md-8 offset-md-4">
@@ -60,9 +66,11 @@
                                     <a href="{{str_replace(url('/'), '', session()->get('urlP'))}}" class="btn btn-danger">
                                         {{__('Retour')}}
                                     </a>
-                                    <button type="submit" class="btn btn-primary">
-                                        {{ __('Continuer') }}
-                                    </button>
+                                    @if(count(json_decode($users)) > 0)
+                                        <button type="submit" class="btn btn-primary">
+                                            {{ __('Continuer') }}
+                                        </button>
+                                    @endif
                                 </div>
                             </div>
                         </form>
