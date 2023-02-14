@@ -120,7 +120,7 @@ class UserController extends Controller
         $validator = Validator::make($request->all(),[
             "email" => ["required", "email"]
         ]);
-        if($validator->fails()) return ($request->wantsJson()) ? response()->json(['errors' => $validator->errors()]) : back()->withErrors($validator->errors())->withInput();
+        if($validator->fails()) return ($request->wantsJson()) ? response()->json(['errors' => $validator->errors()],400) : back()->withErrors($validator->errors())->withInput();
         $user = User::where('email', $request->email)->get();
         if(count($user) > 0){
             $token = Str::random(40);
@@ -148,7 +148,7 @@ class UserController extends Controller
             );
             return ($request->wantsJson()) ? response()->json(['success' => true, 'msg' =>  'Veuillez vérifier votre e-mail pour réinitialiser votre mot de passe.']) : back()->with('message', 'Veuillez vérifier votre e-mail pour réinitialiser votre mot de passe.');
         }
-        return ($request->wantsJson()) ? response()->json(['success' => false, 'msg' =>  'Utilisateur non trouvé.']) : back()->withErrors(['email' => ['Utilisateur non trouvé.']])->withInput();
+        return ($request->wantsJson()) ? response()->json(['success' => false, 'msg' =>  'Utilisateur non trouvé.'],400) : back()->withErrors(['email' => ['Utilisateur non trouvé.']])->withInput();
     }
 
 

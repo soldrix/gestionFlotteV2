@@ -14,16 +14,12 @@ class LocationController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return mixed
      */
     public function index()
     {
-
-    }
-
-    public function adminIndex(){
         $locations = location::leftJoin('voitures', 'voitures.id', '=', 'locations.id_voiture')
-        ->leftjoin('users', 'users.id', '=', 'locations.id_users')
+            ->leftjoin('users', 'users.id', '=', 'locations.id_users')
             ->get([
                 'locations.*',
                 'voitures.immatriculation',

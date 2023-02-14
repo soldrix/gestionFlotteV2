@@ -139,7 +139,7 @@ Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
         });
 
         Route::controller(LocationController::class)->middleware('role:admin')->group(function (){
-            Route::get('locations', 'adminIndex');
+            Route::get('locations', 'index');
             Route::get('location/create' , 'create');
             Route::post('location/store', 'store')->name('createLocation');
             Route::get('location/edit/{id}', 'edit');
