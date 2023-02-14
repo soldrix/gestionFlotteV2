@@ -46,8 +46,19 @@ Route::get('/register',  function (){
 });
 Route::view('/PageNotFound', 'errors.404');
 //page de modification de mot de passe
+
+
+
 Route::view('/UpdatePassword', 'updatePassword');
 Route::post('/userPassword/update', [UserController::class, 'updatePassword'])->name('UpdatePassword');
+
+Route::get('/forget-password', [UserController::class, 'forgetPasswordLoad']);
+Route::post('/forget-password', [App\Http\Controllers\Api\UserController::class, 'forgetPassword'])->name('forgotPassword');
+Route::get('/reset-password', [App\Http\Controllers\Api\UserController::class, 'resetPasswordLoad']);
+Route::post('/reset-password', [App\Http\Controllers\Api\UserController::class, 'resetPassword']);
+
+
+
 Route::controller(LoginController::class)->group(function (){
     Route::post('login','login')->name('login');
     Route::post('register','register')->name('register');

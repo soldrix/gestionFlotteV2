@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PasswordReset;
 use App\Models\roles;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -259,5 +260,12 @@ class UserController extends Controller
         return response([
             'error' => 'request unauthorized'.Auth::user()->id
         ],401);
+    }
+
+    //reset password view
+
+    public function forgetPasswordLoad()
+    {
+        return view('forgetPasswordForm');
     }
 }

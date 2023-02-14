@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\maillerController;
 use Illuminate\Http\Request;
 use App\Models\location;
 use Illuminate\Routing\Controller;
@@ -45,6 +46,15 @@ class LocationController extends Controller
             "id_voiture" => ($request->id_voiture === null) ? null : $request->id_voiture,
             "id_users"  => Auth::id()
         ]);
+        $j = new \stdClass();
+        $j->email = Auth::user()->email;
+        $j->name = Auth::user()->name;
+        $j->DateDebut = date('d/m/Y', strtotime($request->DateDebut));
+        $j->DateFin = date('d/m/Y', strtotime($request->DateFin));
+        $j->montant = $request->montant;
+        $mailler = new maillerController();
+        $mailler->createLocation($j);
+
         return response()->json([
             "location" => $location
         ]);

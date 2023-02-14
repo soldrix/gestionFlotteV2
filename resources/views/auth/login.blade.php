@@ -38,7 +38,8 @@
 
                         <div class="row mb-0">
                             <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <a href="{{url('/forget-password')}}">Mot de passe oublié ?</a>
+                                <button type="submit" class="btn btn-primary mx-2">
                                     {{ __('Connexion') }}
                                 </button>
                             </div>
