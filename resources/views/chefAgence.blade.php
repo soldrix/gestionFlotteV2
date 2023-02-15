@@ -37,6 +37,9 @@
                                 <p class="m-0">Code postal : {{$datas->codePostal}}</p>
                             </li>
                             <li>
+                                <p class="m-0">Chef d'agence : {{$datas->first_name.' '.$datas->last_name.' '.$datas->email}}</p>
+                            </li>
+                            <li>
                                 <a href="/chef-agence/voitures/{{$datas->id}}">Voir les véhicules</a>
                             </li>
                         </ul>

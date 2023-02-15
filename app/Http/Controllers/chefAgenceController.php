@@ -16,7 +16,12 @@ class chefAgenceController extends Controller
      */
     public function index()
     {
-        $agences = agence::all();
+        $agences = agence::leftjoin('users', 'users.id', '=', 'agence.id_user')->get([
+            "agence.*",
+            "users.first_name",
+            "users.last_name",
+            "users.email"
+        ]);
         return view('chefAgence',['agences' => $agences]);
     }
     /**
@@ -26,7 +31,7 @@ class chefAgenceController extends Controller
      */
     public function indexVoiture($id)
     {
-        $voitures = voiture::all()->where('id_agence', '=', $id);
+        $voitures = voiture::where('id_agence', '=', $id)->get();
         return view('voituresAgence',['voitures' => $voitures]);
     }
 

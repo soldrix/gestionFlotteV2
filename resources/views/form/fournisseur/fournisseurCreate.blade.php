@@ -31,7 +31,7 @@
                                     <div class="col-md-6">
                                         <select id="userId" class="form-select @error('id_users') is-invalid @enderror" aria-label="Default select example" name="id_users">
                                             @foreach($users as $datas)
-                                                    <option value="{{$datas->id}}">{{$datas->name.' '.$datas->email}}</option>
+                                                    <option value="{{$datas->id}}">{{$datas->first_name.' '.$datas->last_name.' '.$datas->email}}</option>
                                             @endforeach
                                         </select>
                                         @error ('id_users')

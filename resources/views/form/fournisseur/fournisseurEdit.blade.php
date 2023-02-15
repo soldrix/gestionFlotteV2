@@ -33,11 +33,7 @@
                                     <select id="userId" class="form-select @error('id_users') is-invalid @enderror" aria-label="Default select example" name="id_users">
                                         <option value="">Selectionner un fournisseur</option>
                                         @foreach($users as $datas)
-                                            @if($fournisseur->id_users === $datas->id)
-                                            <option value="{{$datas->id}}" selected>{{$datas->name.' '.$datas->email}}</option>
-                                            @else
-                                            <option value="{{$datas->id}}">{{$datas->name.' '.$datas->email}}</option>
-                                            @endif
+                                            <option value="{{$datas->id}}">{{$datas->first_name.' '.$datas->last_name.' '.$datas->email}}</option>
                                         @endforeach
                                     </select>
                                     @error ('id_users')

@@ -79,11 +79,7 @@
                                         <option value="" selected>Selectioner un utilisateur</option>
                                         <option value="vide">Aucun utilisateur</option>
                                         @foreach($users as $datas)
-                                            @if($datas->id === $location->id_users)
-                                                <option value="{{$datas->id}}">{{$datas->name.' '.$datas->email}}</option>
-                                            @else
-                                                <option value="{{$datas->id}}">{{$datas->name.' '.$datas->email}}</option>
-                                            @endif
+                                                <option value="{{$datas->id}}">{{$datas->first_name.' '.$datas->last_name.' '.$datas->email}}</option>
                                         @endforeach
                                     </select>
                                     @error ('id_users')

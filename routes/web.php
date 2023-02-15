@@ -72,9 +72,9 @@ Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
     });
 
 
-    Route::view('/profil', 'profil');
     //route protéger par des roles
-        Route::controller(VoitureController::class)->middleware('role:admin,responsable auto')->group(function () {
+        Route::controller(VoitureController::class)
+            ->middleware('role:admin,responsable auto')->group(function () {
             Route::get('voitures', 'index');
             Route::get('voiture/create', 'create');
             Route::post('voiture/store', 'store')->name('createVoiture');
@@ -156,11 +156,18 @@ Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
             Route::get('users', 'index');
             Route::put('user/desactivate/{id}', 'desactivate');
         });
+        Route::controller(\App\Http\Controllers\Api\UserController::class)->group(function (){
+            Route::post('user/edit/first_name', "update");
+        });
         Route::controller(UserController::class)->group(function (){
+
+
+
+
            Route::get('profil/edit/{id}', 'editProfil');
            Route::put('profil/update/{id}', 'profilUpdate')->name('profilUpdate');
-            Route::delete('user/delete/{id}', 'destroy');
-
+           Route::delete('user/delete/{id}', 'destroy');
+           Route::get('/profil', 'show');
         });
 
 //        Route::delete('user/delete/{id}', [\App\Http\Controllers\UserController::class,'destroy']);

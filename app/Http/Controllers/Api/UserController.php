@@ -16,6 +16,40 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 class UserController extends Controller
 {
+    public function update(Request $request):JsonResponse
+    {
+        $validator = Validator::make(array_filter($request->all()),[
+            "first_name" => ["string", "max:255"],
+            "last_name" => ["string", "max:255"],
+            "email" => ["email", "unique:users","max:255"],
+            "new_password" => ["string", "max:100", "confirmed"],
+            "old_password" => ["required", "string", "max:100"]
+        ]);
+        if($validator->fails())return response()->json(["error" => $validator->errors()]);
+        $user = User::find($request->id);
+        if(Hash::check($request->old_password, $user->password)){
+            if($request->first_name !== null){
+                $user->first_name = $request->first_name;
+            }
+            if($request->last_name !== null){
+                $user->last_name = $request->last_name;
+            }
+            if($request->email !== null){
+                $user->email = $request->eamil;
+            }
+            if($request->new_password !== null){
+                $user->password = $request->new_password;
+            }
+            $user->update();
+        }
+        return response()->json([
+            "success" => "Le profil a été modifié avec succès.",
+            "datas" => $request->all()
+        ]);
+    }
+
+
+
     public function updateName(Request $request)
     {
         $validator = Validator::make($request->all(), [
