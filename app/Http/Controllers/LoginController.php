@@ -117,9 +117,9 @@ class LoginController extends Controller
                 $request->session()->regenerate();
                 //créer le token de connexion
                 $token = Auth()->user()->createToken('auth_token')->plainTextToken;
-                $role = Auth::user()->type;
-                //ajout un role à l'utilisateur
-                Auth()->user()->assignRole($role);
+//                $role = Auth::user()->type;
+//                //ajout un role à l'utilisateur
+//                Auth()->user()->assignRole($role);
                 return redirect('/home')->with('token','Bearer '.$token);
         }
         return back()->withErrors(['message'=>'Données de connexion invalides.'])->withInput();

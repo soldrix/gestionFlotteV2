@@ -70,13 +70,14 @@ class UserController extends Controller
         // Return errors if validation error occur.
         if ($validator->fails()) return back()->withErrors($validator->errors())->withInput();
 
-        User::create([
+        $user = User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'type' => $request->type
         ]);
+        $user->assignRole($request->type);
 
         if($request->email_receiver !== null){
             $data["email"] = $request->email;
@@ -149,13 +150,10 @@ class UserController extends Controller
         if($request->password !== null){
             $cloneRequest->merge(['password' => Hash::make($request->password)]);
         }
-        if($request->statut !== null){
-            $user->update(array_merge(array_filter($cloneRequest->all()), ["statut" => $request->statut]));
-        }else{
-            $user->update(array_filter($cloneRequest->all()));
-        }
+
         //vérifie si l'utilisateur est relié à une agence ou un fournisseur, le/la supprime au changement de role s'il est relié
         if($request->type !== null){
+            $user->assignRole($request->type);
             $fournisseur = fournisseur::where('id_users' , $id)->get();
             if(count($fournisseur) > 0){
                 $fournisseur = fournisseur::find($fournisseur[0]['id']);
@@ -166,6 +164,11 @@ class UserController extends Controller
                 $agence = agence::find($agence[0]['id']);
                 $agence->delete();
             }
+        }
+        if($request->statut !== null){
+            $user->update(array_merge(array_filter($cloneRequest->all()), ["statut" => $request->statut]));
+        }else{
+            $user->update(array_filter($cloneRequest->all()));
         }
 
 
