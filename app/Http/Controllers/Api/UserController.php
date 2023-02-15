@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -173,9 +172,9 @@ class UserController extends Controller
         $resetData = PasswordReset::where('token',$request->token)->get();
         if (isset($request->token) && count($resetData) > 0){
             $user = User::where('email', $resetData[0]['email'])->get();
-            return view('resetPassword',compact('user'));
+            return ($request->wantsJson()) ? response()->json(['data' => $user]) : view('resetPassword',compact('user'));
         }
-        return view('errors.404');
+        return ($request->wantsJson()) ? response()->json(['success' => false]) :view('errors.404');
     }
 
     public function resetPassword(Request $request)

@@ -105,7 +105,7 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         $user = User::where('email', '=', $request->email)->get('statut');
-        if($user === 0){
+        if($user[0]['statut'] === 0){
             return back()->withErrors(['message' => 'Le compte est désactiver contactez votre administrateur pour plus d’informations.'])->withInput();
         }
         //essaye de connecter l'utilisateur avec les informations transmises

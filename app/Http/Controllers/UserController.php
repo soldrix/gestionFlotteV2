@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\agence;
 use App\Models\fournisseur;
-use App\Models\PasswordReset;
 use App\Models\roles;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -134,6 +133,7 @@ class UserController extends Controller
             'last_name' => 'string|max:255',
             'email' => 'email|unique:users|max:255',
             'type' => 'max:100',
+            'statut' => 'string',
             'password' => 'min:10'
         ],
         [
@@ -149,10 +149,11 @@ class UserController extends Controller
         if($request->password !== null){
             $cloneRequest->merge(['password' => Hash::make($request->password)]);
         }
-
-
-        $user->update(array_filter($cloneRequest->all()));
-
+        if($request->statut !== null){
+            $user->update(array_merge(array_filter($cloneRequest->all()), ["statut" => $request->statut]));
+        }else{
+            $user->update(array_filter($cloneRequest->all()));
+        }
         //vérifie si l'utilisateur est relié à une agence ou un fournisseur, le/la supprime au changement de role s'il est relié
         if($request->type !== null){
             $fournisseur = fournisseur::where('id_users' , $id)->get();
