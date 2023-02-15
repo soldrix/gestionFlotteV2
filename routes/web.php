@@ -47,11 +47,6 @@ Route::get('/register',  function (){
 Route::view('/PageNotFound', 'errors.404');
 //page de modification de mot de passe
 
-
-
-Route::view('/UpdatePassword', 'updatePassword');
-Route::post('/userPassword/update', [UserController::class, 'updatePassword'])->name('UpdatePassword');
-
 Route::get('/forget-password', [UserController::class, 'forgetPasswordLoad']);
 Route::post('/forget-password', [App\Http\Controllers\Api\UserController::class, 'forgetPassword'])->name('forgotPassword');
 Route::get('/reset-password', [App\Http\Controllers\Api\UserController::class, 'resetPasswordLoad']);
@@ -157,15 +152,13 @@ Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
             Route::put('user/desactivate/{id}', 'desactivate');
         });
         Route::controller(\App\Http\Controllers\Api\UserController::class)->group(function (){
-            Route::post('user/edit/first_name', "update");
+            Route::post('user/edit/first_name', "update_first_name");
+            Route::post('user/edit/last_name', "update_last_name");
+            Route::post('user/edit/email', "update_email");
+            Route::post('user/edit/password', "update_password");
         });
         Route::controller(UserController::class)->group(function (){
-
-
-
-
            Route::get('profil/edit/{id}', 'editProfil');
-           Route::put('profil/update/{id}', 'profilUpdate')->name('profilUpdate');
            Route::delete('user/delete/{id}', 'destroy');
            Route::get('/profil', 'show');
         });

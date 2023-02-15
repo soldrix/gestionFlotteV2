@@ -2,25 +2,28 @@ window.bootstrap = require('bootstrap/dist/js/bootstrap.bundle.js');
 $(document).ready(function () {
     $('.delButton').on('click',function () {
         supModal(this);
-    })
+    });
     $('#btn_first_name').on('click',function () {
         form_first_name();
-    })
-    $('.btn_close_modal').on('click',function () {
+    });
+    $('#btn_last_name').on('click',function () {
+        form_last_name();
+    });
+    $('#btn_email').on('click',function () {
+        form_email();
+    });
+    $('#btn_password').on('click',function () {
+       form_password();
+    });
+    $('.modal').on('hidden.bs.modal', function () {
         resetErrors();
-    })
+    });
+
 })
 
 var myModal = new bootstrap.Modal(document.getElementById('delModal'));
 var delToastEl = document.getElementById('toastSupp');
 var delToast = bootstrap.Toast.getOrCreateInstance(delToastEl);
-function setupForm(){
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-}
 function supModal(row){
     let id_users = $(row).attr('data-voiture');
     myModal.show();
@@ -39,35 +42,79 @@ function supModal(row){
 }
 
 function resetErrors(){
-    $('.form-control').removeClass('is-invalid');
+    let formInput = $('.form-control');
+    formInput.removeClass('is-invalid');
+    formInput.val('');
+    $('.alert').addClass('d-none');
     $('.invalid-feedback strong').html('');
 }
 
-
-// var modal_first_name = new bootstrap.Modal(document.getElementById('modal_first_name'));
-function form_first_name() {
-    // modal_first_name.show()
-    setupForm()
+function ajaxForm(dataVal,dataUrl){
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
     $.ajax({
         type:"post",
-        url:'/user/edit/first_name/',
-        data: {"id" : $('#id_user').val(),"first_name" : $('#first_name').val(),"old_password":$('#old_password').val()},
+        url:dataUrl,
+        data: dataVal,
         success:function (data) {
             if($.isEmptyObject(data.error)){
                 resetErrors();
-
+                $('.alert').removeClass('d-none');
+                $('.modal.fade.show').find('.alert').html(data.success);
                 $.each( data.datas, function( key, value ) {
+                    console.log(key.matches('password'))
                     if(key !== 'id'){
-                        $('.'+key+"_text").html(value)
+                        $('.'+key+"_text").html(value);
                     }
                 });
-                console.log(data.success);
             }else{
                 $.each( data.error, function( key, value ) {
-                    $("#"+key).addClass('is-invalid')
-                    $('#'+key).parent().find(".invalid-feedback strong").html(value);
+                    let typeSelect = (key === "old_password") ? ".modal.fade.show ." : "#";
+                    $(typeSelect+key).addClass('is-invalid');
+                    $(typeSelect+key).parent().find(".invalid-feedback strong").html(value);
                 });
             }
         }
     })
+}
+
+function form_first_name() {
+    let obj = {
+        "id" : $('.id_user').val(),
+        "first_name" : $('#first_name').val(),
+        "old_password":$('.modal.fade.show .old_password').val(),
+        "required_first_name": true
+    };
+    ajaxForm(obj,'/user/edit/first_name');
+}
+function form_last_name() {
+    let obj = {
+        "id" : $('.id_user').val(),
+        "last_name" : $('#last_name').val(),
+        "old_password":$('.modal.fade.show .old_password').val(),
+        "required_last_name": true
+    };
+    ajaxForm(obj,'/user/edit/last_name');
+}
+function form_email(){
+    let obj = {
+        "id" : $('.id_user').val(),
+        "email" : $('#email').val(),
+        "old_password":$('.modal.fade.show .old_password').val(),
+        "required_email": true
+    };
+    ajaxForm(obj,'/user/edit/email');
+}
+function form_password() {
+    let obj = {
+        "id" : $('.id_user').val(),
+        "new_password" : $('#new_password').val(),
+        "new_password_confirmation" : $('#new_password_confirmation').val(),
+        "old_password":$('.modal.fade.show .old_password').val(),
+        "required_password": true
+    };
+    ajaxForm(obj,'/user/edit/password');
 }
