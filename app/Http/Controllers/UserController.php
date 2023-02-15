@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
@@ -79,13 +80,14 @@ class UserController extends Controller
         ]);
 
         if($request->email_receiver !== null){
-            $j = new \stdClass();
-            $j->email    = $request->email;
-            $j->email_receiver    = $request->email_receiver;
-            $j->name     = $request->name;
-            $j->password = $request->password;
-            $mailler = new maillerController();
-            $mailler->createUser($j);
+            $data["email"] = $request->email;
+            $data["email_receiver"] = $request->email_receiver;
+            $data["password"] = $request->password;
+            $data['title'] = "Création de compte";
+
+            Mail::send('mail.accountCreatedMail', ['data' => $data],function ($message) use ($data){
+                $message->to($data['email_receiver'])->subject($data['title']);
+            });
         }
 
         return back()->with('message','L\'utilisateur a été créer avec succès.');
@@ -134,10 +136,10 @@ class UserController extends Controller
             'type' => 'max:100',
             'password' => 'min:10'
         ],
-            [
-                'required' => 'Le champ :attribute est requis.',
-                'unique' => "Cette  addresse email a un compte éxistant.",
-            ]);
+        [
+            'required' => 'Le champ :attribute est requis.',
+            'unique' => "Cette  addresse email a un compte éxistant.",
+        ]);
 
         // Return errors if validation error occur.
         if ($validator->fails()) return back()->withErrors($validator->errors())->withInput();
@@ -146,14 +148,6 @@ class UserController extends Controller
         unset($cloneRequest->password);
         if($request->password !== null){
             $cloneRequest->merge(['password' => Hash::make($request->password)]);
-            if($request->send_email === 'on'){
-                $j = new \stdClass();
-                $j->email = $user->email;
-                $j->name = $user->name;
-                $j->password = $request->password;
-                $mailler = new maillerController();
-                $mailler->UserPassword($j);
-            }
         }
 
 

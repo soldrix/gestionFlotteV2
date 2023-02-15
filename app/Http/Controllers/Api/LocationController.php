@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\location;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\JsonResponse;
 
@@ -46,14 +47,16 @@ class LocationController extends Controller
             "id_voiture" => ($request->id_voiture === null) ? null : $request->id_voiture,
             "id_users"  => Auth::id()
         ]);
-        $j = new \stdClass();
-        $j->email = Auth::user()->email;
-        $j->name = Auth::user()->name;
-        $j->DateDebut = date('d/m/Y', strtotime($request->DateDebut));
-        $j->DateFin = date('d/m/Y', strtotime($request->DateFin));
-        $j->montant = $request->montant;
-        $mailler = new maillerController();
-        $mailler->createLocation($j);
+
+        $data["email"] = Auth::user()->email;
+        $data['title'] = "Création de location";
+        $data['DateDebut'] = date('d/m/Y', strtotime($request->DateDebut));
+        $data['DateFin'] = date('d/m/Y', strtotime($request->DateFin));
+        $data['montant'] = $request->montant;
+
+        Mail::send('mail.locationMail', ['data' => $data],function ($message) use ($data){
+            $message->to($data['email'])->subject($data['title']);
+        });
 
         return response()->json([
             "location" => $location

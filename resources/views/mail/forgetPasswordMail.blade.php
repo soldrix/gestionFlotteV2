@@ -7,6 +7,5 @@
 
     <p>{{$data['body']}}</p>
     <a href="{{ $data['url'] }}">Cliquez ici pour réinitialiser votre mot de passe.</a>
-    <p>Merci de ne pas répondre.</p>
-</body>
+    <p style='margin-top: 15px;border-top: 1px solid;padding-bottom: 15px'>Ce message est automatique, merci de ne pas répondre.</p></body>
 </html>

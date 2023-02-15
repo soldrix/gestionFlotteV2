@@ -148,7 +148,7 @@ class UserController extends Controller
             $data['title'] = "réinitialisation de mot de passe";
             $data['body'] = "Veuillez cliquer sur le lien ci-dessous pour réinitialiser votre mot de passe.";
 
-            Mail::send('forgetPasswordMail', ['data' => $data],function ($message) use ($data){
+            Mail::send('mail.forgetPasswordMail', ['data' => $data],function ($message) use ($data){
                 $message->to($data['email'])->subject($data['title']);
             });
 

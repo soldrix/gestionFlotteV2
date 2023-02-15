@@ -106,13 +106,6 @@
                                 </div>
                             </div>
 
-                            <div class="row mb-3 justify-content-center">
-                                <div class="form-check form-switch col-auto">
-                                    <input class="form-check-input" name="send_email" type="checkbox" id="flexSwitchCheckDefault">
-                                    <label class="form-check-label" for="flexSwitchCheckDefault">Envoyer un email.</label>
-                                </div>
-                            </div>
-
                             <div class="row mb-0">
                                 <div class="col-md-6 offset-md-4">
                                     @if(str_contains(url()->previous(), 'edit') === false && str_contains(url()->previous(), 'create') === false)
