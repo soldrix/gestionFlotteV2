@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\agence;
+use App\Models\fournisseur;
+use App\Models\PasswordReset;
 use App\Models\roles;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -18,7 +21,7 @@ class UserController extends Controller
     public function index()
     {
         if(Auth::user()->hasRole('RH')){
-            $users = User::all()->where('statut', 1);
+            $users = User::where('statut', 1)->get();
             return view('users', ['users' => $users]);
         }
         $users = User::all();
@@ -35,6 +38,12 @@ class UserController extends Controller
         return view('form.utilisateur.userCreate',['roles' => $roles]);
     }
 
+    public function show(){
+        $user = User::find(Auth::id());
+        return view('profil',['user' => $user]);
+    }
+
+
     /**
      * Store a newly created resource in storage.
      *
@@ -45,7 +54,8 @@ class UserController extends Controller
     {
         // Validate request data
         $validator = Validator::make(array_filter($request->all()), [
-            'name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'email' => 'required|email|unique:users|max:255',
             'type' => 'required|max:100',
             'password' => 'required|min:10|confirmed',
@@ -61,7 +71,8 @@ class UserController extends Controller
         if ($validator->fails()) return back()->withErrors($validator->errors())->withInput();
 
         User::create([
-            'name' => $request->name,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'type' => $request->type
@@ -117,7 +128,8 @@ class UserController extends Controller
         // Validate request data
 
         $validator = Validator::make(array_filter($request->all()), [
-            'name' => 'string|max:255',
+            'first_name' => 'string|max:255',
+            'last_name' => 'string|max:255',
             'email' => 'email|unique:users|max:255',
             'type' => 'max:100',
             'password' => 'min:10'
@@ -146,6 +158,21 @@ class UserController extends Controller
 
 
         $user->update(array_filter($cloneRequest->all()));
+
+        //vérifie si l'utilisateur est relié à une agence ou un fournisseur, le/la supprime au changement de role s'il est relié
+        if($request->type !== null){
+            $fournisseur = fournisseur::where('id_users' , $id)->get();
+            if(count($fournisseur) > 0){
+                $fournisseur = fournisseur::find($fournisseur[0]['id']);
+                $fournisseur->delete();
+            }
+            $agence = agence::where('id_user', $id)->get();
+            if(count($agence) > 0){
+                $agence = agence::find($agence[0]['id']);
+                $agence->delete();
+            }
+        }
+
 
         return back()->with('message','L\'utilisateur a été créer avec succès.');
     }
@@ -259,5 +286,12 @@ class UserController extends Controller
         return response([
             'error' => 'request unauthorized'.Auth::user()->id
         ],401);
+    }
+
+    //reset password view
+
+    public function forgetPasswordLoad()
+    {
+        return view('forgetPasswordForm');
     }
 }

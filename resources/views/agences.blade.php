@@ -25,7 +25,7 @@
                         <td>{{$datas->ville}}</td>
                         <td>{{$datas->rue}}</td>
                         <td>{{$datas->codePostal}}</td>
-                        <td>{{($datas->name !== null) ? $datas->name.' '.$datas->email : 'Aucun utilisateur'}}</td>
+                        <td>{{($datas->first_name !== null) ? $datas->first_name.' '.$datas->last_name.' '.$datas->email : 'Aucun utilisateur'}}</td>
                         <td class="tdBtn">
                             <div class="divBtnTab d-flex flex-column flex-md-row">
                                 {{--Bouton pour modifié une agence--}}

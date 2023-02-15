@@ -25,7 +25,7 @@
                             <td>{{date('d/m/Y', strtotime($datas->DateDebut))}}</td>
                             <td>{{date('d/m/Y', strtotime($datas->DateFin))}}</td>
                             <td>{{$datas->immatriculation ?? 'Aucune voiture'}}</td>
-                            <td>{{$datas->email ?? 'Aucun utilisateur'}}</td>
+                            <td>{{($datas->email !== null) ? $datas->first_name.' '.$datas->last_name.' '.$datas->email :'Aucun utilisateur'}}</td>
                             <td>{{$datas->montant}}</td>
                             <td class="tdBtn">
                                 <div class="divBtnTab d-flex flex-column flex-md-row">

@@ -15,10 +15,11 @@ class AgenceController extends Controller
      */
     public function index()
     {
-        $agences = agence::join('users', 'users.id', '=', 'agence.id_user')
+        $agences = agence::leftjoin('users', 'users.id', '=', 'agence.id_user')
             ->get([
                 'agence.*',
-                'users.name',
+                'users.first_name',
+                'users.last_name',
                 'users.email'
             ]);
         return view('agences',['agences' => $agences]);
@@ -30,7 +31,7 @@ class AgenceController extends Controller
      */
     public function create()
     {
-        $users = User::all()->where('type', '=', 'chef agence');
+        $users = User::where('type', '=', 'chef agence')->get();
         return view('form.agence.agenceCreate',['users'=> $users]);
     }
 
@@ -69,7 +70,7 @@ class AgenceController extends Controller
     public function edit($id)
     {
         $agence = agence::find($id);
-        $users = User::all()->where('type', '=', 'chef agence');
+        $users = User::where('type', '=', 'chef agence')->get();
         return view('form.agence.agenceEdit',['agence' => $agence,'users' => $users]);
     }
 

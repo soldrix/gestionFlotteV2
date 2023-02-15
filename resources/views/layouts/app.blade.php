@@ -135,7 +135,7 @@
                             <li class="nav-item dropdown ">
                                 @if(\Illuminate\Support\Facades\Auth::user())
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle text-center text-white" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ \Illuminate\Support\Facades\Auth::user()->name }}
+                                    {{ \Illuminate\Support\Facades\Auth::user()->first_name }}
                                 </a>
                                 @endif
                                 <div class="dropdown-menu dropdown-menu-end bg-s" aria-labelledby="navbarDropdown">

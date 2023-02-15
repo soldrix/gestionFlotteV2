@@ -46,8 +46,19 @@ Route::get('/register',  function (){
 });
 Route::view('/PageNotFound', 'errors.404');
 //page de modification de mot de passe
+
+
+
 Route::view('/UpdatePassword', 'updatePassword');
 Route::post('/userPassword/update', [UserController::class, 'updatePassword'])->name('UpdatePassword');
+
+Route::get('/forget-password', [UserController::class, 'forgetPasswordLoad']);
+Route::post('/forget-password', [App\Http\Controllers\Api\UserController::class, 'forgetPassword'])->name('forgotPassword');
+Route::get('/reset-password', [App\Http\Controllers\Api\UserController::class, 'resetPasswordLoad']);
+Route::post('/reset-password', [App\Http\Controllers\Api\UserController::class, 'resetPassword']);
+
+
+
 Route::controller(LoginController::class)->group(function (){
     Route::post('login','login')->name('login');
     Route::post('register','register')->name('register');
@@ -61,9 +72,9 @@ Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
     });
 
 
-    Route::view('/profil', 'profil');
     //route protéger par des roles
-        Route::controller(VoitureController::class)->middleware('role:admin,responsable auto')->group(function () {
+        Route::controller(VoitureController::class)
+            ->middleware('role:admin,responsable auto')->group(function () {
             Route::get('voitures', 'index');
             Route::get('voiture/create', 'create');
             Route::post('voiture/store', 'store')->name('createVoiture');
@@ -128,7 +139,7 @@ Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
         });
 
         Route::controller(LocationController::class)->middleware('role:admin')->group(function (){
-            Route::get('locations', 'adminIndex');
+            Route::get('locations', 'index');
             Route::get('location/create' , 'create');
             Route::post('location/store', 'store')->name('createLocation');
             Route::get('location/edit/{id}', 'edit');
@@ -145,11 +156,18 @@ Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
             Route::get('users', 'index');
             Route::put('user/desactivate/{id}', 'desactivate');
         });
+        Route::controller(\App\Http\Controllers\Api\UserController::class)->group(function (){
+            Route::post('user/edit/first_name', "update");
+        });
         Route::controller(UserController::class)->group(function (){
+
+
+
+
            Route::get('profil/edit/{id}', 'editProfil');
            Route::put('profil/update/{id}', 'profilUpdate')->name('profilUpdate');
-            Route::delete('user/delete/{id}', 'destroy');
-
+           Route::delete('user/delete/{id}', 'destroy');
+           Route::get('/profil', 'show');
         });
 
 //        Route::delete('user/delete/{id}', [\App\Http\Controllers\UserController::class,'destroy']);

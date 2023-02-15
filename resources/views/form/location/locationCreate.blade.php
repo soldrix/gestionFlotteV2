@@ -51,19 +51,30 @@
                             </div>
                             <div class="row mb-3">
                                 <label for="voitureID" class="col-md-4 col-form-label text-md-end">{{ __('Voitures :') }}</label>
-                                <div class="col-md-6">
-                                    <select id="voitureId" class="form-select @error('id_voiture') is-invalid @enderror" aria-label="Default select example" name="id_voiture">
-                                        <option value="null">Aucune voiture</option>
-                                        @foreach($voitures as $datas)
-                                            <option value="{{$datas->id}}">{{$datas->marque.' '.$datas->model.' '.$datas->immatriculation}}</option>
-                                        @endforeach
-                                    </select>
-                                    @error ('id_voiture')
-                                    <span class="invalid-feedback" role="alert">
+                                @if(count(json_decode($voitures)) > 0)
+                                    <div class="col-md-6">
+                                        <select id="voitureId" class="form-select @error('id_voiture') is-invalid @enderror" aria-label="Default select example" name="id_voiture">
+                                            <option value="">Selectioner une voiture</option>
+                                            <option value="vide">Aucune voiture</option>
+                                            @foreach($voitures as $datas)
+                                                @if($datas->id === $location->id_voiture)
+                                                    <option value="{{$datas->id}}" selected>{{$datas->marque.' '.$datas->model.' '.$datas->immatriculation}}</option>
+                                                @else
+                                                    <option value="{{$datas->id}}">{{$datas->marque.' '.$datas->model.' '.$datas->immatriculation}}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                        @error ('id_voiture')
+                                        <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
-                                    @enderror
-                                </div>
+                                        @enderror
+                                    </div>
+                                @else
+                                    <div class="col-md-6">
+                                        <p class="text-danger">Aucune voiture, créer une voiture pour pouvoir créer une location.</p>
+                                    </div>
+                                @endif
                             </div>
 
                             <div class="row mb-3">
@@ -72,7 +83,7 @@
                                     <select id="userId" class="form-select @error('id_user') is-invalid @enderror" aria-label="Default select example" name="id_user">
                                         <option value="null">Aucun utilisateur</option>
                                         @foreach($users as $datas)
-                                            <option value="{{$datas->id}}">{{$datas->name.' '.$datas->email}}</option>
+                                            <option value="{{$datas->id}}">{{$datas->first_name.' '.$datas->last_name.' '.$datas->email}}</option>
                                         @endforeach
                                     </select>
                                     @error ('id_user')
@@ -96,9 +107,11 @@
                                     <a href="{{str_replace(url('/'), '', session()->get('urlP'))}}" class="btn btn-danger">
                                         {{__('Retour')}}
                                     </a>
-                                    <button type="submit" class="btn btn-primary">
-                                        {{ __('Continuer') }}
-                                    </button>
+                                    @if(count(json_decode($voitures)) > 0)
+                                        <button type="submit" class="btn btn-primary">
+                                            {{ __('Continuer') }}
+                                        </button>
+                                    @endif
                                 </div>
                             </div>
                         </form>

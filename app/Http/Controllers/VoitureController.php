@@ -104,10 +104,10 @@ class VoitureController extends Controller
                 'agence.ville',
                 'agence.rue'
             ]);
-        $entretiens = entretien::all()->where('id_voiture', $id);
-        $assurances = assurance::all()->where('id_voiture', $id);
-        $reparations = reparation::all()->where('id_voiture' ,$id);
-        $consommations =consommation::all()->where('id_voiture', $id);
+        $entretiens = entretien::where('id_voiture', $id)->get();
+        $assurances = assurance::where('id_voiture', $id)->get();
+        $reparations = reparation::where('id_voiture' ,$id)->get();
+        $consommations =consommation::where('id_voiture', $id)->get();
         return view('voiture',
             [
                 'voitureData' => $voiture,

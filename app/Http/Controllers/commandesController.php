@@ -34,7 +34,7 @@ class commandesController extends Controller
      */
     public function create()
     {
-        $voitures = voitureFournisseur::all()->where('statut', '=', "1");
+        $voitures = voitureFournisseur::where('statut', '=', "1")->get();
         return view('form.commandes.createCommande',['voitures' => $voitures]);
     }
 
@@ -80,7 +80,7 @@ class commandesController extends Controller
             'voitures_fournisseur.model',
             'commandes.*'
         ]);
-        $voitures = voitureFournisseur::all()->where('statut', '=', "1");
+        $voitures = voitureFournisseur::where('statut', '=', "1")->get();
         return view('form.commandes.editCommande',['commande' => $commande[0], "voitures" => $voitures]);
     }
 

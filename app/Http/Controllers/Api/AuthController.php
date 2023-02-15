@@ -19,11 +19,15 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users|max:255',
             'password' => 'required|min:10|confirmed',
+            "password_confirmation" => 'required'
         ],
         [
-            'required' => 'Le champ :attribute est requis.',
+            'required' => 'Le champ est requis.',
             'unique' => "Cette  addresse email a un compte éxistant.",
-            'password.confirmed' => "Le mot de passe de confirmation ne correspond pas."
+            'password.confirmed' => "Le mot de passe de confirmation ne correspond pas.",
+            'email.email'  => "L'adresse mail doit être une adresse mail valide.",
+            'min' => "Doit contenir au moins 10 caractères.",
+            'max' => "Il y a trop de caractères."
         ]);
 
         // Return errors if validation error occur.

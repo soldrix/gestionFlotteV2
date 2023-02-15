@@ -32,7 +32,7 @@ class FournisseurController extends Controller
      */
     public function create()
     {
-        $users = User::all()->where('type', '=', 'fournisseur');
+        $users = User::where('type', '=', 'fournisseur')->get();
         return view('form.fournisseur.fournisseurCreate', ['users' => $users]);
     }
 
@@ -66,7 +66,7 @@ class FournisseurController extends Controller
     public function edit($id)
     {
         $fournisseur = fournisseur::find($id);
-        $users = User::all();
+        $users = User::where('type', '=', 'fournisseur')->get();
         return view('form.fournisseur.fournisseurEdit',['fournisseur' => $fournisseur, 'users' => $users]);
     }
 

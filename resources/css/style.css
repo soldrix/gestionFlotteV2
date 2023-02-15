@@ -101,3 +101,6 @@ td{
     word-wrap: anywhere;
     text-align: center;
 }
+.w-fit{
+    width: fit-content;
+}

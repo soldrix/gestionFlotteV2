@@ -55,7 +55,7 @@ class LoginController extends Controller
             'users.email'
         ]);
         //récupère toutes les agences créer ou modifier depuis les 7 derniers jours
-        $agences = agence::all()->where('updated_at', '>=', $date);
+        $agences = agence::where('updated_at', '>=', $date)->get();
         //récupère toutes les voitures créer ou modifier depuis les 7 derniers jours
         $voitures = voiture::leftJoin('agence', 'agence.id', '=', 'voitures.id_agence')->where('voitures.updated_at', '>=', $date)->get([
                'voitures.*',
@@ -71,7 +71,8 @@ class LoginController extends Controller
     {
         // Validate request data
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'email' => 'required|email|unique:users|max:255',
             'password' => 'required|min:10|confirmed',
         ],
@@ -85,7 +86,8 @@ class LoginController extends Controller
         if ($validator->fails()) return back()->withErrors($validator->errors())->withInput();
 
         User::create([
-            'name' => $request->name,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'type' => 'user'
@@ -103,7 +105,7 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         $user = User::where('email', '=', $request->email)->get('statut');
-        if($user[0]->statut === 0){
+        if($user === 0){
             return back()->withErrors(['message' => 'Le compte est désactiver contactez votre administrateur pour plus d’informations.'])->withInput();
         }
         //essaye de connecter l'utilisateur avec les informations transmises

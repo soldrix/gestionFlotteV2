@@ -28,11 +28,13 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/image/{path}', [voitureController::class, 'getImage'])->where('path', '.*');
 
+
+Route::post('/forget-password', [UserController::class, 'forgetPassword']);
+Route::post('/reset-password', [UserController::class, 'resetPassword']);
+
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/voitures/agence/{id}',[voitureController::class, 'indexAgence']);
-
-
-
 
 
     Route::post('/logout', [AuthController::class, 'logout']);
