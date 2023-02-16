@@ -10,127 +10,108 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 class UserController extends Controller
 {
-    public function update(Request $request):JsonResponse
+
+    public function update_first_name(Request $request)
     {
         $validator = Validator::make(array_filter($request->all()),[
-            "first_name" => ["string", "max:255"],
-            "last_name" => ["string", "max:255"],
-            "email" => ["email", "unique:users","max:255"],
-            "new_password" => ["string", "max:100", "confirmed"],
+            "first_name" => ["required", "string", "max:255"],
             "old_password" => ["required", "string", "max:100"]
+        ],
+        [
+            "required" => "Le champ est requis.",
+            "first_name.max" => 'Le champ ne peut contenir que 255 caractères.',
+            "old_password.max" => 'Le champ ne peut contenir que 100 caractères.'
         ]);
         if($validator->fails())return response()->json(["error" => $validator->errors()]);
         $user = User::find($request->id);
         if(Hash::check($request->old_password, $user->password)){
-            if($request->first_name !== null){
-                $user->first_name = $request->first_name;
-            }
-            if($request->last_name !== null){
-                $user->last_name = $request->last_name;
-            }
-            if($request->email !== null){
-                $user->email = $request->eamil;
-            }
-            if($request->new_password !== null){
-                $user->password = $request->new_password;
-            }
+            $user->first_name = $request->first_name;
             $user->update();
+            return response()->json([
+                "success" => "Le profil a été modifié avec succès.",
+                "datas" => $request->all()
+            ]);
         }
-        return response()->json([
-            "success" => "Le profil a été modifié avec succès.",
-            "datas" => $request->all()
-        ]);
+        return response()->json(["error" => ["old_password" => "Mot de passe incorrect."]]);
     }
 
-
-
-    public function updateName(Request $request)
+    public function update_last_name(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'password' => 'required|min:10',
-        ],
-            [
-                'required' => 'Le champ :attribute est requis.'
-            ]);
-
-        // Return errors if validation error occur.
-        if ($validator->fails()) {
-            return response()->json([
-                'error' => $validator->errors()
-            ], 400);
-        }
-        if(Hash::check($request->password, Auth::user()->password)){
-            $user = Auth::user();
-            $user->name = $request->name;
-            $user->save();
-            return response()->json([
-                "user" => $user
-            ]);
-        }
-        return response()->json([
-            "message" => "Mot de passe incorrect."
-        ]);
-    }
-    public function updateEmail(Request $request){
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email|max:255',
-            'password' => 'required|min:10',
-        ],
-            [
-                'required' => 'Le champ :attribute ne peut être vide.',
-                'email' => "L'email doit être une addresse email valide."
-            ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'error' => $validator->errors()
-            ], 400);
-        }
-        if(Hash::check($request->password, Auth::user()->password)){
-            $user = Auth::user();
-            $user->email = $request->email;
-            $user->save();
-            return response()->json([
-                "user" => $user
-            ]);
-        }
-        return response()->json([
-            "message" => "Mot de passe incorrect."
-        ]);
-    }
-    public function updatePassword(Request $request){
-        $validator = Validator::make($request->all(),[
-            "old_password" => "required",
-            "new_password" => "required|confirmed"
+        $validator = Validator::make(array_filter($request->all()),[
+            "last_name" => ["required", "string", "max:255"],
+            "old_password" => ["required", "string", "max:100"]
         ],
         [
-            "old_password.required" => "Le mot de passe est requis.",
-            "new_password.required" => "Le nouveau mot de passe est requis.",
-            "confirmed" => "La confirmation du nouveau mot de passe ne correspond pas."
+            "required" => "Le champ est requis.",
+            "last_name.max" => 'Le champ ne peut contenir que 255 caractères.',
+            "old_password.max" => 'Le champ ne peut contenir que 100 caractères.'
         ]);
-        if ($validator->fails()) {
+        if($validator->fails())return response()->json(["error" => $validator->errors()]);
+        $user = User::find($request->id);
+        if(Hash::check($request->old_password, $user->password)){
+            $user->last_name = $request->last_name;
+            $user->update();
             return response()->json([
-                'error' => $validator->errors()
-            ], 400);
-        }
-        if(Hash::check($request->old_password, Auth::user()->password)){
-            $user = Auth::user();
-            $user->password = Hash::make($request->new_password);
-            $user->save();
-            return response()->json([
-                "user" => $user
+                "success" => "Le profil a été modifié avec succès.",
+                "datas" => $request->all()
             ]);
         }
-        return response()->json([
-            "message" => "Mot de passe incorrect."
-        ]);
+        return response()->json(["error" => ["old_password" => "Mot de passe incorrect."]]);
     }
+    public function update_email(Request $request)
+    {
+        $validator = Validator::make(array_filter($request->all()),[
+            "email" => ["required", "email", "unique:users", "max:255"],
+            "old_password" => ["required", "string", "max:100"]
+        ],
+        [
+            "required" => "Le champ est requis.",
+            "email.max" => 'Le champ ne peut contenir que 255 caractères.',
+            "old_password.max" => 'Le champ ne peut contenir que 100 caractères.',
+            "unique" => "L'adresse mail est déjà utiliser."
+        ]);
+        if($validator->fails())return response()->json(["error" => $validator->errors()]);
+        $user = User::find($request->id);
+        if(Hash::check($request->old_password, $user->password)){
+            $user->email = $request->email;
+            $user->update();
+            return response()->json([
+                "success" => "Le profil a été modifié avec succès.",
+                "datas" => $request->all()
+            ]);
+        }
+        return response()->json(["error" => ["old_password" => "Mot de passe incorrect."]]);
+    }
+
+    public function update_password(Request $request):JsonResponse
+    {
+        $validator = Validator::make(array_filter($request->all()),[
+            "new_password" => ["required", "string", "max:100", "confirmed"],
+            "old_password" => ["required", "string", "max:100"]
+        ],
+        [
+            "required" => "Le champ est requis.",
+            "max" => 'Le champ ne peut contenir que 100 caractères.',
+            "confirmed" => "Les mots de passe ne correspondent pas."
+        ]);
+        if($validator->fails())return response()->json(["error" => $validator->errors()]);
+        $user = User::find($request->id);
+        if(Hash::check($request->old_password, $user->password)){
+            $user->password = Hash::make($request->new_password);
+            $user->update();
+            return response()->json([
+                "success" => "Le profil a été modifié avec succès.",
+                "datas" => $request->all()
+            ]);
+        }
+        return response()->json(["error" => ["old_password" => "Mot de passe incorrect."]]);
+    }
+
     public function delete($id)
     {
         User::where('id', $id)->delete();
@@ -166,7 +147,7 @@ class UserController extends Controller
             $data['title'] = "réinitialisation de mot de passe";
             $data['body'] = "Veuillez cliquer sur le lien ci-dessous pour réinitialiser votre mot de passe.";
 
-            Mail::send('forgetPasswordMail', ['data' => $data],function ($message) use ($data){
+            Mail::send('mail.forgetPasswordMail', ['data' => $data],function ($message) use ($data){
                 $message->to($data['email'])->subject($data['title']);
             });
 
@@ -191,9 +172,9 @@ class UserController extends Controller
         $resetData = PasswordReset::where('token',$request->token)->get();
         if (isset($request->token) && count($resetData) > 0){
             $user = User::where('email', $resetData[0]['email'])->get();
-            return view('resetPassword',compact('user'));
+            return ($request->wantsJson()) ? response()->json(['data' => $user]) : view('resetPassword',compact('user'));
         }
-        return view('errors.404');
+        return ($request->wantsJson()) ? response()->json(['success' => false]) :view('errors.404');
     }
 
     public function resetPassword(Request $request)

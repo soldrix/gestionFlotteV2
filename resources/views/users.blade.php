@@ -14,7 +14,7 @@
                     <th>Prenom</th>
                     <th>Nom</th>
                     <th>Email</th>
-                    <th>Type</th>
+                    <th>Role</th>
                     @if(\Illuminate\Support\Facades\Auth::user()->hasRole('admin'))
                         <th>Statut</th>
                     @endif
@@ -28,7 +28,7 @@
                         <td>{{$datas->first_name}}</td>
                         <td>{{$datas->last_name}}</td>
                         <td>{{$datas->email}}</td>
-                        <td>{{$datas->type}}</td>
+                        <td>{{$datas->role}}</td>
                         @if(\Illuminate\Support\Facades\Auth::user()->hasRole('admin'))
                             <td>{{($datas->statut === 0) ? 'Désactiver' : 'Activer'}}</td>
                         @endif
@@ -36,7 +36,7 @@
                             <div class="divBtnTab">
                                 <a class="btn btn-info editButton text-white"  href="/user/edit/{{$datas->id}}"><i class="fa-solid fa-pencil "></i></a>
                                 @if(\Illuminate\Support\Facades\Auth::user()->hasRole('RH'))
-                                    <button class="btn btn-danger desButton" data-voiture="{{$datas->id}}"><i class="fa-solid fa-trash-can"></i></button>
+                                    <button class="btn btn-danger desButton" data-voiture="{{$datas->id}}"><i class="fa-solid fa-user-slash"></i></button>
                                 @else
                                     <button class="btn btn-danger delButton" data-voiture="{{$datas->id}}"><i class="fa-solid fa-trash-can"></i></button>
                                 @endif

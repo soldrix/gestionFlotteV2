@@ -38,9 +38,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     Route::post('/logout', [AuthController::class, 'logout']);
-    Route::post('/user/edit/name', [UserController::class, 'updateName']);
-    Route::post('/user/edit/email', [UserController::class, 'updateEmail']);
-    Route::post('/user/edit/password', [UserController::class, 'updatePassword']);
+    Route::controller(UserController::class)->group(function (){
+        Route::post('user/edit/first_name', "update_first_name");
+        Route::post('user/edit/last_name', "update_last_name");
+        Route::post('user/edit/email', "update_email");
+        Route::post('user/edit/password', "update_password");
+    });
     Route::delete('/user/delete/{id}', [UserController::class, 'delete']);
     Route::get('/user/{id}',[UserController::class, 'getUser']);
     Route::get('/users',[UserController::class, 'index']);

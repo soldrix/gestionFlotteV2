@@ -63,7 +63,10 @@ class LoginController extends Controller
                 'agence.rue'
             ]);
         //récupère touts les utilisateurs créer ou modifier depuis les 7 derniers jours
-        $users = User::where('updated_at', '>=', $date)->get();
+        $users = User::join('roles', 'roles.id', '=', 'users.id_role')->where('users.updated_at', '>=', $date)->get([
+            "users.*",
+            "roles.name as role"
+        ]);
         return view('home',['entretiens' => $entretiens, 'assurances' => $assurances, 'consommations' => $consommations, 'reparations' => $reparations, 'locations' => $locations, 'agences' => $agences, 'fournisseurs' => $fournisseurs, 'voitures' => $voitures, 'users' => $users]);
     }
 
@@ -85,27 +88,26 @@ class LoginController extends Controller
         // Return errors if validation error occur.
         if ($validator->fails()) return back()->withErrors($validator->errors())->withInput();
 
-        User::create([
+        $user = User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'type' => 'user'
+            'id_role' => 1
         ]);
+       $user->assignRole(1);
+
         //login l'utilisateur apres création du compte
         Auth::guard()->attempt($request->only('email', 'password'));
         $request->session()->regenerate();
         $token = Auth()->user()->createToken('auth_token')->plainTextToken;
-        $role = Auth::user()->type;
-        //ajout du role de l'utilisateur
-        Auth()->user()->assignRole($role);
         return redirect('/home')->with('token','Bearer '.$token);
     }
 
     public function login(Request $request)
     {
         $user = User::where('email', '=', $request->email)->get('statut');
-        if($user === 0){
+        if($user[0]['statut'] === 0){
             return back()->withErrors(['message' => 'Le compte est désactiver contactez votre administrateur pour plus d’informations.'])->withInput();
         }
         //essaye de connecter l'utilisateur avec les informations transmises
@@ -117,9 +119,6 @@ class LoginController extends Controller
                 $request->session()->regenerate();
                 //créer le token de connexion
                 $token = Auth()->user()->createToken('auth_token')->plainTextToken;
-                $role = Auth::user()->type;
-                //ajout un role à l'utilisateur
-                Auth()->user()->assignRole($role);
                 return redirect('/home')->with('token','Bearer '.$token);
         }
         return back()->withErrors(['message'=>'Données de connexion invalides.'])->withInput();

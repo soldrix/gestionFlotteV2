@@ -253,17 +253,19 @@
                         <table id="DataTable_users" class="table table-bordered table-hover table-dark mt-2 table-striped dataTable table-responsive" style="width: 100%">
                             <thead>
                             <tr>
+                                <th>Prenom</th>
                                 <th>Nom</th>
                                 <th>Email</th>
-                                <th>Type</th>
+                                <th>Role</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($users as $datas)
                                 <tr data-voiture="{{$datas->id}}">
-                                    <td>{{$datas->name}}</td>
+                                    <td>{{$datas->first_name}}</td>
+                                    <td>{{$datas->last_name}}</td>
                                     <td>{{$datas->email}}</td>
-                                    <td>{{$datas->type}}</td>
+                                    <td>{{$datas->role}}</td>
                                 </tr>
                             @endforeach
                             </tbody>

@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\agence;
 use App\Models\fournisseur;
-use App\Models\PasswordReset;
-use App\Models\roles;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -21,10 +21,19 @@ class UserController extends Controller
     public function index()
     {
         if(Auth::user()->hasRole('RH')){
-            $users = User::where('statut', 1)->get();
+            $users = User::join('roles', 'roles.id', '=', "users.id_role")
+                ->where('statut', 1)
+                ->get([
+                    "users.*",
+                    "roles.name as role"
+                ]);
             return view('users', ['users' => $users]);
         }
-        $users = User::all();
+        $users = User::join('roles', 'roles.id', '=', "users.id_role")
+            ->get([
+                "users.*",
+                "roles.name as role"
+            ]);
         return view('users', ['users' => $users]);
     }
 
@@ -34,7 +43,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = roles::all();
+        $roles = Role::all();
         return view('form.utilisateur.userCreate',['roles' => $roles]);
     }
 
@@ -57,7 +66,7 @@ class UserController extends Controller
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|unique:users|max:255',
-            'type' => 'required|max:100',
+            'id_role' => 'required',
             'password' => 'required|min:10|confirmed',
             'email_receiver' => 'email'
         ],
@@ -70,22 +79,24 @@ class UserController extends Controller
         // Return errors if validation error occur.
         if ($validator->fails()) return back()->withErrors($validator->errors())->withInput();
 
-        User::create([
+        $user = User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'type' => $request->type
+            'id_role' => $request->id_role
         ]);
+        $user->assignRole($request->id_role);
 
         if($request->email_receiver !== null){
-            $j = new \stdClass();
-            $j->email    = $request->email;
-            $j->email_receiver    = $request->email_receiver;
-            $j->name     = $request->name;
-            $j->password = $request->password;
-            $mailler = new maillerController();
-            $mailler->createUser($j);
+            $data["email"] = $request->email;
+            $data["email_receiver"] = $request->email_receiver;
+            $data["password"] = $request->password;
+            $data['title'] = "Création de compte";
+
+            Mail::send('mail.accountCreatedMail', ['data' => $data],function ($message) use ($data){
+                $message->to($data['email_receiver'])->subject($data['title']);
+            });
         }
 
         return back()->with('message','L\'utilisateur a été créer avec succès.');
@@ -100,9 +111,14 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user = User::find($id);
-        $roles = roles::all();
-        return view('form.utilisateur.userEdit',['user' => $user, 'roles' => $roles]);
+        $user = User::join('roles', 'roles.id', '=', 'users.id_role')
+        ->where('users.id', $id)
+        ->get([
+            "users.*",
+            "roles.name as role"
+        ]);
+        $roles = Role::all();
+        return view('form.utilisateur.userEdit',['user' => $user[0], 'roles' => $roles]);
     }
     /**
      * Show the form for editing the specified resource.
@@ -131,13 +147,13 @@ class UserController extends Controller
             'first_name' => 'string|max:255',
             'last_name' => 'string|max:255',
             'email' => 'email|unique:users|max:255',
-            'type' => 'max:100',
+            'statut' => 'string',
             'password' => 'min:10'
         ],
-            [
-                'required' => 'Le champ :attribute est requis.',
-                'unique' => "Cette  addresse email a un compte éxistant.",
-            ]);
+        [
+            'required' => 'Le champ :attribute est requis.',
+            'unique' => "Cette  addresse email a un compte éxistant.",
+        ]);
 
         // Return errors if validation error occur.
         if ($validator->fails()) return back()->withErrors($validator->errors())->withInput();
@@ -146,21 +162,12 @@ class UserController extends Controller
         unset($cloneRequest->password);
         if($request->password !== null){
             $cloneRequest->merge(['password' => Hash::make($request->password)]);
-            if($request->send_email === 'on'){
-                $j = new \stdClass();
-                $j->email = $user->email;
-                $j->name = $user->name;
-                $j->password = $request->password;
-                $mailler = new maillerController();
-                $mailler->UserPassword($j);
-            }
         }
 
-
-        $user->update(array_filter($cloneRequest->all()));
-
         //vérifie si l'utilisateur est relié à une agence ou un fournisseur, le/la supprime au changement de role s'il est relié
-        if($request->type !== null){
+        if($request->id_role !== null){
+            $user->removeRole($user->id_role);
+            $user->assignRole($request->id_role);
             $fournisseur = fournisseur::where('id_users' , $id)->get();
             if(count($fournisseur) > 0){
                 $fournisseur = fournisseur::find($fournisseur[0]['id']);
@@ -172,76 +179,16 @@ class UserController extends Controller
                 $agence->delete();
             }
         }
+        if($request->statut !== null){
+            $user->update(array_merge(array_filter($cloneRequest->all()), ["statut" => $request->statut]));
+        }else{
+            $user->update(array_filter($cloneRequest->all()));
+        }
 
 
         return back()->with('message','L\'utilisateur a été créer avec succès.');
     }
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     *
-     */
-    public function profilUpdate(Request $request, $id){
-        // Validate request data
-        $validator = Validator::make(array_filter($request->all()), [
-            'name' => 'string|max:255',
-            'email' => 'email|unique:users|max:255',
-            'password' => 'min:10|required',
-        ],
-        [
-            'required' => 'Le mot de passe est requis.',
-            'unique' => "Cette  addresse email a un compte éxistant.",
-        ]);
 
-        // Return errors if validation error occur.
-        if ($validator->fails()) return back()->withErrors($validator->errors())->withInput();
-        $user = User::find($id);
-        $cloneRequest = clone $request;
-        unset($cloneRequest->password);
-        if(Auth::guard()->attempt(['email' => Auth::user()->email,'password' => $request->password]))
-        {
-            $user->update(array_filter($cloneRequest->all()));
-            return back()->with('message','L\'utilisateur a été créer avec succès.');
-        }
-        return back()->withErrors([
-            'password' => 'Le mot de passe de connexion est invalide'
-        ])->withInput();
-    }
-
-    public function updatePassword(Request $request)
-    {
-        $validator = Validator::make($request->all(),[
-            'email' => 'required|email',
-            'password' => 'required',
-            'new_password' => 'required|min:10|confirmed'
-        ]);
-        if ($validator->fails()) return back()->withErrors($validator->errors())->withInput();
-        //vérifie si l'utilisateur est connecté
-        if(auth()->guard()->check()){
-            //supprime tous les tokens de l'utilisateur et le déconnecte
-            $request->user()->tokens()->delete();
-            $request->session()->invalidate();
-            Auth::guard()->logout();
-        }
-        //connect l'utilisateur
-        if(Auth::guard()->attempt($request->only('email', 'password'))){
-            $request->session()->regenerate();
-            //récupère l'utilisateur
-            $user = User::find(Auth::user()->id);
-            //modifie le mot de passe de l'utilisateur par le nouveau mot de passe
-            $user->update([
-                'password' => Hash::make($request->new_password)
-            ]);
-            //déconnect l'utlisateur
-            $request->session()->invalidate();
-            Auth::guard()->logout();
-            //redirige l'utilisateur à la page login
-            return redirect('/login')->with('message', 'Le mot de passe a été modifier avec succès.');
-        }
-        return back()->withErrors(['message'=>'Données de connexion invalides.'])->withInput();
-    }
     /**
      * Remove the specified resource from storage.
      *
