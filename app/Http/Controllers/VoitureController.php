@@ -72,7 +72,7 @@ class VoitureController extends Controller
             "nbPlace" => $request->nbPlace,
             "prix" => $request->prix,
             "statut" => $request->statut,
-            "id_agence" => ($request->id_agence !== 'null') ? $request->id_agence : null,
+            "id_agence" => ($request->id_agence !== 'vide') ? $request->id_agence : null,
         ]);
         return back()->with('message', 'La voiture à été créer avec succès.');
     }

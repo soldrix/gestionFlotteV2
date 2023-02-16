@@ -41,7 +41,13 @@ MAIL_PASSWORD=
 ```
 
 
-Enfin démarer le server et ensuite créer un compte:
+Démarer le server:
 ```
 php artisan serve
 ```
+Enfin utiliser le compte suivant :
+
+email : ```admin@gmail.com```
+mot de passe : ```1234567890```
+
+Ne pas oublier de créer un autre compte admin par la suite ou changer le mot de passe.

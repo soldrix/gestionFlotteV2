@@ -32,7 +32,9 @@ class FournisseurController extends Controller
      */
     public function create()
     {
-        $users = User::where('type', '=', 'fournisseur')->get();
+        $users = User::join('roles', 'roles.id', '=', 'users.id_role')->where('roles.name', '=', 'fournisseur')->get([
+            "users.*"
+        ]);
         return view('form.fournisseur.fournisseurCreate', ['users' => $users]);
     }
 

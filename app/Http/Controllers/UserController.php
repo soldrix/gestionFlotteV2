@@ -67,7 +67,6 @@ class UserController extends Controller
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|unique:users|max:255',
             'id_role' => 'required',
-            'password' => 'required|min:10|confirmed',
             'email_receiver' => 'email'
         ],
             [
@@ -83,7 +82,7 @@ class UserController extends Controller
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => Hash::make(1234567890),
             'id_role' => $request->id_role
         ]);
         $user->assignRole($request->id_role);
@@ -91,7 +90,7 @@ class UserController extends Controller
         if($request->email_receiver !== null){
             $data["email"] = $request->email;
             $data["email_receiver"] = $request->email_receiver;
-            $data["password"] = $request->password;
+            $data["password"] = "1234567890";
             $data['title'] = "Création de compte";
 
             Mail::send('mail.accountCreatedMail', ['data' => $data],function ($message) use ($data){

@@ -14,8 +14,12 @@
                     <div class="card-body">
                         <form method="POST" action="{{ route('createFournisseur') }}">
                             @csrf
+                            <p class="text-end">
+                                <span class="text-danger">*</span>
+                                champs obligatoires
+                            </p>
                             <div class="row mb-3">
-                                <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Nom du fournissseur :') }}</label>
+                                <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Nom du fournissseur ')}}<span class="text-danger">*</span>{{__(' :')}}</label>
                                 <div class="col-md-6">
                                     <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
                                     @error ('name')
@@ -26,10 +30,11 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="userId" class="col-md-4 col-form-label text-md-end">{{ __('Utilisateur :') }}</label>
+                                <label for="userId" class="col-md-4 col-form-label text-md-end">{{ __('Utilisateur ')}}<span class="text-danger">*</span>{{__(' :')}}</label>
                                 @if(count(json_decode($users)) > 0)
                                     <div class="col-md-6">
                                         <select id="userId" class="form-select @error('id_users') is-invalid @enderror" aria-label="Default select example" name="id_users">
+                                            <option value="">Sélectionner un utilisateur</option>
                                             @foreach($users as $datas)
                                                     <option value="{{$datas->id}}">{{$datas->first_name.' '.$datas->last_name.' '.$datas->email}}</option>
                                             @endforeach
@@ -41,7 +46,7 @@
                                         @enderror
                                     </div>
                                 @else
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 d-flex justify-content-center align-items-center">
                                         <p class="text-danger">Aucun utilisateur avec le role fournisseur, créer un utilisateur avec le role fournisseur pour pouvoir créer un fournisseur.</p>
                                     </div>
                                 @endif

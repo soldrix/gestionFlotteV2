@@ -66,11 +66,7 @@
                                         <option value="">Selectionner une voiture</option>
                                         <option value="vide">Aucune voiture</option>
                                         @foreach($voitures as $datas)
-                                            @if($assurance->id_voiture === $datas->id)
-                                                <option value="{{$datas->id}}" selected>{{$datas->marque.' '.$datas->model.' '.$datas->immatriculation}}</option>
-                                            @else
                                                 <option value="{{$datas->id}}">{{$datas->marque.' '.$datas->model.' '.$datas->immatriculation}}</option>
-                                            @endif
                                         @endforeach
                                     </select>
                                     @error ('id_voiture')

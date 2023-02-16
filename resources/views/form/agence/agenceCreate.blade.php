@@ -14,8 +14,12 @@
                     <div class="card-body">
                         <form method="POST" action="{{ route('createAgence') }}">
                             @csrf
+                            <p class="text-end">
+                                <span class="text-danger">*</span>
+                                champs obligatoires
+                            </p>
                             <div class="row mb-3">
-                                <label for="ville" class="col-md-4 col-form-label text-md-end">{{ __('Ville :') }}</label>
+                                <label for="ville" class="col-md-4 col-form-label text-md-end">{{ __('Ville ')}}<span class="text-danger">*</span>{{__(' :')}}</label>
                                 <div class="col-md-6">
                                     <input id="ville" type="text" class="form-control @error('ville') is-invalid @enderror" name="ville" value="{{ old('ville') }}" required autocomplete="ville" autofocus>
                                     @error ('ville')
@@ -26,7 +30,7 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="rue" class="col-md-4 col-form-label text-md-end">{{ __('Rue :') }}</label>
+                                <label for="rue" class="col-md-4 col-form-label text-md-end">{{ __('Rue ')}}<span class="text-danger">*</span>{{__(' :')}}</label>
                                 <div class="col-md-6">
                                     <input id="rue" type="text" class="form-control @error('rue') is-invalid @enderror" name="rue" value="{{ old('rue') }}" required autocomplete="rue" autofocus>
                                     @error ('rue')
@@ -37,7 +41,7 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="codePostal" class="col-md-4 col-form-label text-md-end">{{ __('Code postal :') }}</label>
+                                <label for="codePostal" class="col-md-4 col-form-label text-md-end">{{ __('Code postal ')}}<span class="text-danger">*</span>{{__(' :')}}</label>
                                 <div class="col-md-6">
                                     <input id="codePostal" type="text" class="form-control @error('codePostal') is-invalid @enderror" name="codePostal" value="{{ old('codePostal') }}" required autocomplete="codePostal" autofocus>
                                     @error ('codePostal')

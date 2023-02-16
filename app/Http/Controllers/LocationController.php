@@ -57,8 +57,8 @@ class LocationController extends Controller
             "DateDebut" => $request->DateDebut,
             "DateFin" => $request->DateFin,
             "montant" => $request->montant,
-            "id_voiture" => ($request->id_voiture === 'null') ? null : $request->id_voiture,
-            "id_users"  => ($request->id_user === 'null') ? null : $request->id_user
+            "id_voiture" => ($request->id_voiture === 'vide') ? null : $request->id_voiture,
+            "id_users"  => ($request->id_user === 'vide') ? null : $request->id_user
         ]);
         return back()->with('message', 'La location a été créer avec succès.');
     }

@@ -45,7 +45,8 @@ class ReparationController extends Controller
             "nom" => "required",
             "type" => "required",
             "date" => ["required","after:2000-01-01"],
-            "montant" => ["required","numeric"]
+            "montant" => ["required","numeric"],
+            "id_voiture" => "required"
         ],
         [
             "required" => "Le champ est requis.",
@@ -59,7 +60,7 @@ class ReparationController extends Controller
             "date" => $request->date,
             "montant" => $request->montant,
             "note" => ($request->note === null) ? 'Aucune note.' : $request->note,
-            "id_voiture" => ($request->id_voiture === 'null') ? null : $request->id_voiture
+            "id_voiture" => ($request->id_voiture === 'vide') ? null : $request->id_voiture
         ]);
         return back()->with('message', 'L\'reparation à été créer avec succès.');
     }
