@@ -14,7 +14,7 @@
                     <th>Prenom</th>
                     <th>Nom</th>
                     <th>Email</th>
-                    <th>Type</th>
+                    <th>Role</th>
                     @if(\Illuminate\Support\Facades\Auth::user()->hasRole('admin'))
                         <th>Statut</th>
                     @endif
@@ -28,7 +28,7 @@
                         <td>{{$datas->first_name}}</td>
                         <td>{{$datas->last_name}}</td>
                         <td>{{$datas->email}}</td>
-                        <td>{{$datas->type}}</td>
+                        <td>{{$datas->role}}</td>
                         @if(\Illuminate\Support\Facades\Auth::user()->hasRole('admin'))
                             <td>{{($datas->statut === 0) ? 'Désactiver' : 'Activer'}}</td>
                         @endif

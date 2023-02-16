@@ -58,16 +58,16 @@
                             </div>
 
                             <div class="row mb-3">
-                                <label for="type" class="col-md-4 col-form-label text-md-end">{{ __('Type d\'utilisateur ( '.$user->type.' )') }}</label>
+                                <label for="id_role" class="col-md-4 col-form-label text-md-end">{{ __('Role de l\'utilisateur ( '.$user->role.' )') }}</label>
 
                                 <div class="col-md-6">
-                                    <select id="type" class="form-select @error('type') is-invalid @enderror" aria-label="Default select example" name="type">
-                                        <option value="" class="text-capitalize">Selectionner un role</option>
+                                    <select id="id_role" class="form-select @error('id_role') is-invalid @enderror" aria-label="Default select example" name="id_role">
+                                        <option value="" class="text-capitalize">Sélectionner un role</option>
                                         @foreach($roles as $role)
-                                            <option value="{{$role->name}}" class="text-capitalize">{{$role->name}}</option>
+                                            <option value="{{$role->id}}" class="text-capitalize">{{$role->name}}</option>
                                         @endforeach
                                     </select>
-                                    @error('type')
+                                    @error('id_role')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

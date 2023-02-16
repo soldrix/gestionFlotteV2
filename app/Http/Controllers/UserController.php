@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\agence;
 use App\Models\fournisseur;
-use App\Models\roles;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -21,10 +21,19 @@ class UserController extends Controller
     public function index()
     {
         if(Auth::user()->hasRole('RH')){
-            $users = User::where('statut', 1)->get();
+            $users = User::join('roles', 'roles.id', '=', "users.id_role")
+                ->where('statut', 1)
+                ->get([
+                    "users.*",
+                    "roles.name as role"
+                ]);
             return view('users', ['users' => $users]);
         }
-        $users = User::all();
+        $users = User::join('roles', 'roles.id', '=', "users.id_role")
+            ->get([
+                "users.*",
+                "roles.name as role"
+            ]);
         return view('users', ['users' => $users]);
     }
 
@@ -34,7 +43,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = roles::all();
+        $roles = Role::all();
         return view('form.utilisateur.userCreate',['roles' => $roles]);
     }
 
@@ -57,7 +66,7 @@ class UserController extends Controller
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|unique:users|max:255',
-            'type' => 'required|max:100',
+            'id_role' => 'required',
             'password' => 'required|min:10|confirmed',
             'email_receiver' => 'email'
         ],
@@ -75,9 +84,9 @@ class UserController extends Controller
             'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'type' => $request->type
+            'id_role' => $request->id_role
         ]);
-        $user->assignRole($request->type);
+        $user->assignRole($request->id_role);
 
         if($request->email_receiver !== null){
             $data["email"] = $request->email;
@@ -102,9 +111,14 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user = User::find($id);
-        $roles = roles::all();
-        return view('form.utilisateur.userEdit',['user' => $user, 'roles' => $roles]);
+        $user = User::join('roles', 'roles.id', '=', 'users.id_role')
+        ->where('users.id', $id)
+        ->get([
+            "users.*",
+            "roles.name as role"
+        ]);
+        $roles = Role::all();
+        return view('form.utilisateur.userEdit',['user' => $user[0], 'roles' => $roles]);
     }
     /**
      * Show the form for editing the specified resource.
@@ -133,7 +147,6 @@ class UserController extends Controller
             'first_name' => 'string|max:255',
             'last_name' => 'string|max:255',
             'email' => 'email|unique:users|max:255',
-            'type' => 'max:100',
             'statut' => 'string',
             'password' => 'min:10'
         ],
@@ -152,8 +165,9 @@ class UserController extends Controller
         }
 
         //vérifie si l'utilisateur est relié à une agence ou un fournisseur, le/la supprime au changement de role s'il est relié
-        if($request->type !== null){
-            $user->assignRole($request->type);
+        if($request->id_role !== null){
+            $user->removeRole($user->id_role);
+            $user->assignRole($request->id_role);
             $fournisseur = fournisseur::where('id_users' , $id)->get();
             if(count($fournisseur) > 0){
                 $fournisseur = fournisseur::find($fournisseur[0]['id']);

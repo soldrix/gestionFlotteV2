@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\roles;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,6 +17,8 @@ class VerifRight
      */
     public function handle(Request $request, Closure $next, ... $roles)
     {
+
+
         //vérifie dans la liste des roles donné si l'utilisateur a le role
         foreach ($roles as $role){
             //l'utilisateur a le role donc passe

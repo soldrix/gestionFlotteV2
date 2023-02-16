@@ -28,6 +28,7 @@ DB_PASSWORD=root mot de passe de base
 puis lancer la commande suivante
 ```
 php artisan migrate
+php artisan migrate:fresh --seed --seeder=DatabaseSeeder
 php artisan storage:link
 ```
 Créer les roles avec les commandes suivante :
