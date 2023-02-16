@@ -57,11 +57,7 @@
                                         <option value="">Selectioner une voiture</option>
                                         <option value="vide">Aucune voiture</option>
                                         @foreach($voitures as $datas)
-                                            @if($datas->id === $location->id_voiture)
-                                                <option value="{{$datas->id}}" selected>{{$datas->marque.' '.$datas->model.' '.$datas->immatriculation}}</option>
-                                            @else
                                                 <option value="{{$datas->id}}">{{$datas->marque.' '.$datas->model.' '.$datas->immatriculation}}</option>
-                                            @endif
                                         @endforeach
                                     </select>
                                     @error ('id_voiture')
@@ -76,7 +72,7 @@
                                 <label for="userID" class="col-md-4 col-form-label text-md-end">{{ __('utilisateurs :') }}</label>
                                 <div class="col-md-6">
                                     <select id="userId" class="form-select @error('id_users') is-invalid @enderror" aria-label="Default select example" name="id_users">
-                                        <option value="" selected>Selectioner un utilisateur</option>
+                                        <option value="">Selectioner un utilisateur</option>
                                         <option value="vide">Aucun utilisateur</option>
                                         @foreach($users as $datas)
                                                 <option value="{{$datas->id}}">{{$datas->first_name.' '.$datas->last_name.' '.$datas->email}}</option>

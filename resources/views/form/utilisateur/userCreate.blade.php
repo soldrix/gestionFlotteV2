@@ -14,9 +14,12 @@
                     <div class="card-body">
                         <form method="POST" action="{{ route('userCreate') }}">
                             @csrf
-
+                            <p class="text-end">
+                                <span class="text-danger">*</span>
+                                champs obligatoires
+                            </p>
                             <div class="row mb-3">
-                                <label for="first_name" class="col-md-4 col-form-label text-md-end">{{ __('Prenom') }}</label>
+                                <label for="first_name" class="col-md-4 col-form-label text-md-end">{{ __('Prenom ')}}<span class="text-danger">*</span>{{__(' :')}}</label>
 
                                 <div class="col-md-6">
                                     <input id="first_name" type="text" class="form-control @error('first_name') is-invalid @enderror" name="first_name" value="{{ old('first_name') }}" required autocomplete="first_name" autofocus>
@@ -30,7 +33,7 @@
                             </div>
 
                             <div class="row mb-3">
-                                <label for="last_name" class="col-md-4 col-form-label text-md-end">{{ __('Nom') }}</label>
+                                <label for="last_name" class="col-md-4 col-form-label text-md-end">{{ __('Nom ')}}<span class="text-danger">*</span>{{__(' :')}}</label>
 
                                 <div class="col-md-6">
                                     <input id="last_name" type="text" class="form-control @error('last_name') is-invalid @enderror" name="last_name" value="{{ old('last_name') }}" required autocomplete="last_name" autofocus>
@@ -44,7 +47,7 @@
                             </div>
 
                             <div class="row mb-3">
-                                <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Adresse mail Address') }}</label>
+                                <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Adresse mail Address ')}}<span class="text-danger">*</span>{{__(' :')}}</label>
 
                                 <div class="col-md-6">
                                     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
@@ -58,10 +61,11 @@
                             </div>
 
                             <div class="row mb-3">
-                                <label for="id_role" class="col-md-4 col-form-label text-md-end">{{ __('Role de l\'utilisateur') }}</label>
+                                <label for="id_role" class="col-md-4 col-form-label text-md-end">{{ __('Role de l\'utilisateur ')}}<span class="text-danger">*</span>{{__(' :')}}</label>
 
                                 <div class="col-md-6">
                                     <select id="id_role" class="form-select @error('id_role') is-invalid @enderror" aria-label="Default select example" name="id_role">
+                                        <option value="">Sélectionner un role</option>
                                         @foreach($roles as $role)
                                             <option value="{{$role->id}}" class="text-capitalize">{{$role->name}}</option>
                                         @endforeach
@@ -75,7 +79,7 @@
                             </div>
 
                             <div class="row mb-3">
-                                <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
+                                <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password ')}}<span class="text-danger">*</span>{{__(' :')}}</label>
 
                                 <div class="col-md-6">
                                     <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
@@ -89,7 +93,7 @@
                             </div>
 
                             <div class="row mb-3">
-                                <label for="password-confirm" class="col-md-4 col-form-label text-md-end">{{ __('Confirm Password') }}</label>
+                                <label for="password-confirm" class="col-md-4 col-form-label text-md-end">{{ __('Confirm Password ')}}<span class="text-danger">*</span>{{__(' :')}}</label>
 
                                 <div class="col-md-6">
                                     <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">

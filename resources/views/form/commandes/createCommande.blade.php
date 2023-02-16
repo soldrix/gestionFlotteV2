@@ -14,8 +14,12 @@
                     <div class="card-body">
                         <form method="POST" action="{{ route('createCommande') }}">
                             @csrf
+                            <p class="text-end">
+                                <span class="text-danger">*</span>
+                                champs obligatoires
+                            </p>
                             <div class="row mb-3">
-                                <label for="DateDebut" class="col-md-4 col-form-label text-md-end">{{ __('Date de debut :') }}</label>
+                                <label for="DateDebut" class="col-md-4 col-form-label text-md-end">{{ __('Date de debut ')}}<span class="text-danger">*</span>{{__(' :')}}</label>
                                 <div class="col-md-6">
                                     <input id="DateDebut" type="date" class="form-control @error('DateDebut') is-invalid @enderror" name="DateDebut" value="{{ old('DateDebut') }}" required autocomplete="DateDebut" autofocus>
                                     @error ('DateDebut')
@@ -26,7 +30,7 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="DateFin" class="col-md-4 col-form-label text-md-end">{{ __('Date de fin :') }}</label>
+                                <label for="DateFin" class="col-md-4 col-form-label text-md-end">{{ __('Date de fin ')}}<span class="text-danger">*</span>{{__(' :')}}</label>
                                 <div class="col-md-6">
                                     <input id="DateFin" type="date" class="form-control @error('DateFin') is-invalid @enderror" name="DateFin" value="{{ old('DateFin') }}" required autocomplete="DateFin" autofocus>
                                     @error ('DateFin')
@@ -36,27 +40,29 @@
                                     @enderror
                                 </div>
                             </div>
-                            @if(count(json_decode($voitures)) > 0)
                             <div class="row mb-3">
-                                <label for="voitureID" class="col-md-4 col-form-label text-md-end">{{ __('Voiture :') }}</label>
-                                <div class="col-md-6">
-                                    <select id="voitureId" class="form-select @error('id_voiture') is-invalid @enderror" aria-label="Default select example" name="id_voiture">
-                                        @foreach($voitures as $datas)
-                                            <option value="{{$datas->id}}">{{$datas->marque.' '.$datas->model}}</option>
-                                        @endforeach
-                                    </select>
-                                    @error ('id_voiture')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                            </div>
+                                <label for="voitureID" class="col-md-4 col-form-label text-md-end">{{ __('Voiture ')}}<span class="text-danger">*</span>{{__(' :')}}</label>
+                                @if(count(json_decode($voitures)) > 0)
+                                    <div class="col-md-6">
+                                        <select id="voitureId" class="form-select @error('id_voiture') is-invalid @enderror" aria-label="Default select example" name="id_voiture">
+                                            <option value="">Sélectionner une voiture</option>
+                                            @foreach($voitures as $datas)
+                                                <option value="{{$datas->id}}">{{$datas->marque.' '.$datas->model}}</option>
+                                            @endforeach
+                                        </select>
+                                        @error ('id_voiture')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
                                 @else
-                                <div class="col-md-auto">
-                                    <p class="text-danger text-center">Aucune voiture n'est disponible.</p>
-                                </div>
-                            @endif
+                                    <div class="col-md-6 d-flex align-items-center justify-content-center">
+                                        <p class="text-danger m-0">Aucune voiture n'est disponible.</p>
+                                    </div>
+                                @endif
+                            </div>
+
                             <div class="row mb-0">
                                 <div class="col-md-8 offset-md-4">
                                     @if(str_contains(url()->previous(), 'edit') === false && str_contains(url()->previous(), 'create') === false)

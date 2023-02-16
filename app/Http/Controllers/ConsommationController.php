@@ -43,13 +43,14 @@ class ConsommationController extends Controller
     {
         $validator = Validator::make($request->all(),[
             "litre" => ["required","numeric"],
-            "montant" => ["required","numeric"]
+            "montant" => ["required","numeric"],
+            "id_voiture" => "required"
         ]);
         if ($validator->fails()) return back()->withErrors($validator->errors())->withInput();
         consommation::create([
             "litre" => $request->litre,
             "montant" => $request->montant,
-            "id_voiture" => ($request->id_voiture === 'null') ? null : $request->id_voiture
+            "id_voiture" => ($request->id_voiture === 'vide') ? null : $request->id_voiture
         ]);
         return back()->with('message', 'La consommation a été créer avec succès.');
     }

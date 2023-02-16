@@ -31,7 +31,9 @@ class AgenceController extends Controller
      */
     public function create()
     {
-        $users = User::where('type', '=', 'chef agence')->get();
+        $users = User::join("roles", "roles.id", "=", "users.id_role")->where('roles.name', '=', 'chef agence')->get([
+            "users.*"
+        ]);
         return view('form.agence.agenceCreate',['users'=> $users]);
     }
 
@@ -70,7 +72,9 @@ class AgenceController extends Controller
     public function edit($id)
     {
         $agence = agence::find($id);
-        $users = User::where('type', '=', 'chef agence')->get();
+        $users = User::join("roles", "roles.id", "=", "users.id_role")->where('roles.name', '=', 'chef agence')->get([
+            "users.*"
+        ]);
         return view('form.agence.agenceEdit',['agence' => $agence,'users' => $users]);
     }
 

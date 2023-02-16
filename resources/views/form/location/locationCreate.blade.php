@@ -50,18 +50,14 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="voitureID" class="col-md-4 col-form-label text-md-end">{{ __('Voitures :') }}</label>
+                                <label for="voitureID" class="col-md-4 col-form-label text-md-end">{{ __('Voitures ')}}<span class="text-danger">*</span>{{__(' :')}}</label>
                                 @if(count(json_decode($voitures)) > 0)
                                     <div class="col-md-6">
                                         <select id="voitureId" class="form-select @error('id_voiture') is-invalid @enderror" aria-label="Default select example" name="id_voiture">
                                             <option value="">Selectioner une voiture</option>
                                             <option value="vide">Aucune voiture</option>
                                             @foreach($voitures as $datas)
-                                                @if($datas->id === $location->id_voiture)
-                                                    <option value="{{$datas->id}}" selected>{{$datas->marque.' '.$datas->model.' '.$datas->immatriculation}}</option>
-                                                @else
                                                     <option value="{{$datas->id}}">{{$datas->marque.' '.$datas->model.' '.$datas->immatriculation}}</option>
-                                                @endif
                                             @endforeach
                                         </select>
                                         @error ('id_voiture')
@@ -78,10 +74,11 @@
                             </div>
 
                             <div class="row mb-3">
-                                <label for="userID" class="col-md-4 col-form-label text-md-end">{{ __('utilisateurs :') }}</label>
+                                <label for="userID" class="col-md-4 col-form-label text-md-end">{{ __('utilisateurs ')}}<span class="text-danger">*</span>{{__(' :')}}</label>
                                 <div class="col-md-6">
                                     <select id="userId" class="form-select @error('id_user') is-invalid @enderror" aria-label="Default select example" name="id_user">
-                                        <option value="null">Aucun utilisateur</option>
+                                        <option value="">Sélectionner un utilisateur</option>
+                                        <option value="vide">Aucun utilisateur</option>
                                         @foreach($users as $datas)
                                             <option value="{{$datas->id}}">{{$datas->first_name.' '.$datas->last_name.' '.$datas->email}}</option>
                                         @endforeach

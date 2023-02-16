@@ -48,7 +48,8 @@ class commandesController extends Controller
     {
         $validator = Validator::make($request->all(),[
            "DateDebut" => ["required", "date"],
-           "DateFin" => ["required", "date", "after:".$request->DateDebut]
+           "DateFin" => ["required", "date", "after:".$request->DateDebut],
+            "id_voiture" => "required"
         ]);
         if($validator->fails())return back()->withErrors($validator->errors())->withInput();
         commande::create([

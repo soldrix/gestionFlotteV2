@@ -146,11 +146,7 @@
                                         <option value="">Selectionner une agence</option>
                                         <option value="vide">Aucune agence</option>
                                         @foreach($agences as $datas)
-                                            @if($voiture->id_agence === $datas->id)
-                                                <option value="{{$datas->id}}" selected>{{$datas->rue.' '.$datas->ville.' '.$datas->codePostal}}</option>
-                                            @else
                                                 <option value="{{$datas->id}}">{{$datas->rue.' '.$datas->ville.' '.$datas->codePostal}}</option>
-                                            @endif
                                         @endforeach
                                     </select>
                                     @error ('id_agence')

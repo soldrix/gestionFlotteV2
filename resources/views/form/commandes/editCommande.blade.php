@@ -37,28 +37,30 @@
                                     @enderror
                                 </div>
                             </div>
-                            @if(count(json_decode($voitures)) > 0)
                                 <div class="row mb-3">
                                     <label for="voitureID" class="col-md-4 col-form-label text-md-end">{{ __('Voiture : ( '.$commande->marque.' '.$commande->model.' )') }}</label>
+                                    @if(count(json_decode($voitures)) > 0)
                                     <div class="col-md-6">
                                         <select id="voitureId" class="form-select @error('id_voiture') is-invalid @enderror" aria-label="Default select example" name="id_voiture">
+                                            <option value="">Sélectionner une voiture</option>
                                             <option value="">Aucune voiture</option>
                                             @foreach($voitures as $datas)
                                                 <option value="{{$datas->id}}">{{$datas->marque.' '.$datas->model.' '.$datas->immatriculation}}</option>
                                             @endforeach
                                         </select>
                                         @error ('id_voiture')
-                                        <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
                                         @enderror
                                     </div>
+                                    @else
+                                        <div class="col-md-6 d-flex justify-content-center align-items-center">
+                                            <p class="text-danger">Aucune voiture, créer une voiture pour pouvoir modifié une commande.</p>
+                                        </div>
+                                    @endif
                                 </div>
-                            @else
-                                <div class="col-md-auto">
-                                    <p class="text-danger text-center">Aucune voiture, créer une voiture pour pouvoir modifié une commande.</p>
-                                </div>
-                            @endif
+
                             <div class="row mb-0">
                                 <div class="col-md-8 offset-md-4">
                                     @if(str_contains(url()->previous(), 'edit') === false && str_contains(url()->previous(), 'create') === false)

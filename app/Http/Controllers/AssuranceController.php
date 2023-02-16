@@ -45,7 +45,8 @@ class AssuranceController extends Controller
             "nom" => "required",
             "DateDebut" => ["required","after_or_equal:2000-01-01"],
             "DateFin" => ["required",'after:'.$request->DateDebut],
-            "frais" => ["required","numeric"]
+            "frais" => ["required","numeric"],
+            "id_voiture" => "required"
         ],
         [
             "required" => "le champ est requis.",
@@ -59,7 +60,7 @@ class AssuranceController extends Controller
             "DateDebut" => $request->DateDebut,
             "DateFin" => $request->DateFin,
             "frais" => $request->frais,
-            "id_voiture" => ($request->id_voiture === 'null') ? null : $request->id_voiture
+            "id_voiture" => ($request->id_voiture === 'vide') ? null : $request->id_voiture
         ]);
         return back()->with('message', 'L\'assurance a été créer avec succès.');
     }

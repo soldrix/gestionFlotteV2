@@ -57,7 +57,8 @@ class VoitureFournisseurController extends Controller
             "carburant" => ["required"],
             "puissance" => ["required", "integer"],
             "type" => "required",
-            "statut" => ["required", "integer", "max_digits:1"]
+            "statut" => ["required", "integer", "max_digits:1"],
+            "id_fournisseur" => "required"
         ]);
         if($validator->fails()) return back()->withErrors($validator->errors())->withInput();
 //        ajout l'image dans le storage
