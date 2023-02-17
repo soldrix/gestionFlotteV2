@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\models\agence;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class AgenceController extends Controller
 {
@@ -17,6 +20,7 @@ class AgenceController extends Controller
      */
     public function index():JsonResponse
     {
+
         $agence = agence::all();
         return response()->json([
             'data' => $agence

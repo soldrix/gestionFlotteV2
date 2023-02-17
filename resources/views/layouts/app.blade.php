@@ -12,7 +12,6 @@
 
     <!-- Scripts -->
     <script src="{{asset('js/fontawesome.js')}}" defer></script>
-    <script src="{{asset('js/destroyToken.js')}}" defer></script>
     @if(\Illuminate\Support\Facades\Auth::user())
         @if(! \Illuminate\Support\Facades\Auth::user()->hasRole('user'))
             <link href="{{ asset('css/dataTables.bootstrap5.css') }}" rel="stylesheet">

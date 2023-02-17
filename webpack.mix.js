@@ -18,7 +18,6 @@ mix.autoload({
         children: true,
     },})
     .js('resources/js/home.js', 'public/js')
-    .js('resources/js/destroyToken.js', 'public/js')
     .js('resources/js/voiture.js', 'public/js')
     .js('resources/js/agence.js', 'public/js')
     .js('resources/js/entretien.js', 'public/js')
