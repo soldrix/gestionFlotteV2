@@ -26,18 +26,22 @@ Route::get('/', function (){
 });
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+//recuperer une image
 Route::get('/image/{path}', [voitureController::class, 'getImage'])->where('path', '.*');
 
 
 Route::post('/forget-password', [UserController::class, 'forgetPassword']);
 Route::post('/reset-password', [UserController::class, 'resetPassword']);
 
+Route::get('/toto', [UserController::class, 'test']);
+
 
 Route::middleware('auth:sanctum')->group(function () {
+
+    Route::get('/voiture/{id}',[voitureController::class, 'show']);
     Route::get('/voitures/agence/{id}',[voitureController::class, 'indexAgence']);
-
-
     Route::post('/logout', [AuthController::class, 'logout']);
+
     Route::controller(UserController::class)->group(function (){
         Route::post('user/edit/first_name', "update_first_name");
         Route::post('user/edit/last_name', "update_last_name");
@@ -49,40 +53,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/users',[UserController::class, 'index']);
 
     Route::get('/agences',[AgenceController::class , 'index']);
-    Route::get('/agence/{id}',[AgenceController::class , 'show']);
-    Route::post('/agence/create',[AgenceController::class , 'store']);
-    Route::post('/agence/update',[AgenceController::class , 'update']);
-    Route::delete('/agence/delete/{id}',[AgenceController::class , 'destroy']);
-
-    Route::post('/voiture/create', [voitureController::class, 'store']);
-    Route::get('/voiture/{id}', [voitureController::class, 'show'])->where('path', '.*');
-    Route::get('/voitures',[voitureController::class, 'index']);
-    Route::post('/voiture/update',[voitureController::class, 'update']);
-    Route::delete('/voiture/delete/{id}',[voitureController::class, 'destroy']);
-
-    Route::post('/assurance/create',[AssuranceController::class, 'store']);
-    Route::get('/assurances', [AssuranceController::class, "index"]);
-    Route::get('/assurance/{id}', [AssuranceController::class, "show"]);
-    Route::post('/assurance/update', [AssuranceController::class, "update"]);
-    Route::delete('/assurance/delete/{id}',[AssuranceController::class, 'destroy']);
-
-    Route::post('/consommation/create',[ConsommationController::class, 'store']);
-    Route::get('/consommations', [ConsommationController::class, "index"]);
-    Route::get('/consommation/{id}', [ConsommationController::class, "show"]);
-    Route::post('/consommation/update', [ConsommationController::class, "update"]);
-    Route::delete('/consommation/delete/{id}',[ConsommationController::class, 'destroy']);
-
-    Route::post('/entretien/create',[EntretienController::class, 'store']);
-    Route::get('/entretiens', [EntretienController::class, "index"]);
-    Route::get('/entretien/{id}', [EntretienController::class, "show"]);
-    Route::post('/entretien/update', [EntretienController::class, "update"]);
-    Route::delete('/entretien/delete/{id}',[EntretienController::class, 'destroy']);
-
-    Route::post('/reparation/create',[ReparationController::class, 'store']);
-    Route::get('/reparations', [ReparationController::class, "index"]);
-    Route::get('/reparation/{id}', [ReparationController::class, "show"]);
-    Route::post('/reparation/update', [ReparationController::class, "update"]);
-    Route::delete('/reparation/delete/{id}',[ReparationController::class, 'destroy']);
+//    Route::get('/agence/{id}',[AgenceController::class , 'show']);
 
     Route::post('/location/create',[LocationController::class, 'store']);
     Route::get('/locations', [LocationController::class, "index"]);

@@ -65,8 +65,7 @@ function ajaxForm(dataVal,dataUrl){
                 $('.alert').removeClass('d-none');
                 $('.modal.fade.show').find('.alert').html(data.success);
                 $.each( data.datas, function( key, value ) {
-                    console.log(key.matches('password'))
-                    if(key !== 'id'){
+                    if(key !== 'id' && !key.match('password')){
                         $('.'+key+"_text").html(value);
                     }
                 });

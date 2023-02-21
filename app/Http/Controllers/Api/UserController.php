@@ -142,13 +142,19 @@ class UserController extends Controller
             $domain = URL::to('/');
             $url = $domain.'/reset-password?token='.$token;
 
-            $data['url'] = $url;
-            $data["email"] = $request->email;
-            $data['title'] = "réinitialisation de mot de passe";
-            $data['body'] = "Veuillez cliquer sur le lien ci-dessous pour réinitialiser votre mot de passe.";
+//            $data['url'] = $url;
+//            $data["email"] = $request->email;
+//            $data['title'] = "réinitialisation de mot de passe";
+//            $data['body'] = "Veuillez cliquer sur le lien ci-dessous pour réinitialiser votre mot de passe.";
+
+            $data = new \stdClass();
+            $data->url = $url;
+            $data->email = $request->email;
+            $data->title = "réinitialisation de mot de passe";
+            $data->body = "Veuillez cliquer sur le lien ci-dessous pour réinitialiser votre mot de passe.";
 
             Mail::send('mail.forgetPasswordMail', ['data' => $data],function ($message) use ($data){
-                $message->to($data['email'])->subject($data['title']);
+                $message->to($data->email)->subject($data->title);
             });
 
             $datetime = Carbon::now()->format('Y-m-d H:i:s');

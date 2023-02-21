@@ -39,6 +39,8 @@ var delToastEl = document.getElementById('toastSupp');
 var delToast = bootstrap.Toast.getOrCreateInstance(delToastEl);
 function supModal(row){
     let id_user = $(row).attr('data-voiture');
+    let user = table.row($(row).parent().parent().parent());
+
     myModal.show();
     $('#btnDelModal').on('click',function () {
         $.ajaxSetup({
@@ -53,6 +55,7 @@ function supModal(row){
                 if(response.data === 'logout'){
                     window.location.href = '/login';
                 }
+                user.remove().draw();
                 myModal.hide();
                 delToast.show();
             }

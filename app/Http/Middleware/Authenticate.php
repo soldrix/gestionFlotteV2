@@ -19,8 +19,5 @@ class Authenticate extends Middleware
             'status' => 'not ok',
             'message' => "Vous n'êtes pas connecté !"
         ]);
-//        if (! $request->expectsJson()) {
-//            return route('login');
-//        }
     }
 }

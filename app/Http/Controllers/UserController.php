@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
@@ -77,12 +78,12 @@ class UserController extends Controller
 
         // Return errors if validation error occur.
         if ($validator->fails()) return back()->withErrors($validator->errors())->withInput();
-
+        $password = Str::random(10);
         $user = User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
-            'password' => Hash::make(1234567890),
+            'password' => Hash::make($password),
             'id_role' => $request->id_role
         ]);
         $user->assignRole($request->id_role);
@@ -90,7 +91,7 @@ class UserController extends Controller
         if($request->email_receiver !== null){
             $data["email"] = $request->email;
             $data["email_receiver"] = $request->email_receiver;
-            $data["password"] = "1234567890";
+            $data["password"] = $password;
             $data['title'] = "Création de compte";
 
             Mail::send('mail.accountCreatedMail', ['data' => $data],function ($message) use ($data){
@@ -233,6 +234,7 @@ class UserController extends Controller
             'error' => 'request unauthorized'.Auth::user()->id
         ],401);
     }
+
 
     //reset password view
 

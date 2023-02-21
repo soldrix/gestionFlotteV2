@@ -31,7 +31,7 @@
                                 <div class="col-md-8 offset-md-4">
                                     <a href="{{url('/login')}}">Revenir ?</a>
                                     <button type="submit" class="btn btn-primary mx-2">
-                                        {{ __('Connexion') }}
+                                        {{ __('Continuer') }}
                                     </button>
                                 </div>
                             </div>

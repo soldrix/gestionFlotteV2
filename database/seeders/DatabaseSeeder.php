@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         Role::create(['name' => 'user']);
+        $role2 = Role::create(['name' => 'admin']);
         Role::create(['name' => 'RH']);
         Role::create(['name' => 'responsable auto']);
         Role::create(['name' => 'fournisseur']);
@@ -23,7 +24,6 @@ class DatabaseSeeder extends Seeder
         Role::create(['name' => 'responsable agences']);
         Role::create(['name' => 'chef agence']);
         Role::create(['name' => 'secretaire']);
-        $role2 = Role::create(['name' => 'admin']);
         $user2 = \App\Models\User::factory()->create([
             'first_name' => 'admin',
             'last_name' => 'admin',
