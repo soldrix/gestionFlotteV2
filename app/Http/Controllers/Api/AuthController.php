@@ -47,11 +47,12 @@ class AuthController extends Controller
                 'password' => Hash::make($request->password),
                 'type' => 'normal'
             ]);
-            $token = $user->createToken('auth_token',['*'],Carbon::now()->addMinutes(config('session.lifetime')))->plainTextToken;
+            $token = $user->createToken('auth_token',['*'],Carbon::now()->addMinutes(env('SESSION_LIFETIME',1)))->plainTextToken;
 
             return response()->json([
                 'access_token' => $token,
                 'token_type' => 'Bearer',
+                "id_user" => Auth("sanctum")->id()
             ]);
         }
     }
@@ -62,10 +63,12 @@ class AuthController extends Controller
             if(auth('sanctum')->check()){
                 $request->user()->tokens()->delete();
             }
-            $token = Auth('sanctum')->user()->createToken('auth_token',['*'],Carbon::now()->addMinutes(config('session.lifetime')))->plainTextToken;
+            $token = Auth('sanctum')->user()->createToken('auth_token',['*'],Carbon::now()->addMinutes(20) )->plainTextToken;
             return response()->json([
                 'access_token' => $token,
-                'token_type' => 'Bearer',]);
+                'token_type' => 'Bearer',
+                "id_user" => Auth("sanctum")->id(),
+            ]);
         }
         return response()->json([
             'message' => 'Données de connexion invalides.'

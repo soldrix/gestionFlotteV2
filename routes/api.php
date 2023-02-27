@@ -1,15 +1,10 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\AgenceController;
 use App\Http\Controllers\Api\voitureController;
-use App\Http\Controllers\Api\AssuranceController;
-use App\Http\Controllers\Api\ConsommationController;
-use App\Http\Controllers\Api\EntretienController;
-use App\Http\Controllers\Api\ReparationController;
 use App\Http\Controllers\Api\LocationController;
 /*
 |--------------------------------------------------------------------------
@@ -33,9 +28,6 @@ Route::get('/image/{path}', [voitureController::class, 'getImage'])->where('path
 Route::post('/forget-password', [UserController::class, 'forgetPassword']);
 Route::post('/reset-password', [UserController::class, 'resetPassword']);
 
-Route::get('/toto', [UserController::class, 'test']);
-
-
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/voiture/{id}',[voitureController::class, 'show']);
@@ -50,7 +42,6 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     Route::delete('/user/delete/{id}', [UserController::class, 'delete']);
     Route::get('/user/{id}',[UserController::class, 'getUser']);
-    Route::get('/users',[UserController::class, 'index']);
 
     Route::get('/agences',[AgenceController::class , 'index']);
 //    Route::get('/agence/{id}',[AgenceController::class , 'show']);
