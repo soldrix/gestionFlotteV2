@@ -27,7 +27,7 @@ class UserController extends Controller
             "first_name.max" => 'Le champ ne peut contenir que 255 caractères.',
             "old_password.max" => 'Le champ ne peut contenir que 100 caractères.'
         ]);
-        if($validator->fails())return response()->json(["error" => $validator->errors()]);
+        if($validator->fails())return response()->json(["error" => $validator->errors()],400);
         $user = User::find($request->id);
         if(Hash::check($request->old_password, $user->password)){
             $user->first_name = $request->first_name;
@@ -37,7 +37,7 @@ class UserController extends Controller
                 "datas" => $request->all()
             ]);
         }
-        return response()->json(["error" => ["old_password" => "Mot de passe incorrect."]]);
+        return response()->json(["error" => ["old_password" => ["Mot de passe incorrect."]]],401);
     }
 
     public function update_last_name(Request $request)

@@ -32,20 +32,20 @@ class tokenExpiration
         }
 
         $token = PersonalAccessToken::find($userToken->id);
-        $now = Carbon::now();
+        $now =  Carbon::parse(Carbon::now());
 
         $last_seen = Carbon::parse($token->expires_at);
 
-        $absence = $now->diffInMinutes($last_seen);
-
         // If user has been inactivity longer than the allowed inactivity period
-        if ($absence >= config('session.lifetime')) {
+        if ($now->greaterThanOrEqualTo($last_seen)) {
             $request->user()->tokens()->delete();
-            $request->session()->invalidate();
-            Auth::guard()->logout();
-            return ($request->wantsJson())? $next($request) : redirect('login');
+            if(!$request->wantsJson()){
+                Auth::guard()->logout();
+                return redirect('login');
+            }
+            return $next($request);
         }
-        $token->expires_at = $now->addMinutes(config('session.lifetime'));
+        $token->expires_at = $now->addMinutes(intval(env('SESSION_LIFETIME')));
         $token->save();
 
         return $next($request);
