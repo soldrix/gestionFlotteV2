@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\PasswordReset;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Http\JsonResponse;
@@ -51,7 +52,7 @@ class UserController extends Controller
             "last_name.max" => 'Le champ ne peut contenir que 255 caractères.',
             "old_password.max" => 'Le champ ne peut contenir que 100 caractères.'
         ]);
-        if($validator->fails())return response()->json(["error" => $validator->errors()]);
+        if($validator->fails())return response()->json(["error" => $validator->errors()],400);
         $user = User::find($request->id);
         if(Hash::check($request->old_password, $user->password)){
             $user->last_name = $request->last_name;
@@ -61,7 +62,7 @@ class UserController extends Controller
                 "datas" => $request->all()
             ]);
         }
-        return response()->json(["error" => ["old_password" => "Mot de passe incorrect."]]);
+        return response()->json(["error" => ["old_password" => ["Mot de passe incorrect."]]],401);
     }
     public function update_email(Request $request)
     {
@@ -75,7 +76,7 @@ class UserController extends Controller
             "old_password.max" => 'Le champ ne peut contenir que 100 caractères.',
             "unique" => "L'adresse mail est déjà utiliser."
         ]);
-        if($validator->fails())return response()->json(["error" => $validator->errors()]);
+        if($validator->fails())return response()->json(["error" => $validator->errors()],400);
         $user = User::find($request->id);
         if(Hash::check($request->old_password, $user->password)){
             $user->email = $request->email;
@@ -85,37 +86,40 @@ class UserController extends Controller
                 "datas" => $request->all()
             ]);
         }
-        return response()->json(["error" => ["old_password" => "Mot de passe incorrect."]]);
+        return response()->json(["error" => ["old_password" => ["Mot de passe incorrect."]]],401);
     }
 
     public function update_password(Request $request):JsonResponse
     {
         $validator = Validator::make(array_filter($request->all()),[
-            "new_password" => ["required", "string", "max:100", "confirmed"],
+            "new_password" => ["required", "string", "max:100", "confirmed", 'min:10'],
             "old_password" => ["required", "string", "max:100"]
         ],
         [
             "required" => "Le champ est requis.",
             "max" => 'Le champ ne peut contenir que 100 caractères.',
+            "min" => 'Le champ doit contenir au moins 10 caractères.',
             "confirmed" => "Les mots de passe ne correspondent pas."
         ]);
-        if($validator->fails())return response()->json(["error" => $validator->errors()]);
+        if($validator->fails())return response()->json(["error" => $validator->errors()],400);
         $user = User::find($request->id);
         if(Hash::check($request->old_password, $user->password)){
             $user->password = Hash::make($request->new_password);
             $user->update();
             return response()->json([
-                "success" => "Le profil a été modifié avec succès.",
-                "datas" => $request->all()
+                "success" => "Le profil a été modifié avec succès."
             ]);
         }
-        return response()->json(["error" => ["old_password" => "Mot de passe incorrect."]]);
+        return response()->json(["error" => ["old_password" => ["Mot de passe incorrect."]]],401);
     }
 
     public function delete($id)
     {
-        User::where('id', $id)->delete();
-       return response("L'utilisateur a été supprimer avec succès.");
+        $user = User::find($id);
+        $user->tokens()->delete();
+        $user->removeRole($user->id_role);
+        $user->delete();
+       return response()->json(["message" => "L'utilisateur a été supprimer avec succès."]);
     }
     public function getUser($id){
         return response()->json([

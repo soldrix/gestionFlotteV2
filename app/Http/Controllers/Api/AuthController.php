@@ -17,7 +17,8 @@ class AuthController extends Controller
     {
         // Validate request data
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'email' => 'required|email|unique:users|max:255',
             'password' => 'required|min:10|confirmed',
             "password_confirmation" => 'required'
@@ -40,21 +41,23 @@ class AuthController extends Controller
         }
 
         // Check if validation pass then create user and auth token. Return the auth token
-        if ($validator->passes()) {
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'type' => 'normal'
-            ]);
-            $token = $user->createToken('auth_token',['*'],Carbon::now()->addMinutes(env('SESSION_LIFETIME',1)))->plainTextToken;
+        $user = User::create([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'id_role' => 1
+        ]);
+        $user->assignRole(1);
 
-            return response()->json([
-                'access_token' => $token,
-                'token_type' => 'Bearer',
-                "id_user" => Auth("sanctum")->id()
-            ]);
-        }
+        $token = $user->createToken('auth_token',['*'],Carbon::now()->addMinutes(env('SESSION_LIFETIME',1)))->plainTextToken;
+
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'Bearer',
+            "id_user" => Auth("sanctum")->id()
+        ]);
+
     }
 
     public function login(Request $request)
