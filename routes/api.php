@@ -30,8 +30,13 @@ Route::post('/reset-password', [UserController::class, 'resetPassword']);
 Route::get('/reset-password', [UserController::class, 'resetPasswordLoad']);
 Route::middleware('auth:sanctum')->group(function () {
 
-    Route::get('/voiture/{id}',[voitureController::class, 'show']);
-    Route::get('/voitures/agence/{id}',[voitureController::class, 'indexAgence']);
+    Route::controller(voitureController::class)->group(function (){
+        Route::get('/voiture/{id}','show');
+        Route::get('/voitures/agence/{id}','indexAgence');
+        Route::get('/voitures/search/{search}', 'searchVoiture');
+
+    });
+
     Route::post('/logout', [AuthController::class, 'logout']);
 
     Route::controller(UserController::class)->group(function (){
@@ -39,16 +44,20 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('user/edit/last_name', "update_last_name");
         Route::post('user/edit/email', "update_email");
         Route::post('user/edit/password', "update_password");
+        Route::delete('/user/delete/{id}', 'delete');
+        Route::get('/user/{id}','getUser');
     });
-    Route::delete('/user/delete/{id}', [UserController::class, 'delete']);
-    Route::get('/user/{id}',[UserController::class, 'getUser']);
 
-    Route::get('/agences',[AgenceController::class , 'index']);
+    Route::controller(AgenceController::class)->group(function (){
+        Route::get('/agences/search/{search}', 'searchAgence');
+        Route::get('/agences','index');
+    });
 
-    Route::post('/location/create',[LocationController::class, 'store']);
-    Route::get('/locations', [LocationController::class, "index"]);
-    Route::get('/locations/user/{id}',[LocationController::class, 'indexUser']);
-    Route::get('/location/{id}', [LocationController::class, "show"]);
-    Route::post('/location/update', [LocationController::class, "update"]);
-    Route::delete('/location/delete/{id}',[LocationController::class, 'destroy']);
+    Route::controller(LocationController::class)->group(function (){
+        Route::post('/location/create', 'store');
+        Route::get('/locations',  "index");
+        Route::get('/locations/user/{id}', 'indexUser');
+        Route::get('/location/{id}', "show");
+    });
+
 });

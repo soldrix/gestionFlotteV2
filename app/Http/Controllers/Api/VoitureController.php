@@ -43,47 +43,26 @@ class VoitureController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request):JsonResponse
-    {
-        $todayDate = date('Y-m-d');
-        $validator = Validator::make($request->all(),[
-            "marque" => "required",
-            "model"  => "required",
-            "image" => ["required","image","mimes:jpg,png,jpeg,gif,svg","max:2048","dimensions:min_width=100,min_height=100,max_width=1000,max_height=1000"],
-            "carburant" => ["required"],
-            "circulation" => ["required",'date_format:Y-m-d','after_or_equal:'.$todayDate],
-            "immatriculation" => "required",
-            "puissance" => ["required", "integer"],
-            "type" => "required",
-            "nbPorte" => ["required", "integer"],
-            "nbPlace" => ["required", "integer"],
-            "prix" => ["required", "numeric"],
-            "statut" => ["required", "integer", "max_digits:1"]
+    public function searchVoiture($search){
+        $word =explode(" ",$search);
+        $voitures = voiture::leftjoin("locations",'locations.id_voiture', '=', 'voitures.id')
+        ->where(function ($query) use($word){
+            for($i=0; $i < count($word);++$i){
+                if ($i <= 1){
+                    $query->where('voitures.marque', 'like', "%".$word[$i]."%");
+                }else{
+                    $query->orWhere('voitures.marque', 'like', "%".$word[$i]."%");
+                }
+                $query->orWhere('voitures.model', 'like', "%".$word[$i]."%");
+                $query->orWhere('voitures.type', 'like', "%".$word[$i]."%");
+                $query->orWhere('voitures.nbPorte', 'like', "%".$word[$i]."%");
+                $query->orWhere('voitures.prix', 'like', "%".$word[$i]."%");
+                $query->orWhere('locations.commandeNumber', 'like', "%".$word[$i]."%");
+            }
+        })->get([
+            "voitures.*"
         ]);
-        if($validator->fails()) return response()->json(["error" => $validator->errors()],400);
-        $path = Storage::putFile('image', $request->image);
-        $voiture = voiture::create([
-            "image" => $path,
-            "marque" => $request->marque,
-            "model" => $request->model,
-            "carburant" => $request->carburant,
-            "circulation" => $request->circulation,
-            "immatriculation" => $request->immatriculation,
-            "puissance" => $request->puissance,
-            "type" => $request->type,
-            "nbPorte" => $request->nbPorte,
-            "nbPlace" => $request->nbPlace,
-            "prix" => $request->prix,
-            "statut" => $request->statut,
-            "id_agence" => ($request->id_agence !== null) ? $request->id_agence : null
-        ]);
-        return response()->json(['voiture' => $voiture]);
+        return response()->json(["research" => $voitures, "status" => (count($voitures) < 1) ? false : true ]);
     }
 
     /**
@@ -100,50 +79,6 @@ class VoitureController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request):JsonResponse
-    {
-        $validator =Validator::make($request->all(),[
-            "id" => "required",
-            "image" => ["image","mimes:jpg,png,jpeg,gif,svg","max:2048","dimensions:min_width=100,min_height=100,max_width=1000,max_height=1000"],
-            "circulation" => ['date_format:Y-m-d'],
-            "puissance" => ["integer"],
-            "prix" => ["numeric"],
-            "statut" => ["integer", "max_digits:1"]
-        ]);
-        if($validator->fails()) return response()->json(["error" => $validator->errors()],400);
-        $voiture = voiture::find($request->id);
-        if ($request->image !== null){
-            Storage::delete($voiture->image);
-            $path =  Storage::putFile('image', $request->image);
-            unset($request->image);
-            $voiture->update(array_merge($request->all(), ['image' => $path]));
-        }else{
-            $voiture->update($request->all());
-        }
-        return response()->json([
-            'voiture' => $voiture
-        ]);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $voiture = voiture::find($id);
-        Storage::delete($voiture->image);
-        $voiture->delete();
-        return response("La voiture à été supprimé avec succès.");
-    }
     public function getImage($path)
     {
         $image = Storage::get($path);

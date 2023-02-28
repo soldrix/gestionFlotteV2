@@ -54,11 +54,11 @@ class LocationController extends Controller
     {
         $validator = Validator::make($request->all(),[
             "DateDebut"  => ["required","after:2000-01-01"],
-            "DateFin" => ["required", "after_or_equal:".$request->DateDebut]
+            "DateFin" => ["required", "after:".$request->DateDebut]
         ]);
         if ($validator->fails()) return response()->json(["error" => $validator->errors()],400);
-        $DateDebut = Carbon::createFromFormat('d/m/Y',$request->DateDebut)->format('Y-m-d');
-        $DateFin = Carbon::createFromFormat('d/m/Y',$request->DateFin)->format('Y-m-d');
+        $DateDebut = $request->DateDebut;
+        $DateFin = $request->DateFin;
         $DParse = Carbon::parse($DateDebut);
         $FParse = Carbon::parse($DateFin);
         $montant = ($DParse->diffInDays($FParse) + 1) * $request->prix ;
@@ -68,12 +68,15 @@ class LocationController extends Controller
             "montant" => $montant,
             "id_voiture" => ($request->id_voiture === null) ? null : $request->id_voiture,
             "id_users"  => Auth::id(),
+            "commandeNumber" => Str::random(15)
         ]);
 
+        $DateDebut = Carbon::createFromFormat('Y-m-d',$request->DateDebut)->format('d/m/Y');
+        $DateFin = Carbon::createFromFormat('Y-m-d',$request->DateFin)->format('d/m/Y');
         $data["email"] = Auth::user()->email;
         $data['title'] = "Création de location";
-        $data['DateDebut'] = $request->DateDebut;
-        $data['DateFin'] = $request->DateFin;
+        $data['DateDebut'] = $DateDebut;
+        $data['DateFin'] = $DateFin;
         $data['montant'] = $montant;
 
         Mail::send('mail.locationMail', ['data' => $data],function ($message) use ($data){
@@ -83,56 +86,5 @@ class LocationController extends Controller
         return response()->json([
             "location" => $location
         ]);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id):JsonResponse
-    {
-        $location =  location::find($id);
-        return response()->json([
-            "location" => $location
-        ]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request):JsonResponse
-    {
-        $validator = Validator::make($request->all(),[
-            "id" => "required",
-            "DateDebut"  => ["after:2000-01-01"],
-            "DateFin" => ["after_or_equal:".$request->DateDebut,($request->DateDebut) ? "required" : ""],
-            "montant" => ["numeric"]
-        ]);
-        if ($validator->fails()) return response()->json(["error" => $validator->errors()],400);
-        $location = location::find($request->id);
-        if($request->id_voiture) $request['id_voiture'] = ($request->id_voiture === null) ? null : $request->id_voiture;
-        $location->update(array_merge($request->all(),["id_users"  => Auth::id()]));
-        return response()->json([
-            "location" => $location
-        ]);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $location = location::find($id);
-        $location->delete();
-        return response("La location a été supprimé avec succès.");
     }
 }
