@@ -184,12 +184,13 @@ class UserController extends Controller
             $user = User::where('email', $resetData[0]['email'])->get();
             return ($request->wantsJson()) ? response()->json(['data' => $user]) : view('resetPassword',compact('user'));
         }
-        return ($request->wantsJson()) ? response()->json(['success' => false]) :view('errors.404');
+        return ($request->wantsJson()) ? response()->json(['success' => false],400) :view('errors.404');
     }
 
     public function resetPassword(Request $request)
     {
         $validator = Validator::make($request->all(),[
+            'id' => "required",
             'password' => ['required', "min:10", "string", "confirmed"]
         ]);
         if($validator->fails()) return ($request->wantsJson()) ? response()->json(['errors' => $validator->errors()]) : back()->withErrors($validator->errors())->withInput();
@@ -201,4 +202,5 @@ class UserController extends Controller
 
         return ($request->wantsJson()) ? response()->json(["message" => "Le mot de passe a été modifié avec succès."]) : redirect('/login')->with('message', 'Le mot de passe a été modifié avec succès.');
     }
+
 }

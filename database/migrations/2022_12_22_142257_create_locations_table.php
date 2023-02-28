@@ -18,6 +18,7 @@ return new class extends Migration
             $table->date('DateDebut');
             $table->date('DateFin');
             $table->float('montant');
+            $table->string('commandeNumber');
             $table->foreignId('id_voiture')->nullable()->references('id')->on('voitures')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('id_users')->nullable()->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();

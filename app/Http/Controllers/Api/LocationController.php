@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\maillerController;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\location;
 use Illuminate\Routing\Controller;
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Str;
 
 class LocationController extends Controller
 {
@@ -24,6 +26,22 @@ class LocationController extends Controller
         return response([
             "data" => $locations
         ]);
+    }/**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexUser($id)
+    {
+        $locations = location::join("voitures", 'voitures.id', '=', 'locations.id_voiture')->where('locations.id_users',$id)
+            ->get([
+                'locations.*',
+                'voitures.marque',
+                'voitures.model'
+            ]);
+        return response([
+            "locations" => $locations
+        ]);
     }
 
     /**
@@ -36,23 +54,27 @@ class LocationController extends Controller
     {
         $validator = Validator::make($request->all(),[
             "DateDebut"  => ["required","after:2000-01-01"],
-            "DateFin" => ["required", "after_or_equal:".$request->DateDebut],
-            "montant" => ["required", "numeric"]
+            "DateFin" => ["required", "after_or_equal:".$request->DateDebut]
         ]);
         if ($validator->fails()) return response()->json(["error" => $validator->errors()],400);
+        $DateDebut = Carbon::createFromFormat('d/m/Y',$request->DateDebut)->format('Y-m-d');
+        $DateFin = Carbon::createFromFormat('d/m/Y',$request->DateFin)->format('Y-m-d');
+        $DParse = Carbon::parse($DateDebut);
+        $FParse = Carbon::parse($DateFin);
+        $montant = ($DParse->diffInDays($FParse) + 1) * $request->prix ;
         $location  = location::create([
-            "DateDebut" => $request->DateDebut,
-            "DateFin" => $request->DateFin,
-            "montant" => $request->montant,
+            "DateDebut" => $DateDebut,
+            "DateFin" => $DateFin,
+            "montant" => $montant,
             "id_voiture" => ($request->id_voiture === null) ? null : $request->id_voiture,
-            "id_users"  => Auth::id()
+            "id_users"  => Auth::id(),
         ]);
 
         $data["email"] = Auth::user()->email;
         $data['title'] = "Création de location";
-        $data['DateDebut'] = date('d/m/Y', strtotime($request->DateDebut));
-        $data['DateFin'] = date('d/m/Y', strtotime($request->DateFin));
-        $data['montant'] = $request->montant;
+        $data['DateDebut'] = $request->DateDebut;
+        $data['DateFin'] = $request->DateFin;
+        $data['montant'] = $montant;
 
         Mail::send('mail.locationMail', ['data' => $data],function ($message) use ($data){
             $message->to($data['email'])->subject($data['title']);

@@ -8,6 +8,7 @@ use App\Models\voiture;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class LocationController extends Controller
 {
@@ -58,7 +59,8 @@ class LocationController extends Controller
             "DateFin" => $request->DateFin,
             "montant" => $request->montant,
             "id_voiture" => ($request->id_voiture === 'vide') ? null : $request->id_voiture,
-            "id_users"  => ($request->id_user === 'vide') ? null : $request->id_user
+            "id_users"  => ($request->id_user === 'vide') ? null : $request->id_user,
+            "commandeNumber" => Str::random(15)
         ]);
         return back()->with('message', 'La location a été créer avec succès.');
     }

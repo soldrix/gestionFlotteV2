@@ -17,6 +17,7 @@ class location extends Model
         "DateDebut",
         "DateFin",
         "montant",
+        "commandeNumber",
         "id_users",
         "id_voiture"
     ];

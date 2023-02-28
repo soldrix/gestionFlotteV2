@@ -27,7 +27,7 @@ Route::get('/image/{path}', [voitureController::class, 'getImage'])->where('path
 
 Route::post('/forget-password', [UserController::class, 'forgetPassword']);
 Route::post('/reset-password', [UserController::class, 'resetPassword']);
-
+Route::get('/reset-password', [UserController::class, 'resetPasswordLoad']);
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/voiture/{id}',[voitureController::class, 'show']);
@@ -44,10 +44,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user/{id}',[UserController::class, 'getUser']);
 
     Route::get('/agences',[AgenceController::class , 'index']);
-//    Route::get('/agence/{id}',[AgenceController::class , 'show']);
 
     Route::post('/location/create',[LocationController::class, 'store']);
     Route::get('/locations', [LocationController::class, "index"]);
+    Route::get('/locations/user/{id}',[LocationController::class, 'indexUser']);
     Route::get('/location/{id}', [LocationController::class, "show"]);
     Route::post('/location/update', [LocationController::class, "update"]);
     Route::delete('/location/delete/{id}',[LocationController::class, 'destroy']);
