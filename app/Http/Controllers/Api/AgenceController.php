@@ -2,14 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-use Carbon\Carbon;
-use Illuminate\Http\Request;
 use App\models\agence;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
-use Laravel\Sanctum\PersonalAccessToken;
+
 
 class AgenceController extends Controller
 {
@@ -27,74 +23,19 @@ class AgenceController extends Controller
         ]);
     }
 
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request):JsonResponse
-    {
-        $validator = Validator::make($request->all(),[
-            "ville" => "required",
-            "rue" => "required",
-            "codePostal" => "required"
-        ]);
-        if ($validator->fails()) return response()->json(["error" => $validator->errors()],400);
-        $agence = agence::create([
-            "ville" => $request->ville,
-            "rue" => $request->rue,
-            "codePostal" => $request->codePostal
-        ]);
-        return response()->json([
-            "agence" => $agence
-        ]);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id):JsonResponse
-    {
-        $agence = agence::find($id);
-        return response()->json([
-            "agence" => $agence
-        ]);
-    }
-
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request):JsonResponse
-    {
-        $validator = Validator::make($request->all(),[
-            'id' => "required"
-        ]);
-        if ($validator->fails()) return response()->json(['error' => $validator->errors()],400);
-        $agence = agence::find($request->id);
-        $agence->update($request->all());
-        return response()->json(["agance" => $request->all()]);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $agence = agence::find($id);
-        $agence->delete();
-        return response("L'agence à été supprimé avec succès.");
+    public function searchAgence($search){
+        $word =explode(" ",$search);
+        $agences = agence::where(function ($query) use($word){
+            for($i=0; $i < count($word);$i++){
+                if ($i < 2){
+                    $query->where('ville', 'like', "%". $word[$i]."%");
+                }else{
+                    $query->orWhere('ville', 'like', "%". $word[$i]."%");
+                }
+                $query->orWhere('rue', 'like', "%".$word[$i]."%");
+                $query->orWhere('codePostal', 'like', "%".$word[$i]."%");
+            }
+        })->get();
+        return response()->json(["research" => $agences, "status" => (count($agences) < 1) ? false : true ]);
     }
 }

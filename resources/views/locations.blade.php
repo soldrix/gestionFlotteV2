@@ -11,6 +11,7 @@
                 <table id="DataTable_location" class="table table-dark mt-2 table-hover table-striped dataTable table-responsive" style="width: 100%">
                     <thead class="border-1 border-bottom border-white">
                     <tr>
+                        <th>Numéro de commande</th>
                         <th>Date de début</th>
                         <th>Date de Fin</th>
                         <th>Immatriculation</th>
@@ -22,6 +23,7 @@
                     <tbody>
                     @foreach($locations as $datas)
                         <tr data-voiture="{{$datas->id}}" data-db="location">
+                            <th>{{$datas->commandeNumber}}</th>
                             <td>{{date('d/m/Y', strtotime($datas->DateDebut))}}</td>
                             <td>{{date('d/m/Y', strtotime($datas->DateFin))}}</td>
                             <td>{{$datas->immatriculation ?? 'Aucune voiture'}}</td>
