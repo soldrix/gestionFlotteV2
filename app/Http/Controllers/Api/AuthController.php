@@ -48,8 +48,8 @@ class AuthController extends Controller
             'id_role' => 1
         ]);
         $user->assignRole(1);
-
-        $token = $user->createToken('auth_token',['*'],Carbon::now()->addMinutes(env('SESSION_LIFETIME',1)))->plainTextToken;
+        Auth()->attempt($request->only('email', 'password'));
+        $token = Auth('sanctum')->user()->createToken('auth_token',['*'],Carbon::now()->addMinutes(20) )->plainTextToken;
 
         return response()->json([
             'access_token' => $token,
