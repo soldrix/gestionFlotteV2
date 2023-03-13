@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\agence;
 use App\Models\assurance;
+use App\Models\commande;
 use App\Models\consommation;
 use App\Models\entretien;
 use App\Models\fournisseur;
@@ -11,6 +12,7 @@ use App\Models\location;
 use App\Models\reparation;
 use App\Models\User;
 use App\Models\voiture;
+use App\Models\voitureFournisseur;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -65,7 +67,17 @@ class LoginController extends Controller
             "users.*",
             "roles.name as role"
         ]);
-        return view('home',['entretiens' => $entretiens, 'assurances' => $assurances, 'consommations' => $consommations, 'reparations' => $reparations, 'locations' => $locations, 'agences' => $agences, 'fournisseurs' => $fournisseurs, 'voitures' => $voitures, 'users' => $users]);
+        $commandes = commande::join('voitures_fournisseur', 'voitures_fournisseur.id', '=', 'commandes.id_voiture')->where('commandes.updated_at', '>=', $date)->get([
+            'commandes.*',
+            'voitures_fournisseur.marque',
+            'voitures_fournisseur.model'
+        ]);
+        $voitures_fournisseurs= voitureFournisseur::join('fournisseurs', 'fournisseurs.id', '=', 'voitures_fournisseur.id_fournisseur')->where('voitures_fournisseur.updated_at', '>=', $date)->get([
+           "voitures_fournisseur.*",
+            "fournisseurs.name",
+            "fournisseurs.email"
+        ]);
+        return view('home',['entretiens' => $entretiens, 'assurances' => $assurances, 'consommations' => $consommations, 'reparations' => $reparations, 'locations' => $locations, 'agences' => $agences, 'fournisseurs' => $fournisseurs, 'voitures' => $voitures, 'users' => $users, 'commandes' => $commandes , 'voitures_fournisseurs' => $voitures_fournisseurs]);
     }
 
     public function register(Request $request)

@@ -27,63 +27,24 @@ function initDatatable(){
             {  responsivePriority: 3, targets: -1}
         ]
     };
-    //vérifie si le tableau est existe
-    if($('#DataTable_entretiens').length > 0){
-        //vérifie si le tableau n'est pas un datatable
-        if(! $.fn.DataTable.isDataTable( '#DataTable_entretiens' )){
-            //initialise le datatable avec les options
-            $('#DataTable_entretiens').DataTable(DataTableOption);
+    //initialiser tout les tableaux existant
+    $.each($('.dataTable'),function (datas) {
+        let tableId = $('.dataTable').eq(datas).attr('id');
+        if(tableId.length > 0){
+            if(! $.fn.DataTable.isDataTable( '#'+tableId )){
+                //initialise le datatable avec les options
+                $('#'+tableId).DataTable(DataTableOption);
+            }
         }
-    }
-    if($('#DataTable_assurances').length > 0){
-        if(! $.fn.DataTable.isDataTable( '#DataTable_assurances' )){
-            $('#DataTable_assurances').DataTable(DataTableOption);
-        }
-    }
-    if($('#DataTable_reparations').length > 0) {
-        if (!$.fn.DataTable.isDataTable('#DataTable_reparations')) {
-            $('#DataTable_reparations').DataTable(DataTableOption);
-        }
-    }
-    if($('#DataTable_carburants').length > 0){
-        if(! $.fn.DataTable.isDataTable( '#DataTable_carburants' )){
-            $('#DataTable_carburants').DataTable(DataTableOption);
-        }
-    }
+    })
 
-    if($('#DataTable_location').length > 0){
-        if(! $.fn.DataTable.isDataTable( '#DataTable_location' )){
-            $('#DataTable_location').DataTable(DataTableOption);
-        }
-    }
-    if($('#DataTable_users').length > 0){
-        if(! $.fn.DataTable.isDataTable( '#DataTable_users' )){
-            $('#DataTable_users').DataTable(DataTableOption);
-        }
-    }
-    if($('#DataTable_voitures').length > 0){
-        if(! $.fn.DataTable.isDataTable( '#DataTable_voitures' )){
-            $('#DataTable_voitures').DataTable(DataTableOption);
-        }
-    }
-    if($('#DataTable_fournisseur').length > 0){
-        if(! $.fn.DataTable.isDataTable( '#DataTable_fournisseur' )){
-            $('#DataTable_fournisseur').DataTable(DataTableOption);
-        }
-    }
-    if($('#DataTable_agence').length > 0){
-        if(! $.fn.DataTable.isDataTable( '#DataTable_agence' )){
-            $('#DataTable_agence').DataTable(DataTableOption);
-        }
-    }
 }
 
 
 $(document).ready(function () {
     //pour afficher le premier datatable disponible
     $('.tabsHome').first().addClass('active');
-    $('.contentHome').first().addClass('active');
-    $('.contentHome').first().addClass('show');
+    $('.contentHome').first().addClass('active show');
     initDatatable();
     //évènement au click des tabs pour initialiser le nouveau datatable
     $('.tab-pane').on('click',function () {

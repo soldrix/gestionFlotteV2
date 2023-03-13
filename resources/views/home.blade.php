@@ -44,11 +44,21 @@
                                 <a class="nav-link tabsHome" href="#" data-bs-toggle="tab" data-bs-target="#table_agences"><i class="fa-solid fa-shop fa-lg m-2"></i>Agences</a>
                             </li>
                         @endif
+                        @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'responsable commandes']))
+                            <li class="nav-item">
+                                <a class="nav-link tabsHome" href="#" data-bs-toggle="tab" data-bs-target="#table_commandes"><i class="fa-solid fa-calendar-days fa-lg m-2"></i>Commandes</a>
+                            </li>
+                        @endif
+                        @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'responsable fournisseurs']))
+                            <li class="nav-item">
+                                <a class="nav-link tabsHome" href="#" data-bs-toggle="tab" data-bs-target="#table_voitures_fournisseur"><i class="fa-solid fa-car fa-lg m-2"></i>Voitures fournisseurs</a>
+                            </li>
+                        @endif
                     </ul>
                 </div>
                 <div id="block_info_voiture" class="tab-content">
                     {{--Affiche le tableau ou non selont le role de l'utilisateur--}}
-                    @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin','responsable auto', 'fournisseur', 'user']))
+                    @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin','responsable auto', 'user']))
                         <div id="table_voitures" class="tab-pane fade contentHome mt-3" role="tabpanel">
                         <table id="DataTable_voitures" class="table table-dark table-bordered table-hover table-striped dataTable mt-2 table-responsive" style="width: 100%">
                             <thead>
@@ -292,7 +302,57 @@
                                 @endforeach
                                 </tbody>
                             </table>
-                </div>
+                        </div>
+                    @endif
+                    @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'responsable commandes']))
+                        <div id="table_commandes" class="tab-pane fade contentHome mt-3" role="tabpanel">
+                            <table id="DataTable_commandes" class="table table-bordered table-hover table-dark mt-2 table-striped dataTable table-responsive" style="width: 100%">
+                                <thead>
+                                <tr>
+                                    <th>Date de début</th>
+                                    <th>Date de fin</th>
+                                    <th>voiture</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($commandes as $datas)
+                                    <tr>
+                                        <td>{{$datas->DateDebut}}</td>
+                                        <td>{{$datas->DateFin}}</td>
+                                        <td>{{$datas->marque.' '.$datas->model}}</td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @endif
+                    @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin','responsable fournisseur']))
+                        <div id="table_voitures_fournisseur" class="tab-pane fade contentHome mt-3" role="tabpanel">
+                            <table id="DataTable_voitures_fournisseur" class="table table-dark table-bordered table-hover table-striped dataTable mt-2 table-responsive" style="width: 100%">
+                                <thead>
+                                <tr class="text-white">
+                                    <th>Marque</th>
+                                    <th>Model</th>
+                                    <th>Puissance</th>
+                                    <th>Carburant</th>
+                                    <th>Type de véhicule</th>
+                                    <th>Fournisseur</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($voitures_fournisseurs as $datas)
+                                    <tr class="text-white">
+                                        <td>{{$datas->marque}}</td>
+                                        <td>{{$datas->model}}</td>
+                                        <td>{{$datas->puissance}}</td>
+                                        <td>{{$datas->carburant}}</td>
+                                        <td>{{$datas->type}}</td>
+                                        <td>{{($datas->name !== null) ? $datas->name.' '.$datas->email : 'Aucun fournisseur'}}</td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     @endif
                 </div>
             </div>
