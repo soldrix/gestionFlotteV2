@@ -79,7 +79,7 @@
                             </div>
 
                             <div class="row mb-3">
-                                <label for="email_receiver" class="col-md-4 col-form-label text-md-end">{{ __('Envoyer l\'email à : ') }}</label>
+                                <label for="email_receiver" class="col-md-4 col-form-label text-md-end">{{ __('Envoyer l\'email à ') }}<span class="text-danger">*</span>{{__(' :')}}</label>
 
                                 <div class="col-md-6">
                                     <input id="email_receiver" type="email" class="form-control @error('email_receiver') is-invalid @enderror" name="email_receiver" value="">

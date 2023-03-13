@@ -68,7 +68,7 @@ class UserController extends Controller
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|unique:users|max:255',
             'id_role' => 'required',
-            'email_receiver' => 'email'
+            'email_receiver' => 'email|required'
         ],
             [
                 'required' => 'Le champ :attribute est requis.',
@@ -88,16 +88,15 @@ class UserController extends Controller
         ]);
         $user->assignRole($request->id_role);
 
-        if($request->email_receiver !== null){
-            $data["email"] = $request->email;
-            $data["email_receiver"] = $request->email_receiver;
-            $data["password"] = $password;
-            $data['title'] = "Création de compte";
+        $data["email"] = $request->email;
+        $data["email_receiver"] = $request->email_receiver;
+        $data["password"] = $password;
+        $data['title'] = "Création de compte";
 
-            Mail::send('mail.accountCreatedMail', ['data' => $data],function ($message) use ($data){
-                $message->to($data['email_receiver'])->subject($data['title']);
-            });
-        }
+        Mail::send('mail.accountCreatedMail', ['data' => $data],function ($message) use ($data){
+            $message->to($data['email_receiver'])->subject($data['title']);
+        });
+
 
         return back()->with('message','L\'utilisateur a été créer avec succès.');
     }
@@ -147,8 +146,7 @@ class UserController extends Controller
             'first_name' => 'string|max:255',
             'last_name' => 'string|max:255',
             'email' => 'email|unique:users|max:255',
-            'statut' => 'string',
-            'password' => 'min:10'
+            'statut' => 'string'
         ],
         [
             'required' => 'Le champ :attribute est requis.',
@@ -158,21 +156,11 @@ class UserController extends Controller
         // Return errors if validation error occur.
         if ($validator->fails()) return back()->withErrors($validator->errors())->withInput();
         $user = User::find($id);
-        $cloneRequest = clone $request;
-        unset($cloneRequest->password);
-        if($request->password !== null){
-            $cloneRequest->merge(['password' => Hash::make($request->password)]);
-        }
 
         //vérifie si l'utilisateur est relié à une agence ou un fournisseur, le/la supprime au changement de role s'il est relié
         if($request->id_role !== null){
             $user->removeRole($user->id_role);
             $user->assignRole($request->id_role);
-            $fournisseur = fournisseur::where('id_users' , $id)->get();
-            if(count($fournisseur) > 0){
-                $fournisseur = fournisseur::find($fournisseur[0]['id']);
-                $fournisseur->delete();
-            }
             $agence = agence::where('id_user', $id)->get();
             if(count($agence) > 0){
                 $agence = agence::find($agence[0]['id']);
@@ -180,9 +168,9 @@ class UserController extends Controller
             }
         }
         if($request->statut !== null){
-            $user->update(array_merge(array_filter($cloneRequest->all()), ["statut" => $request->statut]));
+            $user->update(array_merge(array_filter($request->all()), ["statut" => $request->statut]));
         }else{
-            $user->update(array_filter($cloneRequest->all()));
+            $user->update(array_filter($request->all()));
         }
 
 

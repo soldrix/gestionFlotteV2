@@ -87,7 +87,7 @@
 
                                 @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'responsable agence']))
                                     <li class="nav-item">
-                                        <a href="{{url('/agences')}}" class="mx-2 text-white nav-link">Gestion agences</a>
+                                        <a href="{{url('/agences')}}" class="mx-2 text-white nav-link">Gestionnaire d'agences</a>
                                     </li>
                                 @endif
                                 @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'chef agence']))
