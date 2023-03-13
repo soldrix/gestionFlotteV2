@@ -27,26 +27,15 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="userId" class="col-md-4 col-form-label text-md-end">{{ __('Utilisateur :') }}</label>
-                                @if(count(json_decode($users)) > 0)
+                                <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Nom du fournissseur ')}}<span class="text-danger">*</span>{{__(' :')}}</label>
                                 <div class="col-md-6">
-                                    <select id="userId" class="form-select @error('id_users') is-invalid @enderror" aria-label="Default select example" name="id_users">
-                                        <option value="">Selectionner un fournisseur</option>
-                                        @foreach($users as $datas)
-                                            <option value="{{$datas->id}}">{{$datas->first_name.' '.$datas->last_name.' '.$datas->email}}</option>
-                                        @endforeach
-                                    </select>
-                                    @error ('id_users')
+                                    <input id="email" type="text" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" autocomplete="email" autofocus>
+                                    @error ('email')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror
                                 </div>
-                                @else
-                                    <div class="col-md-6">
-                                        <p class="text-danger">Aucun utilisateur avec le role fournisseur, créer un utilisateur avec le role fournisseur pour pouvoir modifier un fournisseur.</p>
-                                    </div>
-                                @endif
                             </div>
                             <div class="row mb-0">
                                 <div class="col-md-8 offset-md-4">

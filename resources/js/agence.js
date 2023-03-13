@@ -54,6 +54,9 @@ function supModal(row){
                 agence.remove().draw();
                 myModal.hide();
                 delToast.show();
+
+                let date = new Date();
+                date.getUTCDate()
             }
         })
     })

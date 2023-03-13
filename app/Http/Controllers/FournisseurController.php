@@ -6,7 +6,6 @@ use App\Models\fournisseur;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Spatie\Permission\Models\Role;
 
 class FournisseurController extends Controller
 {
@@ -17,11 +16,7 @@ class FournisseurController extends Controller
      */
     public function index()
     {
-        $fournisseurs = fournisseur::join('users', 'users.id', '=', 'fournisseurs.id_users')
-            ->get([
-                'fournisseurs.*',
-                'users.email'
-            ]);
+        $fournisseurs = fournisseur::all();
         return view('fournisseurs', ['fournisseurs' => $fournisseurs]);
     }
 
@@ -32,10 +27,7 @@ class FournisseurController extends Controller
      */
     public function create()
     {
-        $users = User::join('roles', 'roles.id', '=', 'users.id_role')->where('roles.name', '=', 'fournisseur')->get([
-            "users.*"
-        ]);
-        return view('form.fournisseur.fournisseurCreate', ['users' => $users]);
+        return view('form.fournisseur.fournisseurCreate');
     }
 
     /**
@@ -48,12 +40,12 @@ class FournisseurController extends Controller
     {
         $validator = Validator::make($request->all(),[
             'name' => 'required|string|max:255',
-            'id_users' => 'required'
+            "email" => 'required|email'
         ]);
         if($validator->fails()) return back()->withErrors($validator->errors())->withInput();
         fournisseur::create([
             'name' => $request->name,
-            'id_users' => $request->id_users
+            'email' => $request->email
         ]);
         return back()->with('message', 'Le fournisseur a été créer avec succès.');
     }
@@ -67,9 +59,7 @@ class FournisseurController extends Controller
      */
     public function edit($id)
     {
-        $fournisseur = fournisseur::find($id);
-        $users = User::where('type', '=', 'fournisseur')->get();
-        return view('form.fournisseur.fournisseurEdit',['fournisseur' => $fournisseur, 'users' => $users]);
+        return view('form.fournisseur.fournisseurEdit');
     }
 
     /**
@@ -83,6 +73,7 @@ class FournisseurController extends Controller
     {
         $validator = Validator::make(array_filter($request->all()),[
             'name' => 'string|max:255',
+            'email' => 'email'
         ]);
         if($validator->fails()) return back()->withErrors($validator->errors())->withInput();
         $fournisseur = fournisseur::find($id);

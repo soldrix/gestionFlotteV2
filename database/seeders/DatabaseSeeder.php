@@ -19,11 +19,11 @@ class DatabaseSeeder extends Seeder
         $role2 = Role::create(['name' => 'admin']);
         Role::create(['name' => 'RH']);
         Role::create(['name' => 'responsable auto']);
-        Role::create(['name' => 'fournisseur']);
-        Role::create(['name' => 'responsable fournisseur']);
+        Role::create(['name' => 'responsable fournisseurs']);
         Role::create(['name' => 'responsable agences']);
         Role::create(['name' => 'chef agence']);
         Role::create(['name' => 'secretaire']);
+        Role::create(['name' => 'responsable commandes']);
         $user2 = \App\Models\User::factory()->create([
             'first_name' => 'admin',
             'last_name' => 'admin',

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Models\PasswordReset;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Http\JsonResponse;

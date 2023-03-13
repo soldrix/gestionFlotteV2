@@ -54,7 +54,7 @@
                         <div class="row mb-3">
                             <label for="first_name" class="col-md-4 col-form-label text-md-end">Prenom</label>
                             <div class="col-md-6">
-                                <input id="first_name" type="text" class="form-control" name="first_name" required autocomplete="first_name" autofocus>
+                                <input id="first_name" type="text" class="form-control fn_input" name="first_name" required autocomplete="first_name" autofocus>
                                 <span class="invalid-feedback" role="alert">
                                 <strong></strong>
                             </span>
@@ -63,7 +63,7 @@
                         <div class="row mb-3">
                             <label for="old_password" class="col-md-4 col-form-label text-md-end">Mot de passe</label>
                             <div class="col-md-6">
-                                <input type="password" class="form-control old_password" name="old_password" required autocomplete="old_password" autofocus>
+                                <input type="password" class="form-control old_password fn_input" name="old_password" required autocomplete="old_password" autofocus>
                                 <span class="invalid-feedback" role="alert">
                                 <strong></strong>
                             </span>
@@ -94,7 +94,7 @@
                     <div class="row mb-3">
                         <label for="last_name" class="col-md-4 col-form-label text-md-end">Nom</label>
                         <div class="col-md-6">
-                            <input id="last_name" type="text" class="form-control" name="last_name" required autocomplete="last_name" autofocus>
+                            <input id="last_name" type="text" class="form-control ln_input" name="last_name" required autocomplete="last_name" autofocus>
                             <span class="invalid-feedback" role="alert">
                                 <strong></strong>
                             </span>
@@ -103,7 +103,7 @@
                     <div class="row mb-3">
                         <label for="old_password" class="col-md-4 col-form-label text-md-end">Mot de passe</label>
                         <div class="col-md-6">
-                            <input type="password" class="form-control old_password" name="old_password" required autocomplete="old_password" autofocus>
+                            <input type="password" class="form-control old_password ln_input" name="old_password" required autocomplete="old_password" autofocus>
                             <span class="invalid-feedback" role="alert">
                                 <strong></strong>
                             </span>
@@ -134,7 +134,7 @@
                     <div class="row mb-3">
                         <label for="email" class="col-md-4 col-form-label text-md-end">Adresse mail</label>
                         <div class="col-md-6">
-                            <input id="email" type="email" class="form-control" name="email" required autocomplete="email" autofocus>
+                            <input id="email" type="email" class="form-control e_input" name="email" required autocomplete="email" autofocus>
                             <span class="invalid-feedback" role="alert">
                                 <strong></strong>
                             </span>
@@ -143,7 +143,7 @@
                     <div class="row mb-3">
                         <label for="old_password" class="col-md-4 col-form-label text-md-end">Mot de passe</label>
                         <div class="col-md-6">
-                            <input type="password" class="form-control old_password" name="old_password" required autocomplete="old_password" autofocus>
+                            <input type="password" class="form-control old_password e_input" name="old_password" required autocomplete="old_password" autofocus>
                             <span class="invalid-feedback" role="alert">
                                 <strong></strong>
                             </span>
@@ -174,7 +174,7 @@
                     <div class="row mb-3">
                         <label for="old_password" class="col-md-4 col-form-label text-md-end">Ancien mot de passe</label>
                         <div class="col-md-6">
-                            <input type="password" class="form-control old_password" name="old_password" required autocomplete="old_password" autofocus>
+                            <input type="password" class="form-control old_password p_input" name="old_password" required autocomplete="old_password" autofocus>
                             <span class="invalid-feedback" role="alert">
                                 <strong></strong>
                             </span>
@@ -183,7 +183,7 @@
                     <div class="row mb-3">
                         <label for="new_password" class="col-md-4 col-form-label text-md-end">Nouveau mot de passe</label>
                         <div class="col-md-6">
-                            <input id="new_password" type="password" class="form-control" name="new_password" required autocomplete="new_password" autofocus>
+                            <input id="new_password" type="password" class="form-control p_input" name="new_password" required autocomplete="new_password" autofocus>
                             <span class="invalid-feedback" role="alert">
                                 <strong></strong>
                             </span>
@@ -192,7 +192,7 @@
                     <div class="row mb-3">
                         <label for="new_password_confirmation" class="col-md-4 col-form-label text-md-end">Nouveau mot de passe</label>
                         <div class="col-md-6">
-                            <input id="new_password_confirmation" type="password" class="form-control" name="new_password_confirmation" required autocomplete="new_password_confirmation" autofocus>
+                            <input id="new_password_confirmation" type="password" class="form-control p_input" name="new_password_confirmation" required autocomplete="new_password_confirmation" autofocus>
                             <span class="invalid-feedback" role="alert">
                                 <strong></strong>
                             </span>

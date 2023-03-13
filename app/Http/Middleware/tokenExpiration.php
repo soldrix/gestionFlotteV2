@@ -24,11 +24,20 @@ class tokenExpiration
                 return $next($request);
             }
             $userToken = Auth('sanctum')->user()->tokens->first();
+            if($userToken === null){
+                Auth::guard()->logout();
+                return $next($request);
+            }
         }else{
             if (!auth()->check()) {
                 return $next($request);
             }
             $userToken = Auth::user()->tokens->first();
+            if($userToken === null){
+                Auth::logout();
+                $request->session()->invalidate();
+                return $next($request);
+            }
         }
 
         $token = PersonalAccessToken::find($userToken->id);

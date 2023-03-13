@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\models\agence;
+use App\Models\agence;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 

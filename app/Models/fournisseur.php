@@ -15,6 +15,6 @@ class fournisseur extends Model
 
     protected $fillable =[
         'name',
-        'id_users'
+        'email'
     ];
 }

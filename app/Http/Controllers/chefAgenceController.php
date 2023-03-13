@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\agence;
 use App\Models\voiture;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class chefAgenceController extends Controller
 {

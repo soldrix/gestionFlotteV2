@@ -2,12 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\agence;
-use App\Models\assurance;
-use App\Models\consommation;
-use App\Models\entretien;
 use App\Models\fournisseur;
-use App\Models\reparation;
 use App\Models\voitureFournisseur;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,10 +18,10 @@ class VoitureFournisseurController extends Controller
     public function index()
     {
         $voitures = voitureFournisseur::join('fournisseurs', 'fournisseurs.id', '=', 'voitures_fournisseur.id_fournisseur')
-            ->get([
-                'fournisseurs.name',
-                'voitures_fournisseur.*'
-            ]);
+        ->get([
+            'fournisseurs.name',
+            'voitures_fournisseur.*'
+        ]);
         return view('voituresFournisseur',["voitures"=>$voitures]);
     }
     /**
@@ -34,11 +29,7 @@ class VoitureFournisseurController extends Controller
      */
     public function create()
     {
-        $fournisseurs = fournisseur::leftjoin('users', 'users.id', '=', 'fournisseurs.id_users')
-            ->get([
-            'users.email',
-            'fournisseurs.*'
-        ]);
+        $fournisseurs = fournisseur::all();
         return view('form.voiture_fournisseur.voiture_fournisseurCreate', ['fournisseurs' => $fournisseurs]);
     }
 
@@ -86,11 +77,7 @@ class VoitureFournisseurController extends Controller
     public function edit($id)
     {
         $voiture = voitureFournisseur::find($id);
-        $fournisseurs = fournisseur::join('users', 'users.id', '=', 'fournisseurs.id_users')
-            ->get([
-                'fournisseurs.*',
-                'users.email'
-            ]);
+        $fournisseurs = fournisseur::all();
         return view("form.voiture_fournisseur.voiture_fournisseurEdit",['voiture' => $voiture, 'fournisseurs' => $fournisseurs]);
     }
 

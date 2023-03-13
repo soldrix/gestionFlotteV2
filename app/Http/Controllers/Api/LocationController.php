@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\maillerController;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\location;

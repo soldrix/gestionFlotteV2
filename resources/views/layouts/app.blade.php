@@ -81,7 +81,7 @@
                                     <a href="{{url('/consommations')}}" class="mb-1 text-white nav-link d-flex d-md-none">Consommations</a>
                                 @endif
 
-                                @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['responsable fournisseur']))
+                                @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['responsable fournisseurs']))
                                     <a href="{{url('/voitures-fournisseur')}}" class="dropdown-item color-white">Gestion véhicules fournisseur</a>
                                 @endif
 
@@ -100,7 +100,7 @@
                                         <a href="{{url('/locations')}}" class="mx-2 text-white nav-link">Locations</a>
                                     </li>
                                 @endif
-                                @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'responsable fournisseur']))
+                                @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'responsable fournisseurs']))
                                     <li class="nav-item">
                                         <a href="{{url('/fournisseurs')}}" class="mx-2 text-white nav-link">Fournisseurs</a>
                                     </li>
@@ -109,6 +109,8 @@
                                     <li class="nav-item">
                                         <a href="{{url('/users')}}" class="mx-2 text-white nav-link">Utilisateurs</a>
                                     </li>
+                                @endif
+                                @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin','responsable commandes']))
                                     <li class="nav-item">
                                         <a href="{{url('/commandes')}}" class="mx-2 text-white nav-link">Commandes</a>
                                     </li>

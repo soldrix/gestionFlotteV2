@@ -51,10 +51,7 @@ class LoginController extends Controller
             'voitures.immatriculation'
         ]);
         //récupère touts les fournisseurs créer ou modifier depuis les 7 derniers jours
-        $fournisseurs = fournisseur::leftJoin('users' ,'users.id', '=', 'fournisseurs.id_users')->where('fournisseurs.updated_at', '>=', $date)->get([
-            'fournisseurs.*',
-            'users.email'
-        ]);
+        $fournisseurs = fournisseur::where('updated_at', '>=', $date)->get();
         //récupère toutes les agences créer ou modifier depuis les 7 derniers jours
         $agences = agence::where('updated_at', '>=', $date)->get();
         //récupère toutes les voitures créer ou modifier depuis les 7 derniers jours

@@ -5,12 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\assurance;
 use App\Models\consommation;
 use App\Models\entretien;
-use App\Models\fournisseur;
 use App\Models\reparation;
 use Illuminate\Http\Request;
 use App\Models\voiture;
 use App\Models\agence;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 

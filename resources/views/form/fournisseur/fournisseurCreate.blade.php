@@ -30,26 +30,15 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="userId" class="col-md-4 col-form-label text-md-end">{{ __('Utilisateur ')}}<span class="text-danger">*</span>{{__(' :')}}</label>
-                                @if(count(json_decode($users)) > 0)
-                                    <div class="col-md-6">
-                                        <select id="userId" class="form-select @error('id_users') is-invalid @enderror" aria-label="Default select example" name="id_users">
-                                            <option value="">Sélectionner un utilisateur</option>
-                                            @foreach($users as $datas)
-                                                    <option value="{{$datas->id}}">{{$datas->first_name.' '.$datas->last_name.' '.$datas->email}}</option>
-                                            @endforeach
-                                        </select>
-                                        @error ('id_users')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-                                @else
-                                    <div class="col-md-6 d-flex justify-content-center align-items-center">
-                                        <p class="text-danger">Aucun utilisateur avec le role fournisseur, créer un utilisateur avec le role fournisseur pour pouvoir créer un fournisseur.</p>
-                                    </div>
-                                @endif
+                                <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email')}}<span class="text-danger">*</span>{{__(' :')}}</label>
+                                <div class="col-md-6">
+                                    <input id="email" type="text" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                    @error ('email')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
                             </div>
                             <div class="row mb-0">
                                 <div class="col-md-8 offset-md-4">
@@ -65,11 +54,10 @@
                                     <a href="{{str_replace(url('/'), '', session()->get('urlP'))}}" class="btn btn-danger">
                                         {{__('Retour')}}
                                     </a>
-                                    @if(count(json_decode($users)) > 0)
-                                        <button type="submit" class="btn btn-primary">
-                                            {{ __('Continuer') }}
-                                        </button>
-                                    @endif
+
+                                    <button type="submit" class="btn btn-primary">
+                                        {{ __('Continuer') }}
+                                    </button>
                                 </div>
                             </div>
                         </form>

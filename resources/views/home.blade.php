@@ -31,7 +31,7 @@
                                 <a class="nav-link tabsHome" href="#" data-bs-toggle="tab" data-bs-target="#table_locations"><i class="fa-solid fa-calendar-days fa-lg m-2"></i>Locations</a>
                             </li>
                         @endif
-                        @if(\Illuminate\Support\Facades\Auth::user()->hasRole('admin'))
+                        @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin','responsable fournisseurs']))
                             <li class="nav-item">
                                 <a class="nav-link tabsHome" href="#" data-bs-toggle="tab" data-bs-target="#table_fournisseurs"><i class="fa-solid fa-truck-ramp-box fa-lg m-2"></i>Fournisseurs</a>
                             </li>
@@ -230,7 +230,7 @@
                         </table>
                     </div>
                     @endif
-                    @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin']))
+                    @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin','responsable fournisseurs']))
                         <div id="table_fournisseurs" class="tab-pane fade contentHome mt-3" role="tabpanel">
                         <table id="DataTable_fournisseur" class="table table-bordered table-hover table-dark mt-2 table-striped dataTable table-responsive" style="width: 100%">
                             <thead>

@@ -3,6 +3,34 @@ $(document).ready(function () {
     $('.delButton').on('click',function () {
         supModal(this);
     });
+    $('.fn_input').on('keypress',function (e) {
+       if (e.keyCode === 13){
+           form_first_name();
+           e.preventDefault();
+           return false;
+       }
+    });
+    $('.ln_input').on('keypress',function (e) {
+       if (e.keyCode === 13){
+           form_last_name();
+           e.preventDefault();
+           return false;
+       }
+    });
+    $('.e_input').on('keypress',function (e) {
+       if (e.keyCode === 13){
+           form_email();
+           e.preventDefault();
+           return false;
+       }
+    });
+    $('.p_input').on('keypress',function (e) {
+       if (e.keyCode === 13){
+           form_password();
+           e.preventDefault();
+           return false;
+       }
+    });
     $('#btn_first_name').on('click',function () {
         form_first_name();
     });
@@ -66,16 +94,21 @@ function ajaxForm(dataVal,dataUrl){
                 $('.modal.fade.show').find('.alert').html(data.success);
                 $.each( data.datas, function( key, value ) {
                     if(key !== 'id' && !key.match('password')){
+                        if(key === 'first_name'){
+                            $('#navbarDropdown').html(value)
+                        }
                         $('.'+key+"_text").html(value);
+
                     }
                 });
-            }else{
-                $.each( data.error, function( key, value ) {
-                    let typeSelect = (key === "old_password") ? ".modal.fade.show ." : "#";
-                    $(typeSelect+key).addClass('is-invalid');
-                    $(typeSelect+key).parent().find(".invalid-feedback strong").html(value);
-                });
             }
+        },
+        error:function (data) {
+            $.each( data.responseJSON.error, function( key, value ) {
+                let typeSelect = (key === "old_password") ? ".modal.fade.show ." : "#";
+                $(typeSelect+key).addClass('is-invalid');
+                $(typeSelect+key).parent().find(".invalid-feedback strong").html(value);
+            });
         }
     })
 }
