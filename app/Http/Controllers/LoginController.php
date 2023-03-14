@@ -47,7 +47,7 @@ class LoginController extends Controller
         ]);
         //récupère toutes les locations créer ou modifier depuis les 7 derniers jours
         $locations = location::leftJoin('voitures' ,'voitures.id', '=', 'locations.id_voiture')
-            ->leftJoin('users', 'users.id', '=', 'locations.id_users')
+            ->leftJoin('users', 'users.id', '=', 'locations.id_user')
             ->where('locations.updated_at', '>=', $date)->get([
             'locations.*',
             'voitures.immatriculation'
@@ -67,7 +67,7 @@ class LoginController extends Controller
             "users.*",
             "roles.name as role"
         ]);
-        $commandes = commande::join('voitures_fournisseur', 'voitures_fournisseur.id', '=', 'commandes.id_voiture')->where('commandes.updated_at', '>=', $date)->get([
+        $commandes = commande::join('voitures_fournisseur', 'voitures_fournisseur.id', '=', 'commandes.id_voiture_fournisseur')->where('commandes.updated_at', '>=', $date)->get([
             'commandes.*',
             'voitures_fournisseur.marque',
             'voitures_fournisseur.model'
@@ -116,9 +116,10 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        $user = User::where('email', '=', $request->email)->get('statut');
+        $user = User::where('email', '=', $request->email)->get();
+        if(count($user) < 1 ) return back()->withErrors(['message'=>'Données de connexion invalides.'])->withInput();
         if($user[0]['statut'] === 0){
-            return back()->withErrors(['message' => 'Le compte est désactiver contactez votre administrateur pour plus d’informations.'])->withInput();
+            return back()->withErrors(['message' => 'Le compte est désactiver.', "data" => $request->email])->withInput();
         }
         //essaye de connecter l'utilisateur avec les informations transmises
         if (Auth::guard()->attempt($request->only('email', 'password'))) {

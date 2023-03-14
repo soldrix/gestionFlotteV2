@@ -20,7 +20,7 @@ return new class extends Migration
             $table->float('montant');
             $table->string('commandeNumber');
             $table->foreignId('id_voiture')->nullable()->references('id')->on('voitures')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('id_users')->nullable()->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('id_user')->nullable()->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

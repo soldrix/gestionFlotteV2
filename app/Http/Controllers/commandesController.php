@@ -17,7 +17,7 @@ class commandesController extends Controller
      */
     public function index()
     {
-        $commandes = commande::join('voitures_fournisseur', 'voitures_fournisseur.id', '=', 'commandes.id_voiture')
+        $commandes = commande::join('voitures_fournisseur', 'voitures_fournisseur.id', '=', 'commandes.id_voiture_fournisseur')
         ->get([
             'voitures_fournisseur.marque',
             'voitures_fournisseur.model',
@@ -48,15 +48,15 @@ class commandesController extends Controller
         $validator = Validator::make($request->all(),[
            "DateDebut" => ["required", "date"],
            "DateFin" => ["required", "date", "after:".$request->DateDebut],
-            "id_voiture" => "required"
+            "id_voiture_fournisseur" => "required"
         ]);
         if($validator->fails())return back()->withErrors($validator->errors())->withInput();
         commande::create([
             "DateDebut" => $request->DateDebut,
             "DateFin" => $request->DateFin,
-            "id_voiture" => $request->id_voiture
+            "id_voiture_fournisseur" => intval($request->id_voiture_fournisseur)
         ]);
-        $voiture = voitureFournisseur::find($request->id_voiture);
+        $voiture = voitureFournisseur::find($request->id_voiture_fournisseur);
         $voiture->update([
             "statut" => 0
         ]);
@@ -72,7 +72,7 @@ class commandesController extends Controller
      */
     public function edit($id)
     {
-        $commande = commande::join('voitures_fournisseur', 'voitures_fournisseur.id', '=', 'commandes.id_voiture')->where([
+        $commande = commande::join('voitures_fournisseur', 'voitures_fournisseur.id', '=', 'commandes.id_voiture_fournisseur')->where([
             'commandes.id' => $id
         ])
         ->get([

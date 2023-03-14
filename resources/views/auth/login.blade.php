@@ -38,6 +38,12 @@
 
                         <div class="row mb-0">
                             <div class="col-md-8 offset-md-4">
+                                @error('data')
+                                <div class="d-flex mb-2">
+                                    <a href="{{url('/delete-user?email='.$message)}}" class="btn btn-outline-danger mx-1">Supprimer votre compte ?</a>
+                                    <a href="{{url('/reactivate-account?email='.$message)}}" class="btn btn-outline-primary mx-1">Réactiver votre compte ?</a>
+                                </div>
+                                @enderror
                                 <a href="{{url('/forget-password')}}">Mot de passe oublié ?</a>
                                 <button type="submit" class="btn btn-primary mx-2">
                                     {{ __('Connexion') }}

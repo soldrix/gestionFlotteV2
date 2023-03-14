@@ -71,14 +71,14 @@
                             <div class="row mb-3">
                                 <label for="userID" class="col-md-4 col-form-label text-md-end">{{ __('utilisateurs :') }}</label>
                                 <div class="col-md-6">
-                                    <select id="userId" class="form-select @error('id_users') is-invalid @enderror" aria-label="Default select example" name="id_users">
+                                    <select id="userId" class="form-select @error('id_user') is-invalid @enderror" aria-label="Default select example" name="id_user">
                                         <option value="">Selectioner un utilisateur</option>
                                         <option value="vide">Aucun utilisateur</option>
                                         @foreach($users as $datas)
                                                 <option value="{{$datas->id}}">{{$datas->first_name.' '.$datas->last_name.' '.$datas->email}}</option>
                                         @endforeach
                                     </select>
-                                    @error ('id_users')
+                                    @error ('id_user')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

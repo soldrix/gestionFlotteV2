@@ -18,7 +18,7 @@ class location extends Model
         "DateFin",
         "montant",
         "commandeNumber",
-        "id_users",
+        "id_user",
         "id_voiture"
     ];
 }

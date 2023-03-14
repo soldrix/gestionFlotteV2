@@ -16,7 +16,7 @@ class commande extends Model
     protected  $fillable = [
         'DateDebut',
         'DateFin',
-        "id_voiture"
+        "id_voiture_fournisseur"
     ];
 
 }

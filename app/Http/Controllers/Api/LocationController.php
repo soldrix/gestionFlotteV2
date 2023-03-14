@@ -32,7 +32,7 @@ class LocationController extends Controller
      */
     public function indexUser($id)
     {
-        $locations = location::join("voitures", 'voitures.id', '=', 'locations.id_voiture')->where('locations.id_users',$id)
+        $locations = location::join("voitures", 'voitures.id', '=', 'locations.id_voiture')->where('locations.id_user',$id)
             ->get([
                 'locations.*',
                 'voitures.marque',
@@ -66,7 +66,7 @@ class LocationController extends Controller
             "DateFin" => $DateFin,
             "montant" => $montant,
             "id_voiture" => ($request->id_voiture === null) ? null : $request->id_voiture,
-            "id_users"  => Auth::id(),
+            "id_user"  => Auth::id(),
             "commandeNumber" => Str::random(15)
         ]);
 

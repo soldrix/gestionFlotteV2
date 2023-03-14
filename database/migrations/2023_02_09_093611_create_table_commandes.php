@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->date('DateDebut');
             $table->date('DateFin');
-            $table->foreignId('id_voiture')->references('id')->on('voitures_fournisseur')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('id_voiture_fournisseur')->references('id')->on('voitures_fournisseur')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

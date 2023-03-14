@@ -144,12 +144,6 @@ class UserController extends Controller
             $token = Str::random(40);
             $domain = URL::to('/');
             $url = $domain.'/reset-password?token='.$token;
-
-//            $data['url'] = $url;
-//            $data["email"] = $request->email;
-//            $data['title'] = "réinitialisation de mot de passe";
-//            $data['body'] = "Veuillez cliquer sur le lien ci-dessous pour réinitialiser votre mot de passe.";
-
             $data = new \stdClass();
             $data->url = $url;
             $data->email = $request->email;
@@ -202,4 +196,59 @@ class UserController extends Controller
         return ($request->wantsJson()) ? response()->json(["message" => "Le mot de passe a été modifié avec succès."]) : redirect('/login')->with('message', 'Le mot de passe a été modifié avec succès.');
     }
 
+    public function loadDeleteUser(Request $request)
+    {
+        if(!isset($request->email)) return ($request->wantsJson()) ? response()->json(['user' => false]) : view('errors.404');
+        $verifEmail = User::where([
+            "email" => $request->email,
+            "statut" => 0
+        ])->get();
+        if(count($verifEmail) < 1) return ($request->wantsJson()) ? response()->json(['user' => false]) : view('errors.404');
+        return ($request->wantsJson()) ? response()->json(['user' => true]) : view('auth.deleteUser',['user' => $verifEmail[0]]);
+    }
+    public function deleteAccount(Request $request){
+        $validator = Validator::make($request->all(),[
+           "email" => "required",
+           "password" => "required",
+            "id" => "required"
+        ]);
+        if($validator->fails()) return ($request->wantsJson()) ? response()->json(['errors' => $validator->errors()]) : back()->withErrors($validator->errors())->withInput();
+        if(Auth()->attempt($request->only('email', 'password'))){
+            $user = User::find($request->id);
+            $user->delete();
+            return ($request->wantsJson()) ? response()->json(["message" => "L'utilisateur a été supprimer avec succès."]) : redirect("/login")->with('message', "L'utilisateur a été supprimer avec succès.");
+        }
+        return ($request->wantsJson()) ? response()->json([
+            'message' => 'Données de connexion invalides.'
+        ], 401) : back()->withErrors(['message' => 'Données de connexion invalides.'])->withInput();
+    }
+    public function loadReactivateUser(Request $request){
+        if(!isset($request->email)) return ($request->wantsJson()) ? response()->json(['user' => false]) : view('errors.404');
+        $verifEmail = User::where([
+            "email" => $request->email,
+            "statut" => 0
+        ])->get();
+        $request->session()->invalidate();
+        if(count($verifEmail) < 1) return ($request->wantsJson()) ? response()->json(['user' => false],400) : view('errors.404');
+        return ($request->wantsJson()) ? response()->json(['user' => true]) : view('auth.reactivateUser',['user' => $verifEmail[0]]);
+    }
+    public function reactivateUser(Request $request){
+        $validator = Validator::make($request->all(),[
+            "email" => "required",
+            "password" => "required",
+            "id" => "required"
+        ]);
+        if($validator->fails()) return ($request->wantsJson()) ? response()->json(['errors' => $validator->errors()]) : back()->withErrors($validator->errors())->withInput();
+        if(Auth()->attempt($request->only('email', 'password'))){
+            $user = User::find($request->id);
+            $user->update([
+                "statut" => 1
+            ]);
+            $request->session()->invalidate();
+            return ($request->wantsJson()) ? response()->json(["message" => "L'utilisateur a été réactiver avec succès."]) : redirect("/login")->with('message', "L'utilisateur a été réactiver avec succès.");
+        }
+        return ($request->wantsJson()) ? response()->json([
+            'message' => 'Données de connexion invalides.'
+        ], 401) : back()->withErrors(['message' => 'Données de connexion invalides.'])->withInput();
+    }
 }

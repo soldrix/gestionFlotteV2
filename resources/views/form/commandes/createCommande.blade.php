@@ -44,13 +44,13 @@
                                 <label for="voitureID" class="col-md-4 col-form-label text-md-end">{{ __('Voiture ')}}<span class="text-danger">*</span>{{__(' :')}}</label>
                                 @if(count(json_decode($voitures)) > 0)
                                     <div class="col-md-6">
-                                        <select id="voitureId" class="form-select @error('id_voiture') is-invalid @enderror" aria-label="Default select example" name="id_voiture">
+                                        <select id="voitureId" class="form-select @error('id_voiture_fournisseur') is-invalid @enderror" aria-label="Default select example" name="id_voiture_fournisseur">
                                             <option value="">Sélectionner une voiture</option>
                                             @foreach($voitures as $datas)
                                                 <option value="{{$datas->id}}">{{$datas->marque.' '.$datas->model}}</option>
                                             @endforeach
                                         </select>
-                                        @error ('id_voiture')
+                                        @error ('id_voiture_fournisseur')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>

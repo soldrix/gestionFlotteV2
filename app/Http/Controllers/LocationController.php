@@ -19,7 +19,7 @@ class LocationController extends Controller
     public function index()
     {
         $locations = location::leftJoin('voitures', 'voitures.id', '=', 'locations.id_voiture')
-            ->leftjoin('users', 'users.id', '=', 'locations.id_users')
+            ->leftjoin('users', 'users.id', '=', 'locations.id_user')
             ->get([
                 'locations.*',
                 'voitures.immatriculation',
@@ -58,7 +58,7 @@ class LocationController extends Controller
             "DateFin" => $request->DateFin,
             "montant" => $request->montant,
             "id_voiture" => ($request->id_voiture === 'vide') ? null : $request->id_voiture,
-            "id_users"  => ($request->id_user === 'vide') ? null : $request->id_user,
+            "id_user"  => ($request->id_user === 'vide') ? null : $request->id_user,
             "commandeNumber" => Str::random(15)
         ]);
         return back()->with('message', 'La location a été créer avec succès.');
@@ -98,8 +98,8 @@ class LocationController extends Controller
         if($request->id_voiture !== null){
             $location->id_voiture = ($request->id_voiture === 'vide') ? null :  $request->id_voiture;
         }
-        if($request->id_users !== null){
-            $location->id_users = ($request->id_users === 'vide') ? null :  $request->id_users;
+        if($request->id_user !== null){
+            $location->id_user = ($request->id_user === 'vide') ? null :  $request->id_user;
         }
         if($request->DateDebut !== null){
             $location->DateDebut = $request->DateDebut;
