@@ -28,6 +28,13 @@ Route::get('/image/{path}', [voitureController::class, 'getImage'])->where('path
 Route::post('/forget-password', [UserController::class, 'forgetPassword']);
 Route::post('/reset-password', [UserController::class, 'resetPassword']);
 Route::get('/reset-password', [UserController::class, 'resetPasswordLoad']);
+
+
+Route::get('/delete-user',[App\Http\Controllers\Api\UserController::class, 'loadDeleteUser']);
+Route::post('/delete-user',[App\Http\Controllers\Api\UserController::class, 'deleteAccount'])->name('deleteAccount');
+Route::get('/reactivate-account',[App\Http\Controllers\Api\UserController::class, 'loadReactivateUser']);
+Route::post('/reactivate-account',[App\Http\Controllers\Api\UserController::class, 'reactivateUser'])->name('reactivateAccount');
+
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::controller(voitureController::class)->group(function (){
