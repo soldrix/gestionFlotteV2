@@ -59,10 +59,9 @@
                                     @enderror
                                 </div>
                             </div>
-
+                            @if(\Illuminate\Support\Facades\Auth::user()->hasRole('admin'))
                             <div class="row mb-3">
                                 <label for="id_role" class="col-md-4 col-form-label text-md-end">{{ __('Role de l\'utilisateur ')}}<span class="text-danger">*</span>{{__(' :')}}</label>
-
                                 <div class="col-md-6">
                                     <select id="id_role" class="form-select @error('id_role') is-invalid @enderror" aria-label="Default select example" name="id_role">
                                         <option value="">Sélectionner un role</option>
@@ -77,6 +76,7 @@
                                     @enderror
                                 </div>
                             </div>
+                            @endif
 
                             <div class="row mb-3">
                                 <label for="email_receiver" class="col-md-4 col-form-label text-md-end">{{ __('Envoyer l\'email à ') }}<span class="text-danger">*</span>{{__(' :')}}</label>

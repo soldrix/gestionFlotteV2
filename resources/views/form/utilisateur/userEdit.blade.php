@@ -56,7 +56,7 @@
                                     @enderror
                                 </div>
                             </div>
-
+                            @if(\Illuminate\Support\Facades\Auth::user()->hasRole('admin'))
                             <div class="row mb-3">
                                 <label for="id_role" class="col-md-4 col-form-label text-md-end">{{ __('Role de l\'utilisateur ( '.$user->role.' )') }}</label>
 
@@ -74,7 +74,7 @@
                                     @enderror
                                 </div>
                             </div>
-
+                            @endif
                             <div class="row mb-3">
                                 <label for="statut" class="col-md-4 col-form-label text-md-end">{{ __('Statut') }}</label>
 

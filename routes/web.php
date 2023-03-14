@@ -144,15 +144,13 @@ Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
             Route::put('location/update/{id}', 'update')->name('updateLocation');
             Route::delete('location/delete/{id}', 'destroy');
         });
-        Route::controller(UserController::class)->middleware('role:admin')->group(function (){
-           Route::get('user/edit/{id}', 'edit');
-           Route::put('user/update/{id}', 'update')->name('userUpdate');
-        });
         Route::controller(UserController::class)->middleware('role:admin,RH')->group(function (){
             Route::post('user/store', 'store')->name('userCreate');
             Route::get('user/create', 'create');
             Route::get('users', 'index');
             Route::put('user/desactivate/{id}', 'desactivate');
+            Route::get('user/edit/{id}', 'edit');
+            Route::put('user/update/{id}', 'update')->name('userUpdate');
         });
         Route::controller(\App\Http\Controllers\Api\UserController::class)->group(function (){
             Route::post('user/edit/first_name', "update_first_name");

@@ -15,9 +15,7 @@
                     <th>Nom</th>
                     <th>Email</th>
                     <th>Role</th>
-                    @if(\Illuminate\Support\Facades\Auth::user()->hasRole('admin'))
-                        <th>Statut</th>
-                    @endif
+                    <th>Statut</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -29,9 +27,7 @@
                         <td>{{$datas->last_name}}</td>
                         <td>{{$datas->email}}</td>
                         <td>{{$datas->role}}</td>
-                        @if(\Illuminate\Support\Facades\Auth::user()->hasRole('admin'))
-                            <td>{{($datas->statut === 0) ? 'Désactiver' : 'Activer'}}</td>
-                        @endif
+                        <td>{{($datas->statut === 0) ? 'Désactiver' : 'Activer'}}</td>
                         <td class="tdBtn">
                             <div class="divBtnTab">
                                 <a class="btn btn-info editButton text-white"  href="/user/edit/{{$datas->id}}"><i class="fa-solid fa-pencil "></i></a>

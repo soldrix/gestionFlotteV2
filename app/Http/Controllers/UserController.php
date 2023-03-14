@@ -23,7 +23,7 @@ class UserController extends Controller
     {
         if(Auth::user()->hasRole('RH')){
             $users = User::join('roles', 'roles.id', '=', "users.id_role")
-                ->where('statut', 1)
+                ->where('roles.name', 'NOT LIKE', 'admin')
                 ->get([
                     "users.*",
                     "roles.name as role"
@@ -44,6 +44,9 @@ class UserController extends Controller
      */
     public function create()
     {
+        if(Auth::user()->hasRole('RH')){
+            return view('form.utilisateur.userCreate');
+        }
         $roles = Role::all();
         return view('form.utilisateur.userCreate',['roles' => $roles]);
     }
@@ -63,6 +66,9 @@ class UserController extends Controller
     public function store(Request $request)
     {
         // Validate request data
+        if(Auth::user()->hasRole('RH')){
+            $request->request->add(['id_role' => 1]); //add request
+        }
         $validator = Validator::make(array_filter($request->all()), [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -116,6 +122,7 @@ class UserController extends Controller
             "users.*",
             "roles.name as role"
         ]);
+        if(Auth::user()->hasRole('RH')) return view('form.utilisateur.userEdit',['user' => $user[0]]);
         $roles = Role::all();
         return view('form.utilisateur.userEdit',['user' => $user[0], 'roles' => $roles]);
     }
@@ -141,7 +148,9 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         // Validate request data
-
+        if(Auth::user()->hasRole('RH')){
+            $request->request->add(['id_role' => 1]); //add request
+        }
         $validator = Validator::make(array_filter($request->all()), [
             'first_name' => 'string|max:255',
             'last_name' => 'string|max:255',
