@@ -16,7 +16,6 @@ class AgenceController extends Controller
      */
     public function index():JsonResponse
     {
-
         $agence = agence::all();
         return response()->json([
             'data' => $agence
@@ -24,7 +23,9 @@ class AgenceController extends Controller
     }
 
     public function searchAgence($search){
+        //pour découper la recherche
         $word =explode(" ",$search);
+        //récupère les agences correspondent à la recherche par rapport a chaque colonne
         $agences = agence::where(function ($query) use($word){
             for($i=0; $i < count($word);$i++){
                 if ($i < 2){

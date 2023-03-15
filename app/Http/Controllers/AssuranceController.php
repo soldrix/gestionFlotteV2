@@ -10,11 +10,12 @@ use Illuminate\Support\Facades\Validator;
 class AssuranceController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Pour récupérer toutes les assurances.
      *
      */
     public function index()
     {
+        //pour récupérer toutes les assurances avec l'immatriculation de la voiture si disponible.
         $assurances = assurance::leftJoin('voitures', 'voitures.id', '=', 'assurances.id_voiture')
             ->get([
                 'assurances.*',
@@ -24,17 +25,18 @@ class AssuranceController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Pour afficher la page de création d'une assurance.
      *
      */
     public function create()
     {
+        //récupère toutes les voitures
         $voitures = voiture::all();
         return view('form.assurance.assuranceCreate', ['voitures' => $voitures]);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Pour enregistrer une assurance.
      *
      * @param  \Illuminate\Http\Request  $request
      *
@@ -55,19 +57,17 @@ class AssuranceController extends Controller
             "frais.numeric" => "Le montant des frais doivent être des chiffre ex: ( 10.50 ) ."
         ]);
         if($validator->fails()) return back()->withErrors($validator->errors())->withInput();
-        assurance::create([
-            "nom" => $request->nom,
-            "DateDebut" => $request->DateDebut,
-            "DateFin" => $request->DateFin,
-            "frais" => $request->frais,
-            "id_voiture" => ($request->id_voiture === 'vide') ? null : $request->id_voiture
-        ]);
+        $collections = collect($request->all())->filter();
+        if($collections->get('id_voiture') === 'vide'){
+            $collections = $collections->replaceRecursive(['id_voiture' => null]);
+        }
+        assurance::create($collections->all());
         return back()->with('message', 'L\'assurance a été créer avec succès.');
     }
 
 
     /**
-     * Show the form for editing the specified resource.
+     * Pour afficher la page de modification d'une agence.
      *
      * @param  int  $id
      *
@@ -80,7 +80,7 @@ class AssuranceController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Pour modifier les données d'une assurance.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -101,28 +101,16 @@ class AssuranceController extends Controller
         if($validator->fails()) return back()->withErrors($validator->errors())->withInput();
         $assurance = assurance::find($id);
         //ajout à la modification des champs non vide
-        if($request->id_voiture){
-            //pour retirer id_voiture ou changer par un autre
-            $assurance->id_voiture = ($request->id_voiture === 'vide') ? null : $request->id_voiture;
+        $collections = collect($request->all())->filter();
+        if($collections->get('id_voiture') === 'vide'){
+            $collections = $collections->replaceRecursive(['id_voiture' => null]);
         }
-        if($request->DateDebut !== null){
-            $assurance->DateDebut = $request->DateDebut;
-        }
-        if($request->DateFin !== null){
-            $assurance->DateFin = $request->DateFin;
-        }
-        if($request->frais !== null){
-            $assurance->frais = $request->frais;
-        }
-        if($request->nom !== null){
-            $assurance->nom = $request->nom;
-        }
-        $assurance->update();
+        $assurance->update($collections->all());
         return back()->with('message', 'L\'assurance a été modifié avec succès.');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Pour supprimer une assurance.
      *
      * @param  int  $id
      *

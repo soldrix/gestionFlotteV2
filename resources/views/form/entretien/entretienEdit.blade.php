@@ -76,10 +76,16 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="row mb-3">
+                            <div class="row mb-3 align-items-center">
+                                <label for="note" class="col-md-4 col-form-label text-md-end">{{ __('Supprimer la note:') }}</label>
+                                <div class="w-50 h-fit form-switch mx-5">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="empty_note" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                </div>
+                            </div>
+                            <div class="row mb-3 collapse show" id="collapseExample">
                                 <label for="note" class="col-md-4 col-form-label text-md-end">{{ __('Note supplémentaire :') }}</label>
                                 <div class="col-md-6">
-                                    <textarea id="note" type="text" placeholder="{{$entretien->note}}" class="form-control @error('note') is-invalid @enderror" name="note" value="{{ old('montant') }}"  autocomplete="montant" autofocus ></textarea>
+                                    <textarea id="note" type="text" placeholder="{{$entretien->note}}" class="form-control @error('note') is-invalid @enderror" name="note" value="{{ old('note') }}"  autocomplete="note" autofocus ></textarea>
                                     @error ('note')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>

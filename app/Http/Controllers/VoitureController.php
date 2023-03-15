@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Validator;
 class VoitureController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Pour récupérer toutes les voitures.
      *
      */
     public function index()
@@ -24,7 +24,7 @@ class VoitureController extends Controller
         return view('voitures',["voitures"=>$voitures]);
     }
     /**
-     * Show the form for creating a new resource.
+     * Pour afficher la page de création.
      */
     public function create()
     {
@@ -33,7 +33,7 @@ class VoitureController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Pour enregistrer.
      *
      * @param  \Illuminate\Http\Request  $request
      *
@@ -43,7 +43,7 @@ class VoitureController extends Controller
         $validator = Validator::make($request->all(),[
             "marque" => "required",
             "model"  => "required",
-            "image" => ["required","image","mimes:jpg,png,jpeg,gif,svg","max:2048","dimensions:min_width=100,min_height=100,max_width=1000,max_height=1000"],
+            "image" => ["required","image","mimes:jpg,png,jpeg,gif,svg","max:2048"],
             "carburant" => ["required"],
             "circulation" => ["required",'date_format:Y-m-d'],
             "immatriculation" => ["required", "regex:#[A-Z]{2,4}[\s-]{0,1}[0-9]{1,3}[\s-]{0,1}[A-Z]{2}#"],
@@ -52,48 +52,33 @@ class VoitureController extends Controller
             "nbPorte" => ["required", "integer"],
             "nbPlace" => ["required", "integer"],
             "prix" => ["required", "numeric"],
-            "statut" => ["required", "integer", "max_digits:1"]
+            "statut" => ["required", "integer", "max_digits:1"],
+            "id_agence" => "required"
+        ],
+        [
+            "required" => "Champs requis.",
+            "image" => "Le fichier doit être une image.",
+            "mimes" => "Le fichier doit être au format : jpg, png, jpeg, gif ou svg .",
+            "regex" => "Doit être correspondre à exemple : AA-150-AA ."
         ]);
         if($validator->fails()) return back()->withErrors($validator->errors())->withInput();
         //ajout l'image dans le storage
         $path = Storage::putFile('image', $request->image);
-        voiture::create([
-            "image" => $path,
-            "marque" => $request->marque,
-            "model" => $request->model,
-            "carburant" => $request->carburant,
-            "circulation" => $request->circulation,
-            "immatriculation" => $request->immatriculation,
-            "puissance" => $request->puissance,
-            "type" => $request->type,
-            "nbPorte" => $request->nbPorte,
-            "nbPlace" => $request->nbPlace,
-            "prix" => $request->prix,
-            "statut" => $request->statut,
-            "id_agence" => ($request->id_agence !== 'vide') ? $request->id_agence : null,
-        ]);
+        $collections = collect($request->all())->replaceRecursive(['image' => $path]);
+        if($collections->get('id_agence') === "vide"){
+            $collections = $collections->replaceRecursive(['id_agence' => null]);
+        }
+        voiture::create($collections->all());
         return back()->with('message', 'La voiture à été créer avec succès.');
     }
 
     /**
-     * Display the specified resource.
+     * Pour récupérer les données d'une voiture.
      *
      * @param  int  $id
      *
      */
     public function show($id)
-    {
-        $voiture = voiture::find($id);
-        return view('voiture',['voiture' => $voiture]);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     *
-     */
-    public function adminShow($id)
     {
         $voiture = voiture::leftjoin('agence',  'agence.id', '=', 'voitures.id_agence')
             ->where('voitures.id',$id)
@@ -102,7 +87,9 @@ class VoitureController extends Controller
                 'agence.ville',
                 'agence.rue'
             ]);
+        //pour récupérer les entretiens par rapport au la voiture
         $entretiens = entretien::where('id_voiture', $id)->get();
+        //pour récupérer les assurances par rapport au la voiture
         $assurances = assurance::where('id_voiture', $id)->get();
         $reparations = reparation::where('id_voiture' ,$id)->get();
         $consommations =consommation::where('id_voiture', $id)->get();
@@ -121,7 +108,7 @@ class VoitureController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Pour afficher la page de modification.
      *
      * @param  int  $id
      *
@@ -134,7 +121,7 @@ class VoitureController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Pour modifier.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -143,7 +130,7 @@ class VoitureController extends Controller
     public function update(Request $request,$id)
     {
         $validator =Validator::make(array_filter($request->all()),[
-            "image" => ["image","mimes:jpg,png,jpeg,gif,svg","max:2048","dimensions:min_width=100,min_height=100,max_width=1000,max_height=1000"],
+            "image" => ["image","mimes:jpg,png,jpeg,gif,svg","max:2048"],
             "circulation" => ['date_format:Y-m-d'],
             "puissance" => ["integer"],
             "prix" => ["numeric"],
@@ -151,61 +138,32 @@ class VoitureController extends Controller
             "nbPorte" => ["numeric"],
             "statut" => ["integer", "max_digits:1"],
             "immatriculation" => ["regex:#[A-Z]{2,4}[\s-]{0,1}[0-9]{1,3}[\s-]{0,1}[A-Z]{2}#"]
+        ],
+        [
+            "image" => "Le fichier doit être une image.",
+            "mimes" => "Le fichier doit être au format : jpg, png, jpeg, gif ou svg .",
+            "regex" => "Doit être correspondre à exemple : AA-150-AA ."
         ]);
         if($validator->fails()) return back()->withErrors($validator->errors())->withInput();
         $voiture = voiture::find($id);
-
-        if($request->id_agence !== null){
-           $voiture->id_agence = ($request->id_agence === 'vide') ? null : $request->id_agence;
+        $collections = collect($request->all())->filter();
+        if($collections->get('id_agence') === "vide"){
+            $collections = $collections->replaceRecursive(["id_agence" => null]);
         }
-        if($request->circulation !== null){
-            $voiture->circulation = $request->circulation;
-        }
-        if($request->puissance !== null){
-            $voiture->puissance = $request->puissance;
-        }
-        if($request->prix !== null){
-            $voiture->prix = $request->prix;
-        }
-        if($request->statut !== null){
-            $voiture->statut = $request->statut;
-        }
-        if($request->marque !== null){
-            $voiture->marque = $request->marque;
-        }
-        if($request->model !== null){
-            $voiture->model = $request->model;
-        }
-        if($request->carburant !== null){
-            $voiture->carburant = $request->carburant;
-        }
-        if($request->type !== null){
-            $voiture->type = $request->type;
-        }
-        if($request->nbPorte !== null){
-            $voiture->nbPorte = $request->nbPorte;
-        }
-        if($request->nbPlace !== null){
-            $voiture->nbPlace = $request->nbPlace;
-        }
-        if($request->immatriculation !== null){
-            $voiture->immatriculation = $request->immatriculation;
-        }
-        if ($request->image !== null){
+        if($collections->get('image') !== null){
             //si l'image supprime l'ancienne image du storage
             Storage::delete($voiture->image);
             //ajout la nouvelle image dans le storage
             $path =  Storage::putFile('image', $request->image);
             //ajoute le chemin de l'image dans la modification
-            $voiture->image = $path;
+            $collections = $collections->replaceRecursive(['image' => $path]);
         }
-
-        $voiture->update();
+        $voiture->update($collections->all());
         return back()->with('message', 'La modification à été réaliser avec succès.');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Pour supprimer.
      *
      * @param  int  $id
      *

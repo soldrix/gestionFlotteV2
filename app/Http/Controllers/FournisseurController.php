@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 class FournisseurController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Pour récupérer touts les fournisseurs.
      *
      * @return mixed
      */
@@ -21,7 +21,7 @@ class FournisseurController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Pour afficher la page de création.
      *
      * @return mixed
      */
@@ -31,7 +31,7 @@ class FournisseurController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Pour enregistrer.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return mixed
@@ -43,27 +43,25 @@ class FournisseurController extends Controller
             "email" => 'required|email'
         ]);
         if($validator->fails()) return back()->withErrors($validator->errors())->withInput();
-        fournisseur::create([
-            'name' => $request->name,
-            'email' => $request->email
-        ]);
+        fournisseur::create($request->all());
         return back()->with('message', 'Le fournisseur a été créer avec succès.');
     }
 
 
     /**
-     * Show the form for editing the specified resource.
+     * Pour afficher la page de modification.
      *
      * @param  int  $id
      * @return mixed
      */
     public function edit($id)
     {
-        return view('form.fournisseur.fournisseurEdit');
+        $fournisseur = fournisseur::find($id);
+        return view('form.fournisseur.fournisseurEdit',['fournisseur' => $fournisseur]);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Pour modifier.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -82,7 +80,7 @@ class FournisseurController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Pour supprimer.
      *
      * @param  int  $id
      * @return void

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 class AgenceController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Pour récupérer toutes les agences.
      *
      */
     public function index()
@@ -22,15 +22,18 @@ class AgenceController extends Controller
                 'users.last_name',
                 'users.email'
             ]);
+
+        //retourne les données à une view
         return view('agences',['agences' => $agences]);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Pour afficher la page de création d'une agence.
      *
      */
     public function create()
     {
+        //récupère tout les utilisateurs avec le role chef agence
         $users = User::join("roles", "roles.id", "=", "users.id_role")->where('roles.name', '=', 'chef agence')->get([
             "users.*"
         ]);
@@ -38,7 +41,7 @@ class AgenceController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Pour créer une agence.
      *
      * @param  \Illuminate\Http\Request  $request
      *
@@ -50,27 +53,36 @@ class AgenceController extends Controller
             "ville" => "required",
             "rue" => "required",
             "codePostal" => ["required","integer","min_digits:5", "max_digits:5"]
+        ],
+        [
+            "required" => "Champs requis.",
+            "integer" => "Code postal invalide.",
+            "min_digits" => "Code postal invalide.",
+            "max_digits" => "Code postal invalide."
         ]);
         //retourn les erreurs du validator
         if ($validator->fails()) return back()->withErrors($validator->errors())->withInput();
-        agence::create([
-            "ville" => $request->ville,
-            "rue" => $request->rue,
-            "codePostal" => $request->codePostal,
-            'id_user' => ($request->id_user === 'vide') ? null : $request->id_user
-        ]);
+        //stock toute les valeurs du request
+        $collections = collect($request->all());
+        //test la valeur de id_user
+        if($collections->get('id_user') === 'vide'){
+            //remplace la valeur de id_user par null
+            $collections = $collections->replaceRecursive(['id_user' => null]);
+        }
+        agence::create($collections->all());
         return back()->with('message', 'L\'agence à été créer avec succès.');
     }
 
 
     /**
-     * Show the form for editing the specified resource.
+     * Pour afficher la page de modification d'une agence.
      *
      * @param  int  $id
      *
      */
     public function edit($id)
     {
+        //récupère les données de l'agence
         $agence = agence::find($id);
         $users = User::join("roles", "roles.id", "=", "users.id_role")->where('roles.name', '=', 'chef agence')->get([
             "users.*"
@@ -79,7 +91,7 @@ class AgenceController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Pour modifier les données d'une agence.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -91,26 +103,26 @@ class AgenceController extends Controller
         //array filter pour suprimer valeur null
         $validator = Validator::make(array_filter($request->all()),[
             "codePostal" => ["integer","min_digits:5", "max_digits:5"]
+        ],
+        [
+            "integer" => "Code postal invalide.",
+            "min_digits" => "Code postal invalide.",
+            "max_digits" => "Code postal invalide."
         ]);
         if ($validator->fails()) return back()->withErrors($validator->errors())->withInput();
-        if($request->ville !== null){
-            $agence->ville = $request->ville;
+        //stock toutes les valeurs du request et retire les valeurs null
+        $collections = collect($request->all())->filter();
+        //test la valeur de id_user (cette partie permet de retirer un utilisateur d'une agence)
+        if($collections->get('id_user') === 'vide'){
+            //remplace la valeur de id_user par null
+            $collections = $collections->replaceRecursive(['id_user' => null]);
         }
-        if($request->rue !== null){
-            $agence->rue = $request->rue;
-        }
-        if($request->codePostal !== null){
-            $agence->codePostal = $request->codePostal;
-        }
-        if($request->id_user !== null){
-            $agence->id_user = ($request->id_user === 'vide') ? null : $request->id_user;
-        }
-        $agence->update();
+        $agence->update($collections->all());
         return back()->with('message', 'L\'agence à été créer avec succès.');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Pour supprimer une agence.
      *
      * @param  int  $id
      *

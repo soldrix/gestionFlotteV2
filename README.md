@@ -25,11 +25,14 @@ DB_DATABASE=app_auth_db nom de la base de donner
 DB_USERNAME=root utilisateur de base
 DB_PASSWORD=root mot de passe de base
 ```
-puis lancer la commande suivante
+puis lancer la commande suivante (enter ensuite y pour confirmer.)
+```
+rm storage/app/image/*
+```
+puis lancer les commandes suivantes
 ```
 php artisan migrate:fresh --seed --seeder=DatabaseSeeder
-php artisan storage:link
-```
+php artisan storage:link```
 
 
 Ajouter les valeur dans env pour smtp:

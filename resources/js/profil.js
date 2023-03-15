@@ -46,6 +46,9 @@ $(document).ready(function () {
     $('.modal').on('hidden.bs.modal', function () {
         resetErrors();
     });
+    $('.desButton').on('click',function () {
+        desModal(this);
+    })
 
 })
 
@@ -149,4 +152,34 @@ function form_password() {
         "required_password": true
     };
     ajaxForm(obj,'/user/edit/password');
+}
+var ModalDes = new bootstrap.Modal(document.getElementById('desModal'));
+var desToastEl = document.getElementById('toastDes');
+var desToast = bootstrap.Toast.getOrCreateInstance(desToastEl);
+desToastEl.addEventListener('hidden.bs.toast', function () {
+    window.location.href ='/login';
+})
+
+function desModal(row){
+    let id_user = $(row).attr('data-voiture');
+    ModalDes.show();
+    $('#btnDesModal').on('click',function () {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            type:"post",
+            url: '/user/desactivate',
+            data:{id:id_user},
+            success:function (response) {
+                if(response.data === 'logout'){
+                    window.location.href = '/login';
+                }
+                ModalDes.hide();
+                desToast.show();
+            }
+        })
+    })
 }

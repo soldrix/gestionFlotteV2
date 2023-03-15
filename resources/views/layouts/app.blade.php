@@ -179,7 +179,7 @@
                     <button type="button" class="btn"  data-bs-dismiss="toast" aria-label="Close"><i class="fa-solid fa-l fa-xmark color-white"></i></button>
                 </div>
                 <div class="toast-body">
-                    L'utilisateur à été désactiver.
+                    Votre compte à été désactiver vous allez être redirigé.
                 </div>
             </div>
         </div>

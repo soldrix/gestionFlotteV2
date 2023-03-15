@@ -76,7 +76,7 @@ Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
             Route::get('voitures', 'index');
             Route::get('voiture/create', 'create');
             Route::post('voiture/store', 'store')->name('createVoiture');
-            Route::get('voiture/{id}', 'adminShow')->name('voitureAdmin');
+            Route::get('voiture/{id}', 'show')->name('voitureAdmin');
             Route::get('voiture/edit/{id}', 'edit');
             Route::put('voiture/update/{id}', 'update')->name('updateVoiture');
             Route::delete('voiture/delete/{id}', 'destroy');
@@ -148,7 +148,7 @@ Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
             Route::post('user/store', 'store')->name('userCreate');
             Route::get('user/create', 'create');
             Route::get('users', 'index');
-            Route::put('user/desactivate/{id}', 'desactivate');
+            Route::post('user/desactivate', 'desactivate')->name('desactivateUser');
             Route::get('user/edit/{id}', 'edit');
             Route::put('user/update/{id}', 'update')->name('userUpdate');
         });
@@ -159,7 +159,6 @@ Route::middleware(\App\Http\Middleware\AuthWeb::class)->group(function() {
             Route::post('user/edit/password', "update_password");
         });
         Route::controller(UserController::class)->group(function (){
-           Route::get('profil/edit/{id}', 'editProfil');
            Route::delete('user/delete/{id}', 'destroy');
            Route::get('/profil', 'show');
         });

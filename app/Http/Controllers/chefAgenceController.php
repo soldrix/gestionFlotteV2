@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class chefAgenceController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Pour récupérer toutes les agences par rapport a un chef d'agence.
      *
      * @return mixed
      */
@@ -24,7 +24,7 @@ class chefAgenceController extends Controller
         return view('chefAgence',['agences' => $agences]);
     }
     /**
-     * Display a listing of the resource.
+     * Pour récuprer toutes les voitures d'une agence.
      * @param int $id
      * @return mixed
      */
@@ -35,7 +35,7 @@ class chefAgenceController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Pour afficher la page de modification de statut d'une voiture.
      *
      * @param  int  $id
      * @return mixed
@@ -47,16 +47,18 @@ class chefAgenceController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Pour modifier le statut d'une voiture.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return mixed
      */
     public function update(Request $request, $id)
     {
+        //vérifie que le statut n'est pas vide sinon retourne un message d'erreur
         if($request->statut === null) return back()->withErrors(['statut' => 'Le statut ne peut pas être vide.'])->withInput();
         $voiture = voiture::find($id);
+        //modifie le statut
         $voiture->update($request->all());
         return back()->with('message', 'Modification réaliser avec succès.');
     }

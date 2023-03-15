@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 class ConsommationController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Pour récupérer toutes les consommations.
      *
      */
     public function index()
@@ -24,7 +24,7 @@ class ConsommationController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Pour afficher la page de création.
      *
      */
     public function create()
@@ -34,7 +34,7 @@ class ConsommationController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Pour enregistrer.
      *
      * @param  \Illuminate\Http\Request  $request
      *
@@ -47,17 +47,17 @@ class ConsommationController extends Controller
             "id_voiture" => "required"
         ]);
         if ($validator->fails()) return back()->withErrors($validator->errors())->withInput();
-        consommation::create([
-            "litre" => $request->litre,
-            "montant" => $request->montant,
-            "id_voiture" => ($request->id_voiture === 'vide') ? null : $request->id_voiture
-        ]);
+        $collections = collect($request->all());
+        if($collections->get('id_voiture') === 'vide'){
+            $collections = $collections->replaceRecursive(['id_voiture' => null]);
+        }
+        consommation::create($collections->all());
         return back()->with('message', 'La consommation a été créer avec succès.');
     }
 
 
     /**
-     * Show the form for editing the specified resource.
+     * Pour afficher la page de modification.
      *
      * @param  int  $id
      *
@@ -70,7 +70,7 @@ class ConsommationController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Pour modifier.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -84,21 +84,16 @@ class ConsommationController extends Controller
         ]);
         if ($validator->fails()) return back()->withErrors($validator->errors())->withInput();
         $consommation = consommation::find($id);
-        if($request->id_voiture !== null){
-            $consommation->id_voiture = ($request->id_voiture !== 'vide') ? $request->id_voiture : null;
+        $collections = collect($request->all())->filter();
+        if($collections->get('id_voiture') === 'vide'){
+            $collections = $collections->replaceRecursive(['id_voiture' => null]);
         }
-        if($request->litre !== null){
-            $consommation->litre = $request->litre;
-        }
-        if($request->montant !== null){
-            $consommation->montant = $request->montant;
-        }
-        $consommation->update();
+        $consommation->update($collections->all());
         return back()->with('message', 'La consommation a été modifié aevc succès.');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Pour supprimer.
      *
      * @param  int  $id
      *

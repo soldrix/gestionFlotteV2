@@ -29,9 +29,6 @@ $(document).ready(function () {
     $('.delButton').on('click',function () {
         supModal(this);
     })
-    $('.desButton').on('click',function () {
-        desModal(this);
-    })
 })
 
 var myModal = new bootstrap.Modal(document.getElementById('delModal'));
@@ -58,33 +55,6 @@ function supModal(row){
                 user.remove().draw();
                 myModal.hide();
                 delToast.show();
-            }
-        })
-    })
-}
-var ModalDes = new bootstrap.Modal(document.getElementById('desModal'));
-var desToastEl = document.getElementById('toastDes');
-var desToast = bootstrap.Toast.getOrCreateInstance(desToastEl);
-function desModal(row){
-    let id_user = $(row).attr('data-voiture');
-    let user = table.row($(row).parent().parent().parent());
-    ModalDes.show();
-    $('#btnDesModal').on('click',function () {
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $.ajax({
-            type:"PUT",
-            url: '/user/desactivate/'+id_user,
-            success:function (response) {
-                if(response.data === 'logout'){
-                    window.location.href = '/login';
-                }
-                user.remove().draw();
-                ModalDes.hide();
-                desToast.show();
             }
         })
     })

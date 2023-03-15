@@ -14,8 +14,12 @@
                     <div class="card-body">
                         <form method="POST" action="{{ route('createReparation') }}">
                             @csrf
+                            <p class="text-end">
+                                <span class="text-danger">*</span>
+                                champs obligatoires
+                            </p>
                             <div class="row mb-3">
-                                <label for="type" class="col-md-4 col-form-label text-md-end">{{ __('Type d\'reparation ')}}<span class="text-danger">*</span>{{__(' :')}}</label>
+                                <label for="type" class="col-md-4 col-form-label text-md-end">{{ __('Type de réparation ')}}<span class="text-danger">*</span>{{__(' :')}}</label>
                                 <div class="col-md-6">
                                     <input id="type" type="text" class="form-control @error('type') is-invalid @enderror" name="type" value="{{ old('type') }}" required autocomplete="type" autofocus>
                                     @error ('type')
@@ -37,7 +41,7 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="date" class="col-md-4 col-form-label text-md-end">{{ __('Date de l\'reparation ')}}<span class="text-danger">*</span>{{__(' :')}}</label>
+                                <label for="date" class="col-md-4 col-form-label text-md-end">{{ __('Date de la réparation ')}}<span class="text-danger">*</span>{{__(' :')}}</label>
                                 <div class="col-md-6">
                                     <input id="date" type="date" class="form-control @error('date') is-invalid @enderror" name="date" value="{{ old('date') }}" required autocomplete="date" autofocus>
                                     @error ('date')

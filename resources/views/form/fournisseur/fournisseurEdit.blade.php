@@ -27,9 +27,9 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Nom du fournissseur ')}}<span class="text-danger">*</span>{{__(' :')}}</label>
+                                <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email du fournissseur :')}}</label>
                                 <div class="col-md-6">
-                                    <input id="email" type="text" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" autocomplete="email" autofocus>
+                                    <input id="email" type="text" placeholder="{{$fournisseur->email}}" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" autocomplete="email" autofocus>
                                     @error ('email')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -51,11 +51,9 @@
                                     <a href="{{str_replace(url('/'), '', session()->get('urlP'))}}" class="btn btn-danger">
                                         {{__('Retour')}}
                                     </a>
-                                    @if(count(json_decode($users)) > 0)
-                                        <button type="submit" class="btn btn-primary">
-                                            {{ __('Continuer') }}
-                                        </button>
-                                    @endif
+                                    <button type="submit" class="btn btn-primary">
+                                        {{ __('Continuer') }}
+                                    </button>
                                 </div>
                             </div>
                         </form>

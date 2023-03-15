@@ -23,7 +23,7 @@
                     <tbody>
                     @foreach($locations as $datas)
                         <tr data-voiture="{{$datas->id}}" data-db="location">
-                            <th>{{$datas->commandeNumber}}</th>
+                            <td>{{$datas->commandeNumber}}</td>
                             <td>{{date('d/m/Y', strtotime($datas->DateDebut))}}</td>
                             <td>{{date('d/m/Y', strtotime($datas->DateFin))}}</td>
                             <td>{{$datas->immatriculation ?? 'Aucune voiture'}}</td>

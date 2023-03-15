@@ -31,7 +31,6 @@
                                 <h2 class="text-primary v-title">nombre de siège : <span class="text-white">{{$datas->nbPlace}}</span></h2>
                                 <h2 class="text-primary v-title">nombre de porte : <span class="text-white">{{$datas->nbPorte}}</span></h2>
                                 <h2 class="text-primary v-title">Agence : <span class="text-white">{{($datas->ville !== null) ? $datas->ville.' '.$datas->rue : 'Aucune agence'}}</span></h2>
-                                <h2 class="text-primary v-title">Fournisseur : <span class="text-white">{{($datas->name !== null) ? $datas->name.' '.$datas->email : 'Aucun fournisseur'}}</span></h2>
                             </div>
                             <div class="col-auto mx-2 p-0  align-self-center">
                                 <a class="btn btn-info  ms-lg-5 h-fit" href="edit/{{$datas->id}}">modifier</a>

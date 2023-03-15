@@ -14,7 +14,7 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        // Validate request data
+        // Valide les valeurs de la request
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -24,14 +24,14 @@ class AuthController extends Controller
         ],
         [
             'required' => 'Le champ est requis.',
-            'unique' => "Cette  addresse email a un compte éxistant.",
+            'unique' => "Cette addresse email a un compte éxistant.",
             'password.confirmed' => "Le mot de passe de confirmation ne correspond pas.",
             'email.email'  => "L'adresse mail doit être une adresse mail valide.",
             'min' => "Doit contenir au moins 10 caractères.",
             'max' => "Il y a trop de caractères."
         ]);
 
-        // Return errors if validation error occur.
+        // Retourne les erreurs.
         if ($validator->fails()) {
             $errors = $validator->errors();
             return response()->json([
@@ -40,17 +40,14 @@ class AuthController extends Controller
         }
 
         // Check if validation pass then create user and auth token. Return the auth token
-        $user = User::create([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'id_role' => 1
-        ]);
+        //stock les valeurs de l'utilisateur
+        $collections = collect($request->all())->replaceRecursive(['password' => Hash::make($request->password)])->mergeRecursive(['id_role' => 1]);
+        $user = User::create($collections->all());
         $user->assignRole(1);
+        //connect l'utilisateur
         Auth()->attempt($request->only('email', 'password'));
+        //créer un token avec expiration
         $token = Auth('sanctum')->user()->createToken('auth_token',['*'],Carbon::now()->addMinutes(20) )->plainTextToken;
-
         return response()->json([
             'access_token' => $token,
             'token_type' => 'Bearer',
@@ -61,23 +58,34 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+        //récupère l'utilisateur avec son email
+        $user = User::where('email', '=', $request->email)->get();
+        //vérifie si l'utilisateur est désactivé
+        if($user[0]['statut'] === 0){
+            //retourne message erreur
+            return response()->json(['message' => 'Le compte est désactiver.', "data" => $request->email],400);
+        }
+        //test la connexion de l'utilisateur
         if (Auth()->attempt($request->only('email', 'password'))) {
             if(auth('sanctum')->check()){
+                //supprime les tokens
                 $request->user()->tokens()->delete();
             }
+            //créer un token avec expiration
             $token = Auth('sanctum')->user()->createToken('auth_token',['*'],Carbon::now()->addMinutes(20) )->plainTextToken;
+            //retourne le token et id de l'utilisateur
             return response()->json([
                 'access_token' => $token,
                 'token_type' => 'Bearer',
                 "id_user" => Auth("sanctum")->id(),
             ]);
         }
+        //retourne message erreur
         return response()->json([
             'message' => 'Données de connexion invalides.'
         ], 401);
 
     }
-
     public function logout(Request $request){
         $request->user()->tokens()->delete();
     }

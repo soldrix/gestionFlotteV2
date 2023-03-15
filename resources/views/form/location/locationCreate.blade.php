@@ -14,8 +14,12 @@
                     <div class="card-body">
                         <form method="POST" action="{{ route('createLocation') }}">
                             @csrf
+                            <p class="text-end">
+                                <span class="text-danger">*</span>
+                                champs obligatoires
+                            </p>
                             <div class="row mb-3">
-                                <label for="DateDebut" class="col-md-4 col-form-label text-md-end">{{ __('Date de debut :') }}</label>
+                                <label for="DateDebut" class="col-md-4 col-form-label text-md-end">{{ __('Date de debut ') }}<span class="text-danger">*</span>{{__(' :')}}</label>
                                 <div class="col-md-6">
                                     <input id="DateDebut" type="date" class="form-control @error('DateDebut') is-invalid @enderror" name="DateDebut" value="{{ old('DateDebut') }}" required autocomplete="DateDebut" autofocus>
                                     @error ('DateDebut')
@@ -26,7 +30,7 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="DateFin" class="col-md-4 col-form-label text-md-end">{{ __('Date de fin :') }}</label>
+                                <label for="DateFin" class="col-md-4 col-form-label text-md-end">{{ __('Date de fin ') }}<span class="text-danger">*</span>{{__(' :')}}</label>
                                 <div class="col-md-6">
                                     <input id="DateFin" type="date" class="form-control @error('DateFin') is-invalid @enderror" name="DateFin" value="{{ old('DateFin') }}" required autocomplete="DateFin" autofocus>
                                     @error ('DateFin')
@@ -39,7 +43,7 @@
 
 
                             <div class="row mb-3">
-                                <label for="montant" class="col-md-4 col-form-label text-md-end">{{ __('Montant total :') }}</label>
+                                <label for="montant" class="col-md-4 col-form-label text-md-end">{{ __('Montant total ') }}<span class="text-danger">*</span>{{__(' :')}}</label>
                                 <div class="col-md-6">
                                     <input id="montant" type="text" class="form-control @error('montant') is-invalid @enderror" name="montant" value="{{ old('montant') }}" required autocomplete="montant" autofocus>
                                     @error ('montant')

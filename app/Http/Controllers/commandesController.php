@@ -10,13 +10,14 @@ use Illuminate\Support\Facades\Validator;
 class commandesController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * récupérer toutes les commandes.
      *
      * @return mixed
      *
      */
     public function index()
     {
+        //récupérer toutes les commandes par rapport au fournisseur
         $commandes = commande::join('voitures_fournisseur', 'voitures_fournisseur.id', '=', 'commandes.id_voiture_fournisseur')
         ->get([
             'voitures_fournisseur.marque',
@@ -27,7 +28,7 @@ class commandesController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Pour afficher la page de création.
      *
      * @return mixed
      */
@@ -38,7 +39,7 @@ class commandesController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Pour enregistrer.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return mixed
@@ -49,13 +50,14 @@ class commandesController extends Controller
            "DateDebut" => ["required", "date"],
            "DateFin" => ["required", "date", "after:".$request->DateDebut],
             "id_voiture_fournisseur" => "required"
+        ],
+        [
+            "required" => "Champs requis.",
+            "date" => "Doit être une date valide.",
+            "after" => "Doit être après la date de debut."
         ]);
         if($validator->fails())return back()->withErrors($validator->errors())->withInput();
-        commande::create([
-            "DateDebut" => $request->DateDebut,
-            "DateFin" => $request->DateFin,
-            "id_voiture_fournisseur" => intval($request->id_voiture_fournisseur)
-        ]);
+        commande::create($request->all());
         $voiture = voitureFournisseur::find($request->id_voiture_fournisseur);
         $voiture->update([
             "statut" => 0
@@ -65,7 +67,7 @@ class commandesController extends Controller
 
 
     /**
-     * Show the form for editing the specified resource.
+     * Pour afficher la page de modification.
      *
      * @param  int  $id
      * @return mixed
@@ -85,7 +87,7 @@ class commandesController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Pour modifier les données.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -106,7 +108,7 @@ class commandesController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Pour supprimer.
      *
      * @param  int  $id
      * @return void

@@ -10,7 +10,7 @@ use Illuminate\Http\JsonResponse;
 class VoitureController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Pour récupérer toutes les voitures.
      *
      * @return \Illuminate\Http\Response
      */
@@ -21,7 +21,7 @@ class VoitureController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Pour afficher toutes les voitures d'une agence.
      *
      * @param  string  $id
      * @return \Illuminate\Http\Response
@@ -38,9 +38,16 @@ class VoitureController extends Controller
             'voitures' => $voiture
         ]);
     }
-
+    /**
+     * Pour retourner toutes les voitures par rapport à une recherche.
+     *
+     * @param  string  $search
+     * @return mixed
+     */
     public function searchVoiture($search){
+        //découpe la recherche
         $word =explode(" ",$search);
+        //récupère les voitures par rapports à la recherche
         $voitures = voiture::leftjoin("locations",'locations.id_voiture', '=', 'voitures.id')
         ->where(function ($query) use($word){
             for($i=0; $i < count($word);++$i){
@@ -62,7 +69,7 @@ class VoitureController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Pour récupérer une voiture.
      *
      * @param  string  $id
      * @return \Illuminate\Http\Response
@@ -74,7 +81,12 @@ class VoitureController extends Controller
             "voiture" => $voiture
         ]);
     }
-
+    /**
+     * Pour récupérer une image.
+     *
+     * @param  string  $id
+     * @return \Illuminate\Http\Response
+     */
     public function getImage($path)
     {
         $image = Storage::get($path);

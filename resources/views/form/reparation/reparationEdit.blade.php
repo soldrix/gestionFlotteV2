@@ -16,7 +16,7 @@
                             @csrf
                             <input type="hidden" name="_method" value="PUT">
                             <div class="row mb-3">
-                                <label for="type" class="col-md-4 col-form-label text-md-end">{{ __('Type d\'reparation :') }}</label>
+                                <label for="type" class="col-md-4 col-form-label text-md-end">{{ __('Type de réparation :') }}</label>
                                 <div class="col-md-6">
                                     <input id="type" type="text" placeholder="{{$reparation->type}}" class="form-control @error('type') is-invalid @enderror" name="type" value="{{ old('type') }}" autocomplete="type" autofocus>
                                     @error ('type')
@@ -38,7 +38,7 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="date" class="col-md-4 col-form-label text-md-end">{{ __('Date de l\'reparation :') }}</label>
+                                <label for="date" class="col-md-4 col-form-label text-md-end">{{ __('Date de la réparation :') }}</label>
                                 <div class="col-md-6">
                                     <input id="date" type="date" placeholder="{{ date('d/m/Y', strtotime($reparation->date))}}" class="form-control @error('date') is-invalid @enderror" name="date" value="{{ old('date') }}" autocomplete="date" autofocus>
                                     @error ('date')
@@ -76,7 +76,13 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="row mb-3">
+                            <div class="row mb-3 align-items-center">
+                                <label for="note" class="col-md-4 col-form-label text-md-end">{{ __('Supprimer la note:') }}</label>
+                                <div class="w-50 h-fit form-switch mx-5">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="empty_note" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                </div>
+                            </div>
+                            <div class="row mb-3 collapse show" id="collapseExample">
                                 <label for="note" class="col-md-4 col-form-label text-md-end">{{ __('Note supplémentaire :') }}</label>
                                 <div class="col-md-6">
                                     <textarea id="note" type="text" placeholder="{{$reparation->note}}" class="form-control @error('note') is-invalid @enderror" name="note" value="{{ old('montant') }}"  autocomplete="montant" autofocus ></textarea>

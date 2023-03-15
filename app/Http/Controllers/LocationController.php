@@ -12,7 +12,7 @@ use Illuminate\Support\Str;
 class LocationController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Pour récupérer toutes les locations.
      *
      * @return mixed
      */
@@ -29,7 +29,7 @@ class LocationController extends Controller
         return view('locations',["locations" => $locations]);
     }
     /**
-     * Show the form for creating a new resource.
+     * Pour afficher la page de création.
      *
      */
     public function create()
@@ -40,7 +40,7 @@ class LocationController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Pour enregistrer.
      *
      * @param  \Illuminate\Http\Request  $request
      *
@@ -50,22 +50,29 @@ class LocationController extends Controller
         $validator = Validator::make($request->all(),[
             "DateDebut"  => ["required","after:2000-01-01"],
             "DateFin" => ["required", "after_or_equal:".$request->DateDebut],
-            "montant" => ["required", "numeric"]
+            "montant" => ["required", "numeric"],
+            "id_voiture" => "required",
+            "id_user" => "required"
+        ],
+        [
+            "required" => "Champs requis.",
+            "after" => "Doit être après 01/01/2000.",
+            "after_or_equal" => "Doit être supérieur ou égal à la date de début."
         ]);
         if ($validator->fails()) return back()->withErrors($validator->errors())->withInput();
-        location::create([
-            "DateDebut" => $request->DateDebut,
-            "DateFin" => $request->DateFin,
-            "montant" => $request->montant,
-            "id_voiture" => ($request->id_voiture === 'vide') ? null : $request->id_voiture,
-            "id_user"  => ($request->id_user === 'vide') ? null : $request->id_user,
-            "commandeNumber" => Str::random(15)
-        ]);
+        $collections =collect($request->all())->merge(["commandeNumber" => Str::random(15)]);
+        if($collections->get('id_voiture') === "vide"){
+            $collections = $collections->replaceRecursive(["id_voiture" => null]);
+        }
+        if($collections->get('id_user') === "vide"){
+            $collections = $collections->replaceRecursive(['id_user' => null]);
+        }
+        location::create($collections->all());
         return back()->with('message', 'La location a été créer avec succès.');
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Pour afficher la page de modification.
      *
      * @param  int  $id
      *
@@ -79,7 +86,7 @@ class LocationController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Pour modifier.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -94,29 +101,19 @@ class LocationController extends Controller
         ]);
         if ($validator->fails()) return back()->withErrors($validator->errors())->withInput();
         $location = location::find($id);
-
-        if($request->id_voiture !== null){
-            $location->id_voiture = ($request->id_voiture === 'vide') ? null :  $request->id_voiture;
+        $collections =collect($request->all())->filter();
+        if($collections->get('id_voiture') === "vide"){
+            $collections = $collections->replaceRecursive(["id_voiture" => null]);
         }
-        if($request->id_user !== null){
-            $location->id_user = ($request->id_user === 'vide') ? null :  $request->id_user;
+        if($collections->get('id_user') === "vide"){
+            $collections = $collections->replaceRecursive(['id_user' => null]);
         }
-        if($request->DateDebut !== null){
-            $location->DateDebut = $request->DateDebut;
-        }
-        if($request->DateFin !== null){
-            $location->DateFin = $request->DateFin;
-        }
-        if(isset($request->montant)){
-            $location->montant = $request->montant;
-        }
-
-        $location->update();
+        $location->update($collections->all());
         return back()->with('message', 'La location a été modifié avec succès.');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Pour supprimer.
      *
      * @param  int  $id
      *

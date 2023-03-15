@@ -143,7 +143,7 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="agenceId" class="col-md-4 col-form-label text-md-end">{{ __('Agence :') }}</label>
+                                <label for="agenceId" class="col-md-4 col-form-label text-md-end">{{ __('Agence ') }}<span class="text-danger">*</span>{{__(' :')}}</label>
                                 <div class="col-md-6">
                                     <select id="agenceId" class="form-select @error('id_agence') is-invalid @enderror" aria-label="Default select example" name="id_agence">
                                         <option value="">Sélectionner une agence</option>

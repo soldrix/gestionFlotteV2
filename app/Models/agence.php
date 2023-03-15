@@ -16,7 +16,8 @@ class agence extends Model
     protected $fillable =[
       "ville",
       "rue",
-      "codePostal"
+      "codePostal",
+      "id_user"
     ];
 
 }

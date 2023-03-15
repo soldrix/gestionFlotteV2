@@ -35,6 +35,8 @@
                             <li class="nav-item">
                                 <a class="nav-link tabsHome" href="#" data-bs-toggle="tab" data-bs-target="#table_fournisseurs"><i class="fa-solid fa-truck-ramp-box fa-lg m-2"></i>Fournisseurs</a>
                             </li>
+                        @endif
+                        @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'RH']))
                             <li class="nav-item">
                                 <a class="nav-link tabsHome" href="#" data-bs-toggle="tab" data-bs-target="#table_users"><i class="fa-solid fa-user-group fa-lg m-2"></i>Utilisateurs</a>
                             </li>
@@ -242,23 +244,25 @@
                     @endif
                     @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin','responsable fournisseurs']))
                         <div id="table_fournisseurs" class="tab-pane fade contentHome mt-3" role="tabpanel">
-                        <table id="DataTable_fournisseur" class="table table-bordered table-hover table-dark mt-2 table-striped dataTable table-responsive" style="width: 100%">
-                            <thead>
-                            <tr>
-                                <th>Nom</th>
-                                <th>Email</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($fournisseurs as $datas)
-                                <tr data-voiture="{{$datas->id}}">
-                                    <td>{{$datas->name}}</td>
-                                    <td>{{$datas->email}}</td>
+                            <table id="DataTable_fournisseur" class="table table-bordered table-hover table-dark mt-2 table-striped dataTable table-responsive" style="width: 100%">
+                                <thead>
+                                <tr>
+                                    <th>Nom</th>
+                                    <th>Email</th>
                                 </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                                </thead>
+                                <tbody>
+                                @foreach($fournisseurs as $datas)
+                                    <tr data-voiture="{{$datas->id}}">
+                                        <td>{{$datas->name}}</td>
+                                        <td>{{$datas->email}}</td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @endif
+                    @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'RH']))
                         <div id="table_users" class="tab-pane fade contentHome mt-3" role="tabpanel">
                         <table id="DataTable_users" class="table table-bordered table-hover table-dark mt-2 table-striped dataTable table-responsive" style="width: 100%">
                             <thead>

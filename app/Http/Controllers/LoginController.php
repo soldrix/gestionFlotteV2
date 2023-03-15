@@ -21,7 +21,13 @@ use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
 {
-
+    /**
+     * Pour récupérer toutes les dernières modifications des sept derniers jours.
+     *
+     *
+     * @return mixed
+     *
+     */
     public function index(){
         $date = date('Y-m-d H:i:s', strtotime("-7 day, +1 hour"));
 
@@ -77,9 +83,28 @@ class LoginController extends Controller
             "fournisseurs.name",
             "fournisseurs.email"
         ]);
-        return view('home',['entretiens' => $entretiens, 'assurances' => $assurances, 'consommations' => $consommations, 'reparations' => $reparations, 'locations' => $locations, 'agences' => $agences, 'fournisseurs' => $fournisseurs, 'voitures' => $voitures, 'users' => $users, 'commandes' => $commandes , 'voitures_fournisseurs' => $voitures_fournisseurs]);
+        return view('home',
+            [
+                'entretiens' => $entretiens,
+                'assurances' => $assurances,
+                'consommations' => $consommations,
+                'reparations' => $reparations,
+                'locations' => $locations,
+                'agences' => $agences,
+                'fournisseurs' => $fournisseurs,
+                'voitures' => $voitures,
+                'users' => $users,
+                'commandes' => $commandes ,
+                'voitures_fournisseurs' => $voitures_fournisseurs
+            ]);
     }
-
+    /**
+     * Pour enregistrer un utilisateur.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return   mixed
+     *
+     */
     public function register(Request $request)
     {
         // Validate request data
@@ -97,15 +122,10 @@ class LoginController extends Controller
 
         // Return errors if validation error occur.
         if ($validator->fails()) return back()->withErrors($validator->errors())->withInput();
-
-        $user = User::create([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'id_role' => 1
-        ]);
-       $user->assignRole(1);
+        $collections = collect($request->all())->merge(["id_role" => 1])->replaceRecursive(['password' => Hash::make($request->password)]);
+        $user = User::create($collections->all());
+        //ajoute le role user
+        $user->assignRole(1);
 
         //login l'utilisateur apres création du compte
         Auth::guard()->attempt($request->only('email', 'password'));
@@ -114,6 +134,13 @@ class LoginController extends Controller
         return redirect('/home')->with('token','Bearer '.$token);
     }
 
+    /**
+     * Pour connecter un utilisateur.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return  mixed
+     *
+     */
     public function login(Request $request)
     {
         $user = User::where('email', '=', $request->email)->get();
@@ -134,7 +161,13 @@ class LoginController extends Controller
         }
         return back()->withErrors(['message'=>'Données de connexion invalides.'])->withInput();
     }
-
+    /**
+     * Pour déconnecter un utilisateur.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return  mixed
+     *
+     */
     public function logout(Request $request){
         //détruis les tokens et la session puis redirect l'utilisateur au login
         $request->user()->tokens()->delete();

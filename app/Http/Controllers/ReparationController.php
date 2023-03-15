@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 class ReparationController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Pour récupérer toutes les réparations.
      *
      */
     public function index()
@@ -24,7 +24,7 @@ class ReparationController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Pour afficher la page de création.
      *
      */
     public function create()
@@ -34,7 +34,7 @@ class ReparationController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Pour enregistrer.
      *
      * @param  \Illuminate\Http\Request  $request
      *
@@ -54,20 +54,20 @@ class ReparationController extends Controller
             "numeric" => "Le montant doit être un chiffre ex: ( 10.50)."
         ]);
         if ($validator->fails()) return back()->withErrors($validator->errors())->withInput();
-        reparation::create([
-            "nom" => $request->nom,
-            "type" => $request->type,
-            "date" => $request->date,
-            "montant" => $request->montant,
-            "note" => ($request->note === null) ? 'Aucune note.' : $request->note,
-            "id_voiture" => ($request->id_voiture === 'vide') ? null : $request->id_voiture
-        ]);
+        $collections = collect($request->all());
+        if ($collections->get('note') === null){
+            $collections = $collections->replaceRecursive(['note' => 'Aucune note.']);
+        }
+        if ($collections->get('id_voiture') === "vide"){
+            $collections = $collections->replaceRecursive(['id_voiture' => null]);
+        }
+        reparation::create($collections->all());
         return back()->with('message', 'L\'reparation à été créer avec succès.');
     }
 
 
     /**
-     * Show the form for editing the specified resource.
+     * Pour afficher la page de modification.
      *
      * @param  int  $id
      *
@@ -80,7 +80,7 @@ class ReparationController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Pour modifier.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -98,30 +98,20 @@ class ReparationController extends Controller
         ]);
         if ($validator->fails()) return back()->witherrors($validator->errors())->withInput();
         $reparation = reparation::find($id);
-        if (isset($request->note)){
-            $reparation->note = ($request->note === null) ? 'Aucune note.' : $request->note;
+        $collections = collect($request->all())->filter();
+        //tester et supprimer une note
+        if($collections->get('empty_note') === "on"){
+            $collections = $collections->mergeRecursive(['note' => 'Aucune note.']);
         }
-        if ($request->id_voiture !== null){
-            $reparation->id_voiture = ($request->id_voiture === 'vide') ? null : $request->id_voiture;
+        if($collections->get('id_voiture') === 'vide'){
+            $collections = $collections->replaceRecursive(['id_voiture' => null]);
         }
-        if($request->date !== null){
-            $reparation->date = $request->date;
-        }
-        if($request->montant !== null){
-            $reparation->montant = $request->montant;
-        }
-        if($request->type !== null){
-            $reparation->type = $request->type;
-        }
-        if($request->nom !== null){
-            $reparation->nom = $request->nom;
-        }
-        $reparation->update();
+        $reparation->update($collections->all());
         return back()->with('message', 'L\'reparation à été modfié avec succès.');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Pour supprimer.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

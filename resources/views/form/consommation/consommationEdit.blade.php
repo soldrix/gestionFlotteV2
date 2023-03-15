@@ -41,7 +41,7 @@
                                 <label for="voitureID" class="col-md-4 col-form-label text-md-end">{{ __('Voiture :') }}</label>
                                 <div class="col-md-6">
                                     <select id="voitureId" class="form-select @error('id_voiture') is-invalid @enderror" aria-label="Default select example" name="id_voiture">
-                                        <option value="">Selecetionner une video</option>
+                                        <option value="">Selecetionner une voiture</option>
                                         <option value="vide">Aucune voiture</option>
                                         @foreach($voitures as $datas)
                                                 <option value="{{$datas->id}}">{{$datas->marque.' '.$datas->model.' '.$datas->immatriculation}}</option>

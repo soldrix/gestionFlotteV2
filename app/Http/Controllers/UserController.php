@@ -16,12 +16,15 @@ use Spatie\Permission\Models\Role;
 class UserController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Pour afficher touts les utilisateurs.
      *
      */
     public function index()
     {
+        //vérifie le rôle de l'utilisateur pour changer de request de données
         if(Auth::user()->hasRole('RH')){
+
+            //récupère touts les utilisateurs sauf les utilisateurs avec le rôle admin
             $users = User::join('roles', 'roles.id', '=', "users.id_role")
                 ->where('roles.name', 'NOT LIKE', 'admin')
                 ->get([
@@ -39,7 +42,7 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Pour afficher la page de création.
      *
      */
     public function create()
@@ -51,6 +54,10 @@ class UserController extends Controller
         return view('form.utilisateur.userCreate',['roles' => $roles]);
     }
 
+    /**
+     * Pour récupérer les données d'un utilisateur.
+     *
+     */
     public function show(){
         $user = User::find(Auth::id());
         return view('profil',['user' => $user]);
@@ -58,7 +65,7 @@ class UserController extends Controller
 
 
     /**
-     * Store a newly created resource in storage.
+     * Pour enregistrer.
      *
      * @param  \Illuminate\Http\Request  $request
      *
@@ -84,14 +91,11 @@ class UserController extends Controller
 
         // Return errors if validation error occur.
         if ($validator->fails()) return back()->withErrors($validator->errors())->withInput();
+        //créer un mot de passe aléatoire
         $password = Str::random(10);
-        $user = User::create([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'email' => $request->email,
-            'password' => Hash::make($password),
-            'id_role' => $request->id_role
-        ]);
+        //stock les données du request sauf la valeur email_receiver
+        $collections = collect($request->all())->except(['email_receiver'])->replaceRecursive(['password' => Hash::make($password)]);
+        $user = User::create($collections->all());
         $user->assignRole($request->id_role);
 
         $data["email"] = $request->email;
@@ -109,7 +113,7 @@ class UserController extends Controller
 
 
     /**
-     * Show the form for editing the specified resource.
+     * Pour afficher la page de modification.
      *
      * @param  int  $id
      *
@@ -126,20 +130,9 @@ class UserController extends Controller
         $roles = Role::all();
         return view('form.utilisateur.userEdit',['user' => $user[0], 'roles' => $roles]);
     }
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     *
-     */
-    public function editProfil($id)
-    {
-        $user = User::find($id);
-        return view('form.utilisateur.profilEdit',['user' => $user]);
-    }
 
     /**
-     * Update the specified resource in storage.
+     * Pour modifier les données.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -168,7 +161,9 @@ class UserController extends Controller
 
         //vérifie si l'utilisateur est relié à une agence ou un fournisseur, le/la supprime au changement de role s'il est relié
         if($request->id_role !== null){
+            //retire l'ancien role
             $user->removeRole($user->id_role);
+            //ajoute le nouveau role
             $user->assignRole($request->id_role);
             $agence = agence::where('id_user', $id)->get();
             if(count($agence) > 0){
@@ -187,7 +182,7 @@ class UserController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Pour supprimer.
      *
      * @param  int  $id
      *
@@ -216,13 +211,22 @@ class UserController extends Controller
     /**
      * Desactivate user.
      *
-     * @param int $id
+     * @param $request Request
      * @return mixed
     **/
-    public function desactivate($id)
+    public function desactivate(Request $request)
     {
+        if(Auth::id() == $request->id){
+            $user = User::find($request->id);
+            $user->statut = 0;
+            $user->update();
+            $request->user()->tokens()->delete();
+            $request->session()->invalidate();
+            Auth::logout();
+            return response('ok',200);
+        }
         if(Auth::user()->hasRole(['admin', 'RH'])){
-            $user = User::find($id);
+            $user = User::find($request->id);
             $user->statut = 0;
             $user->update();
             return response('ok',200);

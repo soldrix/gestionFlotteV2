@@ -1,14 +1,11 @@
 @extends('layouts.app')
 @section('content')
 <div class="container d-flex flex-column pt-5">
-    <div id="profilContent" class="w-100">
-
-    </div>
-<div class="col-8 d-flex align-self-center flex-column">
-    <h2>Mon profil</h2>
-    <div class="bg-s shadow-block p-3">
+    <div id="profilContent" class="w-100"></div>
+    <div class="col-8 d-flex align-self-center flex-column">
+        <h2>Mon profil</h2>
+        <div class="bg-s shadow-block p-3">
             <h3> <span class="first_name_text">{{$user->first_name}}</span> <span class="last_name_text">{{$user->last_name}}</span></h3>
-
             <div class="bg-p p-3">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <p class="m-0">Prenom <br> <span class="first_name_text">{{$user->first_name}}</span></p>
@@ -23,20 +20,17 @@
                     <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modal_email">Modifier</button>
                 </div>
             </div>
+        </div>
+        <h3 class="border-1 border-top border-white mt-5 pt-5">Mot de passe</h3>
+        <a class="btn btn-outline-primary h-50 w-fit m-2" data-bs-toggle="modal" data-bs-target="#modal_password">
+            modifier mot de passe
+        </a>
+        <h3 class="border-1 border-top border-white mt-5 pt-5">Suppression de compte</h3>
+        <div class="d-flex justify-content-center w-100 mt-2">
+            <button class="btn btn-outline-danger delButton mx-2" data-voiture="{{\Illuminate\Support\Facades\Auth::user()->id}}">suppression du compte</button>
+            <button class="btn btn-danger desButton mx-2" data-voiture="{{$user->id}}">Désactiver le compte</button>
+        </div>
     </div>
-    <h3 class="border-1 border-top border-white mt-5 pt-5">Mot de passe</h3>
-    <a class="btn btn-outline-primary h-50 w-fit m-2" data-bs-toggle="modal" data-bs-target="#modal_password">
-        modifier mot de passe
-    </a>
-
-
-
-            <div class="d-flex justify-content-center w-100">
-                <button class="btn btn-outline-danger delButton" data-voiture="{{\Illuminate\Support\Facades\Auth::user()->id}}">suppression du compte</button>
-            </div>
-    </div>
-
-
 </div>
 
 <!-- Modal first name -->

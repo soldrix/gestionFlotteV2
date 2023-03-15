@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Validator;
 class VoitureFournisseurController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Pour récupérer toutes les voitures fournisseurs.
      *
      */
     public function index()
@@ -25,7 +25,7 @@ class VoitureFournisseurController extends Controller
         return view('voituresFournisseur',["voitures"=>$voitures]);
     }
     /**
-     * Show the form for creating a new resource.
+     * Pour afficher la page de création.
      */
     public function create()
     {
@@ -34,7 +34,7 @@ class VoitureFournisseurController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Pour enregistrer.
      *
      * @param  \Illuminate\Http\Request  $request
      *
@@ -54,22 +54,14 @@ class VoitureFournisseurController extends Controller
         if($validator->fails()) return back()->withErrors($validator->errors())->withInput();
 //        ajout l'image dans le storage
         $path = Storage::putFile('image', $request->image);
-         voitureFournisseur::create([
-            "image" => $path,
-            "marque" => $request->marque,
-            "model" => $request->model,
-            "carburant" => $request->carburant,
-            "puissance" => $request->puissance,
-            "type" => $request->type,
-            "statut" => $request->statut,
-            "id_fournisseur" => $request->id_fournisseur
-        ]);
+        $collections = collect($request->all())->replaceRecursive(['image' => $path]);
+         voitureFournisseur::create($collections->all());
         return back()->with('message', 'La voiture à été créer avec succès.');
     }
 
 
     /**
-     * Show the form for editing the specified resource.
+     * Pour afficher la page de modification.
      *
      * @param  int  $id
      *
@@ -82,7 +74,7 @@ class VoitureFournisseurController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Pour modifier.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -97,43 +89,22 @@ class VoitureFournisseurController extends Controller
         ]);
         if($validator->fails()) return back()->withErrors($validator->errors())->withInput();
         $voiture = voitureFournisseur::find($id);
+        $collections = collect($request->all())->filter();
 
-        if($request->puissance !== null){
-            $voiture->puissance = $request->puissance;
-        }
-        if($request->prix !== null){
-            $voiture->prix = $request->prix;
-        }
-        if($request->statut !== null){
-            $voiture->statut = $request->statut;
-        }
-        if($request->marque !== null){
-            $voiture->marque = $request->marque;
-        }
-        if($request->model !== null){
-            $voiture->model = $request->model;
-        }
-        if($request->carburant !== null){
-            $voiture->carburant = $request->carburant;
-        }
-        if($request->type !== null){
-            $voiture->type = $request->type;
-        }
-        if ($request->image !== null){
+        if ($collections->get('image') !== null){
             //si l'image supprime l'ancienne image du storage
             Storage::delete($voiture->image);
             //ajout la nouvelle image dans le storage
             $path =  Storage::putFile('image', $request->image);
             //ajoute le chemin de l'image dans la modification
-            $voiture->image = $path;
+            $collections = $collections->replaceRecursive(['image' => $path]);
         }
-
-        $voiture->update();
+        $voiture->update($collections->all());
         return back()->with('message', 'La modification à été réaliser avec succès.');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Pour supprimer.
      *
      * @param  int  $id
      *

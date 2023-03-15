@@ -31,9 +31,7 @@
                         <td class="tdBtn">
                             <div class="divBtnTab">
                                 <a class="btn btn-info editButton text-white"  href="/user/edit/{{$datas->id}}"><i class="fa-solid fa-pencil "></i></a>
-                                @if(\Illuminate\Support\Facades\Auth::user()->hasRole('RH'))
-                                    <button class="btn btn-danger desButton" data-voiture="{{$datas->id}}"><i class="fa-solid fa-user-slash"></i></button>
-                                @else
+                                @if(\Illuminate\Support\Facades\Auth::user()->hasRole('admin'))
                                     <button class="btn btn-danger delButton" data-voiture="{{$datas->id}}"><i class="fa-solid fa-trash-can"></i></button>
                                 @endif
                             </div>

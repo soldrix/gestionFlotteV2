@@ -30,7 +30,6 @@ $(document).ready(function () {
         supModal(this);
     })
 })
-
 var myModal = new bootstrap.Modal(document.getElementById('delModal'));
 var delToastEl = document.getElementById('toastSupp');
 var delToast = bootstrap.Toast.getOrCreateInstance(delToastEl);
