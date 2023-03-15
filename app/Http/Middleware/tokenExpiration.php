@@ -41,7 +41,7 @@ class tokenExpiration
         }
 
         $token = PersonalAccessToken::find($userToken->id);
-        $now =  Carbon::parse(Carbon::now());
+        $now =  Carbon::parse(Carbon::now()->addHour());
 
         $last_seen = Carbon::parse($token->expires_at);
 
