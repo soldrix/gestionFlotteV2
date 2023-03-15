@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\PasswordReset;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Http\JsonResponse;
@@ -274,7 +275,7 @@ class UserController extends Controller
         ])->get();
         //vérifie que l'utilisateur était bien désactivé, s'il n'est pas désactiver retourne false
         if(count($verifEmail) < 1) return ($request->wantsJson()) ? response()->json(['user' => false]) : view('errors.404');
-        return ($request->wantsJson()) ? response()->json(['user' => true]) : view('auth.deleteUser',['user' => $verifEmail[0]]);
+        return ($request->wantsJson()) ? response()->json(['user' => true, 'data' => $verifEmail[0]]) : view('auth.deleteUser',['user' => $verifEmail[0]]);
     }
     /**
      * Pour supprimer un compte si l'utilisateur est désactivé.
@@ -297,11 +298,16 @@ class UserController extends Controller
             $user = User::find($request->id);
             //supprime l'utilisateur
             $user->delete();
+            if(!$request->wantsJson()){
+                $request->session()->invalidate();
+            }
             return ($request->wantsJson()) ? response()->json(["message" => "L'utilisateur a été supprimer avec succès."]) : redirect("/login")->with('message', "L'utilisateur a été supprimer avec succès.");
         }
         //retourne message erreur
         return ($request->wantsJson()) ? response()->json([
-            'message' => 'Données de connexion invalides.'
+            'message' => 'Données de connexion invalides.',
+            "data" => $request->all(),
+            'test' => Auth()->attempt($request->only('email', 'password'))
         ], 401) : back()->withErrors(['message' => 'Données de connexion invalides.'])->withInput();
     }
     /**
@@ -316,9 +322,8 @@ class UserController extends Controller
             "email" => $request->email,
             "statut" => 0
         ])->get();
-        $request->session()->invalidate();
         if(count($verifEmail) < 1) return ($request->wantsJson()) ? response()->json(['user' => false],400) : view('errors.404');
-        return ($request->wantsJson()) ? response()->json(['user' => true]) : view('auth.reactivateUser',['user' => $verifEmail[0]]);
+        return ($request->wantsJson()) ? response()->json(['user' => true, 'data' => $verifEmail[0]]) : view('auth.reactivateUser',['user' => $verifEmail[0]]);
     }
     /**
      * Pour réactiver un compte si l'utilisateur est désactivé.
@@ -342,7 +347,9 @@ class UserController extends Controller
             $user->update([
                 "statut" => 1
             ]);
-            $request->session()->invalidate();
+            if(!$request->wantsJson()){
+                $request->session()->invalidate();
+            }
             return ($request->wantsJson()) ? response()->json(["message" => "L'utilisateur a été réactiver avec succès."]) : redirect("/login")->with('message', "L'utilisateur a été réactiver avec succès.");
         }
         return ($request->wantsJson()) ? response()->json([

@@ -58,15 +58,16 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        //récupère l'utilisateur avec son email
-        $user = User::where('email', '=', $request->email)->get();
-        //vérifie si l'utilisateur est désactivé
-        if($user[0]['statut'] === 0){
-            //retourne message erreur
-            return response()->json(['message' => 'Le compte est désactiver.', "data" => $request->email],400);
-        }
         //test la connexion de l'utilisateur
         if (Auth()->attempt($request->only('email', 'password'))) {
+            //récupère l'utilisateur avec son email
+            $user = User::where('email', '=', $request->email)->get();
+            //vérifie si l'utilisateur est désactivé
+            if($user[0]['statut'] === 0){
+                //retourne message erreur
+                return response()->json(['message' => 'Le compte est désactiver.', "data" => $request->email],400);
+            }
+
             if(auth('sanctum')->check()){
                 //supprime les tokens
                 $request->user()->tokens()->delete();
