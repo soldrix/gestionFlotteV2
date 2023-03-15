@@ -16,9 +16,12 @@ class AgenceController extends Controller
      */
     public function index():JsonResponse
     {
-        $agence = agence::all();
+        $agences = agence::where('id_user' ,'!=', null)
+            ->get([
+                "agence.*"
+            ]);
         return response()->json([
-            'data' => $agence
+            'data' => $agences
         ]);
     }
 

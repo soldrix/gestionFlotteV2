@@ -15,7 +15,9 @@ class chefAgenceController extends Controller
      */
     public function index()
     {
-        $agences = agence::leftjoin('users', 'users.id', '=', 'agence.id_user')->get([
+        $agences = agence::leftjoin('users', 'users.id', '=', 'agence.id_user')
+            ->where('agence.id_user' ,'!=', null)
+            ->get([
             "agence.*",
             "users.first_name",
             "users.last_name",
