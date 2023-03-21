@@ -21,7 +21,7 @@ class AssuranceController extends Controller
                 'assurances.*',
                 'voitures.immatriculation'
             ]);
-        return view('assurances',['assurances' => $assurances]);
+        return response(['assurances' => $assurances]);
     }
 
     /**
@@ -56,13 +56,13 @@ class AssuranceController extends Controller
             "DateFin.after" => "La date de Fin doit être plus grande que la date de debut.",
             "frais.numeric" => "Le montant des frais doivent être des chiffre ex: ( 10.50 ) ."
         ]);
-        if($validator->fails()) return back()->withErrors($validator->errors())->withInput();
+        if($validator->fails()) return response(['errors' => $validator->errors()]);
         $collections = collect($request->all())->filter();
         if($collections->get('id_voiture') === 'vide'){
             $collections = $collections->replaceRecursive(['id_voiture' => null]);
         }
         assurance::create($collections->all());
-        return back()->with('message', 'L\'assurance a été créer avec succès.');
+        return response(['message' => 'L\'assurance a été créer avec succès.']);
     }
 
 
@@ -76,7 +76,7 @@ class AssuranceController extends Controller
     {
         $assurance = assurance::find($id);
         $voitures = voiture::all();
-        return view('form.assurance.assuranceEdit', ['assurance' => $assurance, 'voitures' => $voitures]);
+        return response( ['assurance' => $assurance, 'voitures' => $voitures]);
     }
 
     /**
@@ -98,7 +98,7 @@ class AssuranceController extends Controller
             "DateFin.after" => "La date de Fin doit être plus grande que la date de debut.",
             "frais.numeric" => "Le montant des frais doivent être des chiffre ex: ( 10.50 ) ."
         ]);
-        if($validator->fails()) return back()->withErrors($validator->errors())->withInput();
+        if($validator->fails()) return response(['errors' => $validator->errors()]);
         $assurance = assurance::find($id);
         //ajout à la modification des champs non vide
         $collections = collect($request->all())->filter();
@@ -106,7 +106,7 @@ class AssuranceController extends Controller
             $collections = $collections->replaceRecursive(['id_voiture' => null]);
         }
         $assurance->update($collections->all());
-        return back()->with('message', 'L\'assurance a été modifié avec succès.');
+        return response(['message' => 'L\'assurance a été modifié avec succès.']);
     }
 
     /**

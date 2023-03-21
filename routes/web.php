@@ -52,8 +52,10 @@ Route::post('/forget-password', [App\Http\Controllers\Api\UserController::class,
 Route::get('/reset-password', [App\Http\Controllers\Api\UserController::class, 'resetPasswordLoad']);
 Route::post('/reset-password', [App\Http\Controllers\Api\UserController::class, 'resetPassword']);
 
+
 Route::get('/delete-user',[App\Http\Controllers\Api\UserController::class, 'loadDeleteUser']);
 Route::post('/delete-user',[App\Http\Controllers\Api\UserController::class, 'deleteAccount'])->name('deleteAccount');
+
 Route::get('/reactivate-account',[App\Http\Controllers\Api\UserController::class, 'loadReactivateUser']);
 Route::post('/reactivate-account',[App\Http\Controllers\Api\UserController::class, 'reactivateUser'])->name('reactivateAccount');
 

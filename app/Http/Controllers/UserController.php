@@ -31,14 +31,14 @@ class UserController extends Controller
                     "users.*",
                     "roles.name as role"
                 ]);
-            return view('users', ['users' => $users]);
+            return response( ['users' => $users]);
         }
         $users = User::join('roles', 'roles.id', '=', "users.id_role")
             ->get([
                 "users.*",
                 "roles.name as role"
             ]);
-        return view('users', ['users' => $users]);
+        return response(['users' => $users]);
     }
 
     /**
@@ -108,7 +108,7 @@ class UserController extends Controller
         });
 
 
-        return back()->with('message','L\'utilisateur a été créer avec succès.');
+        return response(['message' => 'L\'utilisateur a été créer avec succès.']);
     }
 
 
@@ -156,7 +156,7 @@ class UserController extends Controller
         ]);
 
         // Return errors if validation error occur.
-        if ($validator->fails()) return back()->withErrors($validator->errors())->withInput();
+        if ($validator->fails()) return response(["errors"=>$validator->errors()]);
         $user = User::find($id);
 
         //vérifie si l'utilisateur est relié à une agence ou un fournisseur, le/la supprime au changement de role s'il est relié
@@ -178,7 +178,7 @@ class UserController extends Controller
         }
 
 
-        return back()->with('message','L\'utilisateur a été créer avec succès.');
+        return response(['message' => 'L\'utilisateur a été créer avec succès.']);
     }
 
     /**
@@ -216,24 +216,10 @@ class UserController extends Controller
     **/
     public function desactivate(Request $request)
     {
-        if(Auth::id() == $request->id){
-            $user = User::find($request->id);
-            $user->statut = 0;
-            $user->update();
-            $request->user()->tokens()->delete();
-            $request->session()->invalidate();
-            Auth::logout();
-            return response('ok',200);
-        }
-        if(Auth::user()->hasRole(['admin', 'RH'])){
             $user = User::find($request->id);
             $user->statut = 0;
             $user->update();
             return response('ok',200);
-        }
-        return response([
-            'error' => 'request unauthorized'.Auth::user()->id
-        ],401);
     }
 
 

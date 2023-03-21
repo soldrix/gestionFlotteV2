@@ -26,7 +26,7 @@ class LocationController extends Controller
                 'users.email'
             ])
         ;
-        return view('locations',["locations" => $locations]);
+        return response(["locations" => $locations]);
     }
     /**
      * Pour afficher la page de création.
@@ -59,7 +59,7 @@ class LocationController extends Controller
             "after" => "Doit être après 01/01/2000.",
             "after_or_equal" => "Doit être supérieur ou égal à la date de début."
         ]);
-        if ($validator->fails()) return back()->withErrors($validator->errors())->withInput();
+        if ($validator->fails()) return response(['errors' => $validator->errors()]);
         $collections =collect($request->all())->merge(["commandeNumber" => Str::random(15)]);
         if($collections->get('id_voiture') === "vide"){
             $collections = $collections->replaceRecursive(["id_voiture" => null]);
@@ -68,7 +68,7 @@ class LocationController extends Controller
             $collections = $collections->replaceRecursive(['id_user' => null]);
         }
         location::create($collections->all());
-        return back()->with('message', 'La location a été créer avec succès.');
+        return response(['message' => 'La location a été créer avec succès.']);
     }
 
     /**
@@ -99,7 +99,7 @@ class LocationController extends Controller
             "DateFin" => ["after_or_equal:". ($request->DateDebut) ? $request->DateDebut : '2000-01-01',($request->DateDebut) ? "required" : ""],
             "montant" => "numeric",
         ]);
-        if ($validator->fails()) return back()->withErrors($validator->errors())->withInput();
+        if ($validator->fails()) return response(['errors' => $validator->errors()]);
         $location = location::find($id);
         $collections =collect($request->all())->filter();
         if($collections->get('id_voiture') === "vide"){
@@ -109,7 +109,7 @@ class LocationController extends Controller
             $collections = $collections->replaceRecursive(['id_user' => null]);
         }
         $location->update($collections->all());
-        return back()->with('message', 'La location a été modifié avec succès.');
+        return response(['message' =>  'La location a été modifié avec succès.']);
     }
 
     /**

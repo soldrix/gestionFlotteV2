@@ -20,7 +20,7 @@ class ReparationController extends Controller
                 'reparations.*',
                 'voitures.immatriculation'
             ]);
-        return view('reparations',['reparations' => $reparations]);
+        return response(['reparations' => $reparations]);
     }
 
     /**
@@ -53,7 +53,7 @@ class ReparationController extends Controller
             "date.after" => "La date doit être valide et être après 01/01/2000.",
             "numeric" => "Le montant doit être un chiffre ex: ( 10.50)."
         ]);
-        if ($validator->fails()) return back()->withErrors($validator->errors())->withInput();
+        if ($validator->fails()) return response(['errors' => $validator->errors()]);
         $collections = collect($request->all());
         if ($collections->get('note') === null){
             $collections = $collections->replaceRecursive(['note' => 'Aucune note.']);
@@ -62,7 +62,7 @@ class ReparationController extends Controller
             $collections = $collections->replaceRecursive(['id_voiture' => null]);
         }
         reparation::create($collections->all());
-        return back()->with('message', 'L\'reparation à été créer avec succès.');
+        return response(['message' => 'L\'reparation à été créer avec succès.']);
     }
 
 
@@ -76,7 +76,7 @@ class ReparationController extends Controller
     {
         $reparation = reparation::find($id);
         $voitures = voiture::all();
-        return view('form.reparation.reparationEdit',['reparation' => $reparation, 'voitures' => $voitures]);
+        return response(['reparation' => $reparation, 'voitures' => $voitures]);
     }
 
     /**
@@ -107,7 +107,7 @@ class ReparationController extends Controller
             $collections = $collections->replaceRecursive(['id_voiture' => null]);
         }
         $reparation->update($collections->all());
-        return back()->with('message', 'L\'reparation à été modfié avec succès.');
+        return response(['message' => 'L\'reparation à été modfié avec succès.']);
     }
 
     /**

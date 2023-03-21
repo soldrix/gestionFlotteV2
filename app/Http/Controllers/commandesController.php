@@ -24,7 +24,7 @@ class commandesController extends Controller
             'voitures_fournisseur.model',
             'commandes.*'
         ]);
-        return view('commandes',['commandes' => $commandes]);
+        return response(['commandes' => $commandes]);
     }
 
     /**
@@ -56,13 +56,13 @@ class commandesController extends Controller
             "date" => "Doit être une date valide.",
             "after" => "Doit être après la date de debut."
         ]);
-        if($validator->fails())return back()->withErrors($validator->errors())->withInput();
+        if($validator->fails())return response(['errors' => $validator->errors()]);
         commande::create($request->all());
         $voiture = voitureFournisseur::find($request->id_voiture_fournisseur);
         $voiture->update([
             "statut" => 0
         ]);
-        return back()->with('message', 'La commande a été créer avec succès.');
+        return response(['message' => 'La commande a été créer avec succès.']);
     }
 
 
@@ -83,7 +83,7 @@ class commandesController extends Controller
             'commandes.*'
         ]);
         $voitures = voitureFournisseur::where('statut', '=', "1")->get();
-        return view('form.commandes.editCommande',['commande' => $commande[0], "voitures" => $voitures]);
+        return response(['commande' => $commande[0], "voitures" => $voitures]);
     }
 
     /**
@@ -101,10 +101,10 @@ class commandesController extends Controller
         ],[
             "after" => "la date doit être après la date de debut."
         ]);
-        if($validator->fails())return back()->withErrors($validator->errors())->withInput();
+        if($validator->fails())return response(['errors' => $validator->errors()]);
         $commande = commande::find($id);
         $commande->update(array_filter($request->all()));
-        return back()->with('message', 'La commande a été modifié avec succès.');
+        return response(['message' => 'La commande a été modifié avec succès.']);
     }
 
     /**

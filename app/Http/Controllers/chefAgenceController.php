@@ -23,7 +23,7 @@ class chefAgenceController extends Controller
             "users.last_name",
             "users.email"
         ]);
-        return view('chefAgence',['agences' => $agences]);
+        return response(['agences' => $agences]);
     }
     /**
      * Pour récuprer toutes les voitures d'une agence.
@@ -33,7 +33,7 @@ class chefAgenceController extends Controller
     public function indexVoiture($id)
     {
         $voitures = voiture::where('id_agence', '=', $id)->get();
-        return view('voituresAgence',['voitures' => $voitures]);
+        return response(['voitures' => $voitures]);
     }
 
     /**
@@ -45,7 +45,7 @@ class chefAgenceController extends Controller
     public function edit($id)
     {
         $voiture = voiture::find($id);
-        return view('form.voiture.statutEdit',['voiture' => $voiture]);
+        return response(['voiture' => $voiture]);
     }
 
     /**
@@ -58,11 +58,11 @@ class chefAgenceController extends Controller
     public function update(Request $request, $id)
     {
         //vérifie que le statut n'est pas vide sinon retourne un message d'erreur
-        if($request->statut === null) return back()->withErrors(['statut' => 'Le statut ne peut pas être vide.'])->withInput();
+        if($request->statut === null) return response(['statut' => 'Le statut ne peut pas être vide.']);
         $voiture = voiture::find($id);
         //modifie le statut
         $voiture->update($request->all());
-        return back()->with('message', 'Modification réaliser avec succès.');
+        return response(['message' => 'Modification réaliser avec succès.']);
     }
 
 }

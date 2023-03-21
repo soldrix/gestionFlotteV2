@@ -22,7 +22,7 @@ class VoitureFournisseurController extends Controller
             'fournisseurs.name',
             'voitures_fournisseur.*'
         ]);
-        return view('voituresFournisseur',["voitures"=>$voitures]);
+        return response(["voitures"=>$voitures]);
     }
     /**
      * Pour afficher la page de création.
@@ -51,12 +51,12 @@ class VoitureFournisseurController extends Controller
             "statut" => ["required", "integer", "max_digits:1"],
             "id_fournisseur" => "required"
         ]);
-        if($validator->fails()) return back()->withErrors($validator->errors())->withInput();
+        if($validator->fails()) return response(["errors" => $validator->errors()]);
 //        ajout l'image dans le storage
         $path = Storage::putFile('image', $request->image);
         $collections = collect($request->all())->replaceRecursive(['image' => $path]);
          voitureFournisseur::create($collections->all());
-        return back()->with('message', 'La voiture à été créer avec succès.');
+        return response(['message' => 'La voiture à été créer avec succès.']);
     }
 
 
@@ -70,7 +70,7 @@ class VoitureFournisseurController extends Controller
     {
         $voiture = voitureFournisseur::find($id);
         $fournisseurs = fournisseur::all();
-        return view("form.voiture_fournisseur.voiture_fournisseurEdit",['voiture' => $voiture, 'fournisseurs' => $fournisseurs]);
+        return response(['voiture' => $voiture, 'fournisseurs' => $fournisseurs]);
     }
 
     /**
@@ -100,7 +100,7 @@ class VoitureFournisseurController extends Controller
             $collections = $collections->replaceRecursive(['image' => $path]);
         }
         $voiture->update($collections->all());
-        return back()->with('message', 'La modification à été réaliser avec succès.');
+        return response(['message' => 'La modification à été réaliser avec succès.']);
     }
 
     /**

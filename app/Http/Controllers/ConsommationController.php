@@ -20,7 +20,7 @@ class ConsommationController extends Controller
                 'consommations.*',
                 'voitures.immatriculation'
             ]);
-        return view('consommations', ['consommations' => $consommations]);
+        return response(['consommations' => $consommations]);
     }
 
     /**
@@ -46,13 +46,13 @@ class ConsommationController extends Controller
             "montant" => ["required","numeric"],
             "id_voiture" => "required"
         ]);
-        if ($validator->fails()) return back()->withErrors($validator->errors())->withInput();
+        if ($validator->fails()) return response(['errors' => $validator->errors()]);
         $collections = collect($request->all());
         if($collections->get('id_voiture') === 'vide'){
             $collections = $collections->replaceRecursive(['id_voiture' => null]);
         }
         consommation::create($collections->all());
-        return back()->with('message', 'La consommation a été créer avec succès.');
+        return response(['message' => 'La consommation a été créer avec succès.' ]);
     }
 
 
@@ -66,7 +66,7 @@ class ConsommationController extends Controller
     {
         $consommation = consommation::find($id);
         $voitures = voiture::all();
-        return view('form.consommation.consommationEdit', ['consommation' => $consommation, 'voitures' => $voitures]);
+        return response(['consommation' => $consommation, 'voitures' => $voitures]);
     }
 
     /**
@@ -82,14 +82,14 @@ class ConsommationController extends Controller
             "litre" => ["numeric"],
             "montant" => ["numeric"]
         ]);
-        if ($validator->fails()) return back()->withErrors($validator->errors())->withInput();
+        if ($validator->fails())return response(['errors' => $validator->errors()]);
         $consommation = consommation::find($id);
         $collections = collect($request->all())->filter();
         if($collections->get('id_voiture') === 'vide'){
             $collections = $collections->replaceRecursive(['id_voiture' => null]);
         }
         $consommation->update($collections->all());
-        return back()->with('message', 'La consommation a été modifié aevc succès.');
+        return response(['message' => 'La consommation a été modifié aevc succès.']);
     }
 
     /**

@@ -17,7 +17,7 @@ class FournisseurController extends Controller
     public function index()
     {
         $fournisseurs = fournisseur::all();
-        return view('fournisseurs', ['fournisseurs' => $fournisseurs]);
+        return response(['fournisseurs' => $fournisseurs]);
     }
 
     /**
@@ -42,9 +42,9 @@ class FournisseurController extends Controller
             'name' => 'required|string|max:255',
             "email" => 'required|email'
         ]);
-        if($validator->fails()) return back()->withErrors($validator->errors())->withInput();
+        if($validator->fails()) return response(['errors' => $validator->errors()]);
         fournisseur::create($request->all());
-        return back()->with('message', 'Le fournisseur a été créer avec succès.');
+        return response(['message' => 'Le fournisseur a été créer avec succès.']);
     }
 
 
@@ -57,7 +57,7 @@ class FournisseurController extends Controller
     public function edit($id)
     {
         $fournisseur = fournisseur::find($id);
-        return view('form.fournisseur.fournisseurEdit',['fournisseur' => $fournisseur]);
+        return response(['fournisseur' => $fournisseur]);
     }
 
     /**
@@ -73,10 +73,10 @@ class FournisseurController extends Controller
             'name' => 'string|max:255',
             'email' => 'email'
         ]);
-        if($validator->fails()) return back()->withErrors($validator->errors())->withInput();
+        if($validator->fails()) return response(['errors' => $validator->errors()]);
         $fournisseur = fournisseur::find($id);
         $fournisseur->update(array_filter($request->all()));
-        return back()->with('message', 'Le fournisseur a été modifié avec succès.');
+        return response(['message' => 'Le fournisseur a été modifié avec succès.']);
     }
 
     /**

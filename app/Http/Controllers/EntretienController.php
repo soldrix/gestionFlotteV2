@@ -20,7 +20,7 @@ class EntretienController extends Controller
                 'entretiens.*',
                 'voitures.immatriculation'
             ]);
-        return view('entretiens',['entretiens' => $entretiens]);
+        return response(['entretiens' => $entretiens]);
     }
 
     /**
@@ -53,7 +53,7 @@ class EntretienController extends Controller
                 "date.after" => "La date doit être valide et être après 01/01/2000.",
                 "numeric" => "Le montant doit être un chiffre ex: ( 10.50)."
             ]);
-        if ($validator->fails()) return back()->withErrors($validator->errors())->withInput();
+        if ($validator->fails()) return response(['errors' => $validator->errors()]);
         $collections = collect($request->all());
         if($collections->get('note') === null){
             $collections = $collections->replaceRecursive(['note' => 'Aucune note.']);
@@ -62,7 +62,7 @@ class EntretienController extends Controller
             $collections = $collections->replaceRecursive(['id_voiture' => null]);
         }
         entretien::create($collections->all());
-        return back()->with('message', 'L\'entretien à été créer avec succès.');
+        return response(['message' => 'L\'entretien à été créer avec succès.']);
     }
 
 
@@ -76,7 +76,7 @@ class EntretienController extends Controller
     {
         $entretien = entretien::find($id);
         $voitures = voiture::all();
-        return view('form.entretien.entretienEdit',['entretien' => $entretien, 'voitures' => $voitures]);
+        return response(['entretien' => $entretien, 'voitures' => $voitures]);
     }
 
     /**
@@ -96,7 +96,7 @@ class EntretienController extends Controller
             "date.after" => "La date doit être valide et être après 01/01/2000.",
             "numeric" => "Le montant doit être un chiffre ex: ( 10.50)."
         ]);
-        if ($validator->fails()) return back()->witherrors($validator->errors())->withInput();
+        if ($validator->fails()) return response(['errors' => $validator->errors()]);
         $entretien = entretien::find($id);
         $collections = collect($request->all())->filter();
         //pour vérifier si l'utilisateur veut supprimer la note, si oui supprimer la note
@@ -107,7 +107,7 @@ class EntretienController extends Controller
            $collections = $collections->replaceRecursive(["id_voiture" => null]);
         }
         $entretien->update($collections->all());
-        return back()->with('message', 'L\'entretien à été modfié avec succès.');
+        return response(['message' => 'L\'entretien à été modfié avec succès.']);
     }
 
     /**

@@ -24,7 +24,7 @@ class AgenceController extends Controller
             ]);
 
         //retourne les données à une view
-        return view('agences',['agences' => $agences]);
+        return response(['agences' => $agences]);
     }
 
     /**
@@ -61,7 +61,7 @@ class AgenceController extends Controller
             "max_digits" => "Code postal invalide."
         ]);
         //retourn les erreurs du validator
-        if ($validator->fails()) return back()->withErrors($validator->errors())->withInput();
+        if ($validator->fails()) return response($validator->errors());
         //stock toute les valeurs du request
         $collections = collect($request->all());
         //test la valeur de id_user
@@ -70,7 +70,7 @@ class AgenceController extends Controller
             $collections = $collections->replaceRecursive(['id_user' => null]);
         }
         agence::create($collections->all());
-        return back()->with('message', 'L\'agence à été créer avec succès.');
+        return response(['message' => 'L\'agence à été créer avec succès.']);
     }
 
 
@@ -87,7 +87,7 @@ class AgenceController extends Controller
         $users = User::join("roles", "roles.id", "=", "users.id_role")->where('roles.name', '=', 'chef agence')->get([
             "users.*"
         ]);
-        return view('form.agence.agenceEdit',['agence' => $agence,'users' => $users]);
+        return response(['agence' => $agence,'users' => $users]);
     }
 
     /**
@@ -109,7 +109,7 @@ class AgenceController extends Controller
             "min_digits" => "Code postal invalide.",
             "max_digits" => "Code postal invalide."
         ]);
-        if ($validator->fails()) return back()->withErrors($validator->errors())->withInput();
+        if ($validator->fails()) return response(['errors' => $validator->errors()]);
         //stock toutes les valeurs du request et retire les valeurs null
         $collections = collect($request->all())->filter();
         //test la valeur de id_user (cette partie permet de retirer un utilisateur d'une agence)
@@ -118,7 +118,7 @@ class AgenceController extends Controller
             $collections = $collections->replaceRecursive(['id_user' => null]);
         }
         $agence->update($collections->all());
-        return back()->with('message', 'L\'agence à été créer avec succès.');
+        return response(['message' => 'L\'agence à été créer avec succès.']);
     }
 
     /**

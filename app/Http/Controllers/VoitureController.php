@@ -21,7 +21,7 @@ class VoitureController extends Controller
     public function index()
     {
         $voitures = voiture::all();
-        return view('voitures',["voitures"=>$voitures]);
+        return response(["voitures"=>$voitures]);
     }
     /**
      * Pour afficher la page de création.
@@ -61,7 +61,7 @@ class VoitureController extends Controller
             "mimes" => "Le fichier doit être au format : jpg, png, jpeg, gif ou svg .",
             "regex" => "Doit être correspondre à exemple : AA-150-AA ."
         ]);
-        if($validator->fails()) return back()->withErrors($validator->errors())->withInput();
+        if($validator->fails()) return response(['errors' => $validator->errors()]);
         //ajout l'image dans le storage
         $path = Storage::putFile('image', $request->image);
         $collections = collect($request->all())->replaceRecursive(['image' => $path]);
@@ -69,7 +69,7 @@ class VoitureController extends Controller
             $collections = $collections->replaceRecursive(['id_agence' => null]);
         }
         voiture::create($collections->all());
-        return back()->with('message', 'La voiture à été créer avec succès.');
+        return response(['message' => 'La voiture à été créer avec succès.']);
     }
 
     /**
@@ -93,7 +93,7 @@ class VoitureController extends Controller
         $assurances = assurance::where('id_voiture', $id)->get();
         $reparations = reparation::where('id_voiture' ,$id)->get();
         $consommations =consommation::where('id_voiture', $id)->get();
-        return view('voiture',
+        return response(
             [
                 'voitureData' => $voiture,
                 'nbEnt' => count($entretiens),
@@ -144,7 +144,7 @@ class VoitureController extends Controller
             "mimes" => "Le fichier doit être au format : jpg, png, jpeg, gif ou svg .",
             "regex" => "Doit être correspondre à exemple : AA-150-AA ."
         ]);
-        if($validator->fails()) return back()->withErrors($validator->errors())->withInput();
+        if($validator->fails()) return response(['errors' => $validator->errors()]);
         $voiture = voiture::find($id);
         $collections = collect($request->all())->filter();
         if($collections->get('id_agence') === "vide"){
@@ -159,7 +159,7 @@ class VoitureController extends Controller
             $collections = $collections->replaceRecursive(['image' => $path]);
         }
         $voiture->update($collections->all());
-        return back()->with('message', 'La modification à été réaliser avec succès.');
+        return response(['message' => 'La modification à été réaliser avec succès.']);
     }
 
     /**
@@ -168,10 +168,11 @@ class VoitureController extends Controller
      * @param  int  $id
      *
      */
-    public function destroy($id):void
+    public function destroy($id)
     {
         $voiture = voiture::find($id);
         Storage::delete($voiture->image);
         $voiture->delete();
+        return response(['message' => 'Supprimer avec succès.']);
     }
 }
