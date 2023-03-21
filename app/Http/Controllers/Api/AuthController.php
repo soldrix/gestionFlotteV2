@@ -47,7 +47,8 @@ class AuthController extends Controller
         //connect l'utilisateur
         Auth()->attempt($request->only('email', 'password'));
         //créer un token avec expiration
-        $token = Auth('sanctum')->user()->createToken('auth_token',['*'],Carbon::now()->addMinutes(20) )->plainTextToken;
+        date_default_timezone_set('Europe/Paris');
+        $token = Auth('sanctum')->user()->createToken('auth_token',['*'],Carbon::now()->addMinutes(config('session.lifetime')) )->plainTextToken;
         return response()->json([
             'access_token' => $token,
             'token_type' => 'Bearer',
@@ -73,7 +74,8 @@ class AuthController extends Controller
                 $request->user()->tokens()->delete();
             }
             //créer un token avec expiration
-            $token = Auth('sanctum')->user()->createToken('auth_token',['*'],Carbon::now()->addMinutes(20) )->plainTextToken;
+            date_default_timezone_set('Europe/Paris');
+            $token = Auth('sanctum')->user()->createToken('auth_token',['*'],Carbon::now()->addMinutes(config('session.lifetime')))->plainTextToken;
             //retourne le token et id de l'utilisateur
             return response()->json([
                 'access_token' => $token,

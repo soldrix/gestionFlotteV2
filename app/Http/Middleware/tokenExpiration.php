@@ -40,8 +40,9 @@ class tokenExpiration
             }
         }
 
+        date_default_timezone_set('Europe/Paris');
         $token = PersonalAccessToken::find($userToken->id);
-        $now =  Carbon::parse(Carbon::now()->addHour());
+        $now =  Carbon::parse(Carbon::now());
 
         $last_seen = Carbon::parse($token->expires_at);
 

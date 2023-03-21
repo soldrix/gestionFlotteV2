@@ -32,8 +32,8 @@ rm storage/app/image/*
 puis lancer les commandes suivantes
 ```
 php artisan migrate:fresh --seed --seeder=DatabaseSeeder
-php artisan storage:link```
-
+php artisan storage:link
+```
 
 Ajouter les valeur dans env pour smtp:
 ```
