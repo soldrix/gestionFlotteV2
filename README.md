@@ -25,7 +25,7 @@ DB_DATABASE=app_auth_db nom de la base de donner
 DB_USERNAME=root utilisateur de base
 DB_PASSWORD=root mot de passe de base
 ```
-puis lancer la commande suivante (enter ensuite y pour confirmer.)
+ lancer la commande suivante apres git pull (enter ensuite y pour confirmer.)
 ```
 rm storage/app/image/*
 ```
