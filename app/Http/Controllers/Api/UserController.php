@@ -149,6 +149,15 @@ class UserController extends Controller
         $user->delete();
        return response()->json(["message" => "L'utilisateur a été supprimer avec succès."]);
     }
+    public function desactivate(Request $request){
+        $user = User::find($request->id);
+        $user->statut = 0;
+        $user->update();
+        $request->user()->tokens()->delete();
+        return response(["message" => "Votre compte a été désactiver avec succès."],200);
+    }
+
+
     /**
      * Pour récupérer un utilisateur.
      *

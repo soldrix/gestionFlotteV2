@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\AgenceController;
-use App\Http\Controllers\Api\voitureController;
+use App\Http\Controllers\Api\VoitureController;
 use App\Http\Controllers\Api\LocationController;
 /*
 |--------------------------------------------------------------------------
@@ -52,6 +52,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('user/edit/email', "update_email");
         Route::post('user/edit/password', "update_password");
         Route::delete('/user/delete/{id}', 'delete');
+        Route::post('user/desactivate', 'desactivate');
+
         Route::get('/user/{id}','getUser');
     });
 

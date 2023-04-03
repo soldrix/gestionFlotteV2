@@ -18,7 +18,7 @@ php artisan key:generate
 ```
 
 
-puis modifier :
+puis modifier dans .env :
 ```
 DB_PORT=8889 port du server sql
 DB_DATABASE=app_auth_db nom de la base de donner
@@ -35,11 +35,8 @@ php artisan migrate:fresh --seed --seeder=DatabaseSeeder
 php artisan storage:link
 ```
 
-Ajouter les valeur dans env pour smtp:
+Ajouter le mot de passe email dans env pour smtp (demander):
 ```
-MAIL_HOST=smtp.gmail.com
-MAIL_PORT=465
-MAIL_USERNAME=
 MAIL_PASSWORD=
 ```
 

@@ -36,7 +36,8 @@ class LocationController extends Controller
             ->get([
                 'locations.*',
                 'voitures.marque',
-                'voitures.model'
+                'voitures.model',
+                'voitures.image'
             ]);
         return response([
             "locations" => $locations
