@@ -118,7 +118,7 @@ class AgenceController extends Controller
             $collections = $collections->replaceRecursive(['id_user' => null]);
         }
         $agence->update($collections->all());
-        return back()->with('message', 'L\'agence à été créer avec succès.');
+        return back()->with('message', 'L\'agence à été modifié avec succès.');
     }
 
     /**

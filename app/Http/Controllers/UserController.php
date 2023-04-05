@@ -178,7 +178,7 @@ class UserController extends Controller
         }
 
 
-        return back()->with('message','L\'utilisateur a été créer avec succès.');
+        return back()->with('message','L\'utilisateur a été modifé avec succès.');
     }
 
     /**

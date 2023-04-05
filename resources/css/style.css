@@ -3,6 +3,7 @@
 @import '~flatpickr/dist/flatpickr.css';
 :root{
  --bg-primary: #11151c;
+ --bg-body: linear-gradient(172deg, rgba(35,24,186,1) 0%, rgba(0,0,0,1) 100%) no-repeat fixed;
  --bg-secondary: #19212e;
 }
 /*
@@ -63,7 +64,7 @@ span.dtr-data{
     word-wrap: anywhere;
 }
 body{
-    background-color: var(--bg-primary);
+    background: var(--bg-body);
     color: white;
 }
 .bg-nav{
