@@ -5,7 +5,7 @@
             <h2 class="mt-3">Liste des dernier ajout et modification.</h2>
             <div class="divbottom">
                 <div class="border-bottom mt-2 border-dark border-opacity-25 border-2 pt-2">
-                    <ul id="info_voiture" class="nav nav-tabs mt-3">
+                    <ul id="info_voiture" class="nav nav-tabs mt-3" >
                         {{--Affiche les tabs dont l'utlisateur à accès avec son role--}}
                         @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin', 'responsable auto', 'fournisseur', 'user']))
                             <li class="nav-item">
